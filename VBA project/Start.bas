@@ -1,5 +1,5 @@
 Attribute VB_Name = "Start"
-'Public MyFilePribor As String 'Файл в котором храним приборы
+Public MyFilePribor As String 'Файл в котором храним приборы
 Public AllCBp As New Collection  'Переменная для хранения  всех пунктов ФНП ОРПД
 Public AllCBv As New Collection  'Переменная для хранения  всех пунктов ФНП ОПВБ
 Public AllCBh As New Collection  'Переменная для хранения  всех пунктов ФНП ХОПО
@@ -18,8 +18,8 @@ Sub Main()
 ' Макрос создан 15.04.2011
 '
 'Set AllCBp = New Scripting.Dictionary
-'MyFilePribor = ActiveDocument.AttachedTemplate.Path
-'MyFilePribor = MyFilePribor & "\tablprib.txt"
+MyFilePribor = ActiveDocument.AttachedTemplate.Path
+MyFilePribor = MyFilePribor & "\tablprib.txt"
     Dim sFilePath
     sFilePath = ActiveDocument.AttachedTemplate.Path & "\data_base.xls"    'ActiveDocument.Path &
 On Error Resume Next
@@ -154,7 +154,7 @@ If UF1.CBFNPOPVB.Value = True Then
     ActiveDocument.Variables("TTrDop1").Value = " Техническое состояние " & ActiveDocument.Variables("TechUsrtva").Value & " соответствует требованиям п.п. 30, 169" & UF1.FNPOPVBR.Value & "."
     SetVar = Array(43, 47, 48, 53, 177, 178, 179, 184, 185, 186, 189, 190, 196, 197, 198, 199, 203)
     Call SetValue(SetVar, "CBvb", "p7-3OPVB")
-    ActiveDocument.Variables("p7-3OPVB").Value = ActiveDocument.Variables("TckZpt").Value & " п.п." & ActiveDocument.Variables("p7-3OPVB").Value & UF1.FNPORPDR.Value
+    ActiveDocument.Variables("p7-3OPVB").Value = ActiveDocument.Variables("TckZpt").Value & " п.п." & ActiveDocument.Variables("p7-3OPVB").Value & UF1.FNPOPVBR.Value
 '    ActiveDocument.Variables("p7-3OPVB").Value = ActiveDocument.Variables("TckZpt").Value & " п.п." & ActiveDocument.Variables("CBvb177").Value & ActiveDocument.Variables("CBvb178").Value & ActiveDocument.Variables("CBvb179").Value
 '    ActiveDocument.Variables("p7-3OPVB").Value = ActiveDocument.Variables("p7-3OPVB").Value & ActiveDocument.Variables("CBvb196").Value & ActiveDocument.Variables("CBvb197").Value & ActiveDocument.Variables("CBvb198").Value
 '    ActiveDocument.Variables("p7-3OPVB").Value = ActiveDocument.Variables("p7-3OPVB").Value & ActiveDocument.Variables("CBvb199").Value & ActiveDocument.Variables("CBvb203").Value & UF1.FNPOPVBR.Value
@@ -380,7 +380,7 @@ End Sub
 
 Sub variable()
 'ActiveDocument.Variables("punkt1-1OPVB").Value = Strings.Chr(13) & "п.п. 4, 23, 25 Федеральных норм и правил в области промышленной безопасности " & Strings.Chr(171) & "Правила проведения экспертизы промышленной безопасности" & Strings.Chr(187) & ", утвержденных приказом Федеральной службы по экологическому, технологическому и атомному надзору от 20.10.2020 г. №420, зарегистрированных в Минюсте России рег.№61391 от 11.12.2020 г"
-ActiveDocument.Variables("VIKRezKontr").Value = "при визуальном и измерительном контроле дефектов, препятствующих дальнейшей эксплуатации, не обнаружено" ' & Strings.Chr(171) & "Методические рекомендации о порядке проведения магнитопорошкового контроля технических устройств и сооружений, применяемых и эксплуатируемых на опасных производственных объектах" & Strings.Chr(187) & ", утвержденные Приказом Ростехнадзора от 13.12.2006 г. №1072" 'Strings.ChrW(31)
+ActiveDocument.Variables("Koof_fid").Value = "1,0" ' & Strings.Chr(171) & "Методические рекомендации о порядке проведения магнитопорошкового контроля технических устройств и сооружений, применяемых и эксплуатируемых на опасных производственных объектах" & Strings.Chr(187) & ", утвержденные Приказом Ростехнадзора от 13.12.2006 г. №1072" 'Strings.ChrW(31)
 'MsgBox (ActiveDocument.Variables("CBp178").Value)
 '    Dim V As variable, S As String
 '    For Each V In ActiveDocument.Variables

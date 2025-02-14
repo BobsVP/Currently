@@ -53,10 +53,10 @@ End Sub
  
 Private Sub AktVIKMK_Change()
 If UF1.AktVIKMK.Enabled = True Then
-    UF1.ProtokTolch.Value = Val(UF1.AktVIKMK.Value) + 1
+    UF1.ProtokTolch.Value = Format(Val(UF1.AktVIKMK.Value) + 1, "000")
     ActiveDocument.Variables("AktVIKMK").Value = UF1.AktVIKMK.Value
 Else
-    UF1.ProtokTolch.Value = Val(UF1.AktVIKMK.Value)
+    UF1.ProtokTolch.Value = UF1.AktVIKMK.Value
 End If
 End Sub
 
@@ -211,14 +211,14 @@ Private Sub CBPodNaliv_Click()
         UF1.CBRUA93.Value = True
         ActiveDocument.Variables("GOST34347PGiI").Value = Strings.ChrW(31)
         ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий без давления (под налив)"
-        UF1.NaznTehUstr.Value = "емкость"
+'        UF1.NaznTehUstr.Value = "емкость"
         ActiveDocument.Variables("IspitatP").Value = "полный налив"
-'        UF1.RabocheeP.Value = "под налив"
+        ActiveDocument.Variables("VnutrIzbP").Value = "гидростатическим"
         UF1.RazreshaemoeP.Value = "под налив"
         UF1.IspitatP.Value = "наливом"
     Else
         ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
-'        ActiveDocument.Variables("NaznTehUstr").Value = "сосуд для "
+        ActiveDocument.Variables("VnutrIzbP").Value = "внутренним избыточным"
         ActiveDocument.Variables("IndxP").Value = Strings.ChrW(31)
         UF1.CBSO439.Value = True
     End If
@@ -468,7 +468,7 @@ End Sub
 
 Private Sub CBRUA93_Click()
 If UF1.CBRUA93.Value = True Then
-    ActiveDocument.Variables("p4-5RUA").Value = "; п.п. 2.51, 2.53, 2.54" & UF1.RUA93.Value
+    ActiveDocument.Variables("p4-5RUA").Value = "; п. 3.1. " & Strings.Chr(171) & "г, з" & Strings.Chr(187) & UF1.RUA93.Value
     ActiveDocument.Variables("GIRUA93").Value = "; п.п." & ActiveDocument.Variables("p2-102RUA").Value & ActiveDocument.Variables("p2-111RUA").Value & " 2.113" & UF1.RUA93.Value
     ActiveDocument.Variables("UZKRUA").Value = "; п. 2.84" & UF1.RUA93.Value
     ActiveDocument.Variables("NTDAktNKRUA93").Value = Strings.Chr(13) & Mid(UF1.RUA93.Value, 2, 140) & "."
@@ -925,6 +925,10 @@ Private Sub ExpertZS_Change()
     If Date > CDate("04.12.2025") Then MsgBox ("Проверь срок действия удостоверения экспертов по ЗС")
 End Sub
 
+Private Sub ExpertZSM_Click()
+    If Date > CDate("04.12.2025") Then MsgBox ("Проверь срок действия удостоверения экспертов по ЗС")
+End Sub
+
 Private Sub FlanzSoed_Change()
     BaseUstr(BaseUstrIndex, 34) = UF1.FlanzSoed.Value
     ActiveDocument.Variables("FlanzSoed").Value = Trim(UF1.FlanzSoed.Value)
@@ -948,10 +952,10 @@ End Sub
 
 Private Sub KontrGib_Change()
 If UF1.KontrGib.Enabled = True Then
-    UF1.AktGI.Value = Val(UF1.KontrGib.Value) + 1
+    UF1.AktGI.Value = Format(Val(UF1.KontrGib.Value) + 1, "000")
     ActiveDocument.Variables("KontrGib").Value = UF1.KontrGib.Value
 Else
-    UF1.AktGI.Value = Val(UF1.KontrGib.Value)
+    UF1.AktGI.Value = UF1.KontrGib.Value
 End If
 End Sub
 
@@ -1130,7 +1134,7 @@ End Sub
 Private Sub PasportKolStr_Change()
     BaseUstr(BaseUstrIndex, 37) = UF1.PasportKolStr.Value
     If UF1.PasportKolStr.Value = "" Then
-        ActiveDocument.Variables("PasportKolStr").Value = Trim(UF1.PasportKolStr.Value)
+        ActiveDocument.Variables("PasportKolStr").Value = = Strings.ChrW(31)
     Else
         ActiveDocument.Variables("PasportKolStr").Value = " - " & Trim(UF1.PasportKolStr.Value) & " л."
     End If
@@ -1252,9 +1256,9 @@ End Sub
 Private Sub Progib_Change()
 ActiveDocument.Variables("Progib").Value = UF1.Progib.Value
 If UF1.Progib.Enabled = True Then
-    UF1.KontrGib.Value = Val(UF1.Progib.Value) + 1
+    UF1.KontrGib.Value = Format(Val(UF1.Progib.Value) + 1, "000")
 Else
-    UF1.KontrGib.Value = Val(UF1.Progib.Value)
+    UF1.KontrGib.Value = UF1.Progib.Value
 End If
 
 End Sub
@@ -1323,11 +1327,11 @@ Else
     ActiveDocument.Variables("AktGI").Value = UF1.AktGI.Value
 End If
 If UF1.AktGI.Enabled = True Then
-    UF1.AktAE.Value = Val(UF1.AktGI.Value) + 1
-    UF1.ProtokolVD.Value = Val(UF1.AktGI.Value) + 1
+    UF1.AktAE.Value = Format(Val(UF1.AktGI.Value) + 1, "000")
+    UF1.ProtokolVD.Value = Format(Val(UF1.AktGI.Value) + 1, "000")
 Else
-    UF1.AktAE.Value = Val(UF1.AktGI.Value)
-    UF1.ProtokolVD.Value = Val(UF1.AktGI.Value)
+    UF1.AktAE.Value = UF1.AktGI.Value
+    UF1.ProtokolVD.Value = UF1.AktGI.Value
 End If
 End Sub
 
@@ -1339,7 +1343,7 @@ Dim objDoc As Object
     With Application.Dialogs(wdDialogFileOpen)
         lRetVal = .Display
         fName = .Name
-        fName = Options.DefaultFilePath(wdCurrentFolderPath) & "\" & Replace(fName, """", "")
+        If Not fName Like "*:*" Then fName = Options.DefaultFilePath(wdCurrentFolderPath) & "\" & Replace(fName, """", "")
     End With
     If lRetVal <> -1 Then Exit Sub
 Set objWrd = CreateObject("Word.Application")
@@ -1415,9 +1419,9 @@ End Sub
 Private Sub KartOvaln_Change()
 ActiveDocument.Variables("KartOvaln").Value = UF1.KartOvaln.Value
 If UF1.KartOvaln.Enabled = True Then
-    UF1.Progib.Value = Val(UF1.KartOvaln.Value) + 1
+    UF1.Progib.Value = Format(Val(UF1.KartOvaln.Value) + 1, "000")
 Else
-    UF1.Progib.Value = Val(UF1.KartOvaln.Value)
+    UF1.Progib.Value = UF1.KartOvaln.Value
 End If
 End Sub
 
@@ -1470,7 +1474,7 @@ End Sub
 '
 Private Sub AktVIK_Change()
 ActiveDocument.Variables("AktVIK").Value = UF1.AktVIK.Value
-UF1.AktVIKMK.Value = Val(UF1.AktVIK.Value) + 1
+UF1.AktVIKMK.Value = Format(Val(UF1.AktVIK.Value) + 1, "000")
 End Sub
 
 Private Sub Button1_Click()
@@ -1550,6 +1554,9 @@ Call DeleteBookmarks("ExprtPSNN")
 End If
 If UF1.ExpertZS.Value = False Then
 Call DeleteBookmarks("ExprtPZ")
+End If
+If UF1.ExpertZSM.Value = False Then
+Call DeleteBookmarks("ExprtPZM")
 End If
 
 'ВИК МК да/нет
@@ -1785,7 +1792,7 @@ If UF1.OptionSosud.Value = True Then
         UF1.ComboBoxTechUsrtvo.ListIndex = 11
         UF1.ComboBoxRaschet.ListIndex = 2
         ActiveDocument.Variables("TipTehUstr").Value = "емкость"
-        UF1.NaznTehUstr.Value = "емкость под налив"
+        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "емкость под налив"
         ActiveDocument.Variables("p2-102RUA").Value = Strings.ChrW(31)
         ActiveDocument.Variables("p2-111RUA").Value = " 2.111,"
         UF1.CBZikl.Value = False
@@ -2191,18 +2198,18 @@ End Sub
 Private Sub ProtkTV_Change()
 ActiveDocument.Variables("ProtkTV").Value = UF1.ProtkTV.Value
 If UF1.ProtkTV.Enabled = True Then
-    UF1.KartOvaln.Value = Val(UF1.ProtkTV.Value) + 1
+    UF1.KartOvaln.Value = Format(Val(UF1.ProtkTV.Value) + 1, "000")
 Else
-    UF1.KartOvaln.Value = Val(UF1.ProtkTV.Value)
+    UF1.KartOvaln.Value = UF1.ProtkTV.Value
 End If
 End Sub
 
 Private Sub ProtokTolch_Change()
 ActiveDocument.Variables("ProtokTolch").Value = UF1.ProtokTolch.Value
 If UF1.ProtokTolch.Enabled = True Then
-    UF1.ZakUZK.Value = Val(UF1.ProtokTolch.Value) + 1
+    UF1.ZakUZK.Value = Format(Val(UF1.ProtokTolch.Value) + 1, "000")
 Else
-    UF1.ZakUZK.Value = Val(UF1.ProtokTolch.Value)
+    UF1.ZakUZK.Value = UF1.ProtokTolch.Value
 End If
 End Sub
 
@@ -2577,6 +2584,7 @@ Private Sub RabSreda_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If UF1.RabSreda.Value Like "*[Кк]ислород*" Then MsgBox ("Кислород")
     If UF1.RabSreda.Value Like "*[Щщ][её]лочь*" Then MsgBox ("Щелочь")
     If UF1.RabSreda.Value Like "*[Кк]ислота*" Then MsgBox ("Кислота")
+    If UF1.RabSreda.Value Like "*[Аа]цетилен*" Then MsgBox ("Ацетилен")
 End Sub
 
 Private Sub RabSredaRub_Change()
@@ -2648,15 +2656,7 @@ End Sub
 Private Sub RazreshaemoeP_Change()
     UF1.RazreshaemoeP.Value = Trim(UF1.RazreshaemoeP.Value)
     UF1.RazreshaemoeP = Replace(UF1.RazreshaemoeP, ".", ",")
-    BaseUstr(BaseUstrIndex, 26) = UF1.RazreshaemoeP.Value
-End Sub
-
-Private Sub RazreshaemoeP_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    If UF1.ComboBoxTipUstroistva.Value = "Автоцистерна для СУГ" And Val(UF1.RazreshaemoeP.Value) < Val(UF1.RaschetnP.Value) Then
-        MsgBox ("Для сосудов с СУГ не допускается снижение давления. П.402 ФНП ОРПД")
-    End If
     If IsNumeric(UF1.RazreshaemoeP.Value) Then
-        UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.25), "###0.0#")
         ActiveDocument.Variables("RazreshaemoeP").Value = Format(UF1.RazreshaemoeP.Value, "###0.0#####") & " кгс/см" & Strings.ChrW(178)
         ActiveDocument.Variables("RazreshaemoePKrt").Value = Format(UF1.RazreshaemoeP.Value, "###0.0#####")
         ActiveDocument.Variables("RazreshaemoePMP").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10, "###0.0#####") & " МПа"
@@ -2667,6 +2667,14 @@ Private Sub RazreshaemoeP_Exit(ByVal Cancel As MSForms.ReturnBoolean)
         ActiveDocument.Variables("RazreshaemoePMP").Value = Strings.ChrW(31)
         ActiveDocument.Variables("RazreshaemoePMPKrt").Value = Strings.ChrW(31)
     End If
+    BaseUstr(BaseUstrIndex, 26) = UF1.RazreshaemoeP.Value
+End Sub
+
+Private Sub RazreshaemoeP_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If UF1.ComboBoxTipUstroistva.Value = "Автоцистерна для СУГ" And Val(UF1.RazreshaemoeP.Value) < Val(UF1.RaschetnP.Value) Then
+        MsgBox ("Для сосудов с СУГ не допускается снижение давления. П.402 ФНП ОРПД")
+    End If
+    If IsNumeric(UF1.RazreshaemoeP.Value) Then UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.25), "###0.0#")
     If UF1.CBVakuum.Value = True Then
         If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
             UF1.IspitatP.Value = "2,0"
@@ -3036,9 +3044,9 @@ End Sub
 Private Sub ZakMPDZD_Change()
 ActiveDocument.Variables("ZakMPDZD").Value = UF1.ZakMPDZD.Value
 If UF1.ZakMPDZD.Enabled = True Then
-    UF1.ProtkTV.Value = Val(UF1.ZakMPDZD.Value) + 1
+    UF1.ProtkTV.Value = Format(Val(UF1.ZakMPDZD.Value) + 1, "000")
 Else
-    UF1.ProtkTV.Value = Val(UF1.ZakMPDZD.Value)
+    UF1.ProtkTV.Value = UF1.ZakMPDZD.Value
 End If
 End Sub
 
@@ -3052,9 +3060,9 @@ End Sub
 Private Sub ZakUZK_Change()
 ActiveDocument.Variables("ZakUZK").Value = UF1.ZakUZK.Value
 If UF1.ZakUZK.Enabled = True Then
-    UF1.ZakMPDZD.Value = Val(UF1.ZakUZK.Value) + 1
+    UF1.ZakMPDZD.Value = Format(Val(UF1.ZakUZK.Value) + 1, "000")
 Else
-    UF1.ZakMPDZD.Value = Val(UF1.ZakUZK.Value)
+    UF1.ZakMPDZD.Value = UF1.ZakUZK.Value
 End If
 End Sub
 

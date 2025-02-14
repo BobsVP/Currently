@@ -40,46 +40,137 @@ Sub GorGid() ' Устанавливаем пункты для горючих жидкостей
 '    SelectComboBox = Array(137, 141, 142, 144, 146, 147, 148, 149, 150)
 End Sub
 
-Sub RaschOstRes()
-If IsNumeric(UF1.ddiam.Value) And IsNumeric(UF1.otolsh.Value) And IsNumeric(UF1.otolshfakt.Value) And IsNumeric(UF1.DopuskNapro.Value) Then
-    Dim R As Double
-        If IsNumeric(UF1.otolshfakt.Value) Then ActiveDocument.Variables("oSkorKorroz").Value = Format((UF1.otolsh.Value - UF1.otolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
-        If IsNumeric(UF1.dtolshfakt.Value) Then ActiveDocument.Variables("dSkorKorroz").Value = Format((UF1.dtolsh.Value - UF1.dtolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
-    If UF1.ComboBoxRaschet.ListIndex = 0 Then 'Пассат
-        ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * 10 * CDbl(UF1.Koof_fio.Value) - _
-        (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
-        If IsNumeric(UF1.ddlina.Value) Then R = (CDbl(UF1.ddiam.Value) * CDbl(UF1.ddiam.Value)) / (4 * CDbl(UF1.ddlina.Value))
-        ActiveDocument.Variables("dtolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * R / (2 * CDbl(UF1.DopuskNaprd.Value) * 10 * CDbl(UF1.Koof_fid.Value) - _
-        0.5 * (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
+Sub RaschOstRes() ' Расчет остаточного ресурса
+
+Dim R As Double
+    'Скорость коррозии
+    If IsNumeric(UF1.otolsh.Value) And IsNumeric(UF1.otolshfakt.Value) And Val(ActiveDocument.Variables("SrokSlugb").Value) <> 0 Then
+        ActiveDocument.Variables("oSkorKorroz").Value = Format((UF1.otolsh.Value - UF1.otolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+    Else
+        ActiveDocument.Variables("oSkorKorroz").Value = Strings.ChrW(31)
     End If
-    If UF1.ComboBoxRaschet.ListIndex = 1 Then  'РД 10-249-98
-        If UF1.OptionTruboprovod.Value = True Then
-            ActiveDocument.Variables("Sotbrako").Value = OtbrTolTabl(CDbl(UF1.odiam.Value))
-            ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTabl(CDbl(UF1.ddiam.Value))
-            ActiveDocument.Variables("MaxSK").Value = Max(CDbl(ActiveDocument.Variables("oSkorKorroz").Value), CDbl(ActiveDocument.Variables("dSkorKorroz").Value))
-            ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
-            ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
-        Else
-            ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * CDbl(UF1.Koof_fio.Value) - _
-            CDbl(UF1.RazreshaemoeP.Value) / 10) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
-            ActiveDocument.Variables("otolshraschK").Value = RashTolshTr(1)
-            ActiveDocument.Variables("ProvUslo").Value = Format((CDbl(ActiveDocument.Variables("otolshrasch").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
-            ActiveDocument.Variables("ProvUslK").Value = Format((CDbl(ActiveDocument.Variables("otolshraschK").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
-            R = CDbl(UF1.ddiam.Value) / (2 * CDbl(UF1.ddlina.Value))
-            ActiveDocument.Variables("dtolshrasch").Value = Format((CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.ddiam.Value) / (4 * CDbl(UF1.DopuskNaprd.Value) * CDbl(UF1.Koof_fid.Value) - _
-            CDbl(UF1.RazreshaemoeP.Value) / 10)) * R + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
-            ActiveDocument.Variables("ProvUsld1").Value = CDbl(UF1.ddlina.Value) / CDbl(UF1.ddiam.Value)
-            ActiveDocument.Variables("ProvUsld2").Value = Format((CDbl(ActiveDocument.Variables("dtolshrasch").Value) - CDbl(UF1.PribNaKorrd.Value)) / CDbl(UF1.ddiam.Value), "##0.0###")
-        End If
+    If IsNumeric(UF1.dtolsh.Value) And IsNumeric(UF1.dtolshfakt.Value) And Val(ActiveDocument.Variables("SrokSlugb").Value) <> 0 Then
+        ActiveDocument.Variables("dSkorKorroz").Value = Format((UF1.dtolsh.Value - UF1.dtolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+    Else
+        ActiveDocument.Variables("dSkorKorroz").Value = Strings.ChrW(31)
     End If
-    If UF1.ComboBoxRaschet.ListIndex = 2 Then   'РД 153-34.1-37.525-96 кислота и щелочь
-    End If
-    If UF1.ComboBoxRaschet.ListIndex = 3 Then  'ГОСТ 32388-2013 тех. трубопровод
-        ActiveDocument.Variables("Sotbrako").Value = OtbrTolTablTT(CDbl(UF1.odiam.Value))
-        ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTablTT(CDbl(UF1.ddiam.Value))
+    If ActiveDocument.Variables("oSkorKorroz").Value <> Strings.ChrW(31) And ActiveDocument.Variables("dSkorKorroz").Value <> Strings.ChrW(31) Then
         ActiveDocument.Variables("MaxSK").Value = Max(CDbl(ActiveDocument.Variables("oSkorKorroz").Value), CDbl(ActiveDocument.Variables("dSkorKorroz").Value))
-        ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
-        ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
+    End If
+    
+    'Первая строка расчет
+    If IsNumeric(UF1.odiam.Value) And IsNumeric(UF1.DopuskNapro.Value) And IsNumeric(UF1.Koof_fio.Value) And IsNumeric(UF1.PribNaKorro.Value) And IsNumeric(UF1.RazreshaemoeP.Value) Then
+        Select Case UF1.ComboBoxRaschet.ListIndex
+        
+            Case Is = 0 'Пассат
+                ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * 10 * CDbl(UF1.Koof_fio.Value) - _
+                (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
+                
+            Case Is = 1 'РД 10-249-98
+                If UF1.OptionTruboprovod.Value = True Then
+                    ActiveDocument.Variables("Sotbrako").Value = OtbrTolTabl(CDbl(UF1.odiam.Value))
+                    ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
+                Else
+                    ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * CDbl(UF1.Koof_fio.Value) - _
+                    CDbl(UF1.RazreshaemoeP.Value) / 10) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
+                    ActiveDocument.Variables("otolshraschK").Value = RashTolshTr(1)
+                    ActiveDocument.Variables("ProvUslo").Value = Format((CDbl(ActiveDocument.Variables("otolshrasch").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
+                    ActiveDocument.Variables("ProvUslK").Value = Format((CDbl(ActiveDocument.Variables("otolshraschK").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
+                End If
+                
+            Case Is = 2 'РД 153-34.1-37.525-96 кислота и щелочь
+            
+            Case Is = 3 'ГОСТ 32388-2013 тех. трубопровод
+                ActiveDocument.Variables("Sotbrako").Value = OtbrTolTablTT(CDbl(UF1.odiam.Value))
+                ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
+                
+            Case Is = 4 'ГОСТ 25215-82 баллоны
+            
+            Case Is = 5 'Справочник Лащинский
+        End Select
+        
+    Else
+        ActiveDocument.Variables("otolshrasch").Value = Strings.ChrW(31)
+    End If
+    
+    'Вторая строка расчет
+    If IsNumeric(UF1.ddiam.Value) And IsNumeric(UF1.DopuskNaprd.Value) And IsNumeric(UF1.Koof_fid.Value) And IsNumeric(UF1.PribNaKorrd.Value) And IsNumeric(UF1.RazreshaemoeP.Value) Then
+        Select Case UF1.ComboBoxRaschet.ListIndex
+        
+            Case Is = 0 'Пассат
+                If IsNumeric(UF1.ddlina.Value) Then
+                    R = (CDbl(UF1.ddiam.Value) * CDbl(UF1.ddiam.Value)) / (4 * CDbl(UF1.ddlina.Value))
+                    ActiveDocument.Variables("dtolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * R / (2 * CDbl(UF1.DopuskNaprd.Value) * 10 * CDbl(UF1.Koof_fid.Value) - _
+                    0.5 * (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
+                End If
+                
+            Case Is = 1 'РД 10-249-98
+                If UF1.OptionTruboprovod.Value = True Then
+                    ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTabl(CDbl(UF1.ddiam.Value))
+                    ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
+                Else
+                    If IsNumeric(UF1.ddlina.Value) Then
+                        R = CDbl(UF1.ddiam.Value) / (2 * CDbl(UF1.ddlina.Value))
+                        ActiveDocument.Variables("dtolshrasch").Value = Format((CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.ddiam.Value) / (4 * CDbl(UF1.DopuskNaprd.Value) * CDbl(UF1.Koof_fid.Value) - _
+                        CDbl(UF1.RazreshaemoeP.Value) / 10)) * R + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
+                    End If
+                    ActiveDocument.Variables("ProvUsld1").Value = CDbl(UF1.ddlina.Value) / CDbl(UF1.ddiam.Value)
+                    ActiveDocument.Variables("ProvUsld2").Value = Format((CDbl(ActiveDocument.Variables("dtolshrasch").Value) - CDbl(UF1.PribNaKorrd.Value)) / CDbl(UF1.ddiam.Value), "##0.0###")
+                End If
+                
+            Case Is = 2 'РД 153-34.1-37.525-96 кислота и щелочь
+            
+            Case Is = 3 'ГОСТ 32388-2013 тех. трубопровод
+                ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTablTT(CDbl(UF1.ddiam.Value))
+                ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
+                
+            Case Is = 4 'ГОСТ 25215-82 баллоны
+            
+            Case Is = 5 'Справочник Лащинский
+        End Select
+        
+    Else
+        ActiveDocument.Variables("otolshrasch").Value = Strings.ChrW(31)
+    End If
+'If IsNumeric(UF1.ddiam.Value) And IsNumeric(UF1.otolsh.Value) And IsNumeric(UF1.otolshfakt.Value) And IsNumeric(UF1.DopuskNapro.Value) Then
+'    Dim R As Double
+'        If IsNumeric(UF1.otolshfakt.Value) Then ActiveDocument.Variables("oSkorKorroz").Value = Format((UF1.otolsh.Value - UF1.otolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+'        If IsNumeric(UF1.dtolshfakt.Value) Then ActiveDocument.Variables("dSkorKorroz").Value = Format((UF1.dtolsh.Value - UF1.dtolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+'    If UF1.ComboBoxRaschet.ListIndex = 0 Then 'Пассат
+'        ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * 10 * CDbl(UF1.Koof_fio.Value) - _
+'        (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
+'        If IsNumeric(UF1.ddlina.Value) Then R = (CDbl(UF1.ddiam.Value) * CDbl(UF1.ddiam.Value)) / (4 * CDbl(UF1.ddlina.Value))
+'        ActiveDocument.Variables("dtolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) * R / (2 * CDbl(UF1.DopuskNaprd.Value) * 10 * CDbl(UF1.Koof_fid.Value) - _
+'        0.5 * (CDbl(UF1.RazreshaemoeP.Value))) + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
+'    End If
+'    If UF1.ComboBoxRaschet.ListIndex = 1 Then  'РД 10-249-98
+'        If UF1.OptionTruboprovod.Value = True Then
+'            ActiveDocument.Variables("Sotbrako").Value = OtbrTolTabl(CDbl(UF1.odiam.Value))
+'            ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTabl(CDbl(UF1.ddiam.Value))
+'            ActiveDocument.Variables("MaxSK").Value = Max(CDbl(ActiveDocument.Variables("oSkorKorroz").Value), CDbl(ActiveDocument.Variables("dSkorKorroz").Value))
+'            ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
+'            ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
+'        Else
+'            ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.odiam.Value) / (2 * CDbl(UF1.DopuskNapro.Value) * CDbl(UF1.Koof_fio.Value) - _
+'            CDbl(UF1.RazreshaemoeP.Value) / 10) + CDbl(UF1.PribNaKorro.Value), "##0.0#")
+'            ActiveDocument.Variables("otolshraschK").Value = RashTolshTr(1)
+'            ActiveDocument.Variables("ProvUslo").Value = Format((CDbl(ActiveDocument.Variables("otolshrasch").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
+'            ActiveDocument.Variables("ProvUslK").Value = Format((CDbl(ActiveDocument.Variables("otolshraschK").Value) - CDbl(UF1.PribNaKorro.Value)) / CDbl(UF1.odiam.Value), "##0.0###")
+'            R = CDbl(UF1.ddiam.Value) / (2 * CDbl(UF1.ddlina.Value))
+'            ActiveDocument.Variables("dtolshrasch").Value = Format((CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.ddiam.Value) / (4 * CDbl(UF1.DopuskNaprd.Value) * CDbl(UF1.Koof_fid.Value) - _
+'            CDbl(UF1.RazreshaemoeP.Value) / 10)) * R + CDbl(UF1.PribNaKorrd.Value), "##0.0#")
+'            ActiveDocument.Variables("ProvUsld1").Value = CDbl(UF1.ddlina.Value) / CDbl(UF1.ddiam.Value)
+'            ActiveDocument.Variables("ProvUsld2").Value = Format((CDbl(ActiveDocument.Variables("dtolshrasch").Value) - CDbl(UF1.PribNaKorrd.Value)) / CDbl(UF1.ddiam.Value), "##0.0###")
+'        End If
+'    End If
+'    If UF1.ComboBoxRaschet.ListIndex = 2 Then   'РД 153-34.1-37.525-96 кислота и щелочь
+'    End If
+'    If UF1.ComboBoxRaschet.ListIndex = 3 Then  'ГОСТ 32388-2013 тех. трубопровод
+'        ActiveDocument.Variables("Sotbrako").Value = OtbrTolTablTT(CDbl(UF1.odiam.Value))
+'        ActiveDocument.Variables("Sotbrakd").Value = OtbrTolTablTT(CDbl(UF1.ddiam.Value))
+'        ActiveDocument.Variables("MaxSK").Value = Max(CDbl(ActiveDocument.Variables("oSkorKorroz").Value), CDbl(ActiveDocument.Variables("dSkorKorroz").Value))
+'        ActiveDocument.Variables("otolshrasch").Value = RashTolshTr(1)
+'        ActiveDocument.Variables("dtolshrasch").Value = RashTolshTr(2)
         If Val(ActiveDocument.Variables("SrokSlugb").Value) > 30 Then
             ActiveDocument.Variables("KoefTT").Value = "0,95"
             ActiveDocument.Variables("bolmen").Value = "более"
@@ -87,25 +178,25 @@ If IsNumeric(UF1.ddiam.Value) And IsNumeric(UF1.otolsh.Value) And IsNumeric(UF1.
             ActiveDocument.Variables("KoefTT").Value = "1,0"
             ActiveDocument.Variables("bolmen").Value = "менее"
         End If
-    End If
-    If UF1.ComboBoxRaschet.ListIndex = 4 Then  'ГОСТ 25215-82 баллоны
-    End If
-    If UF1.ComboBoxRaschet.ListIndex = 5 Then   'Справочник Лащинский
-    End If
-'    ActiveDocument.Variables("SrokSlugb").Value = Year(Date) - Val(Right(UF1.DataVvoda.Value, 4))
-'    If UF1.otolshfakt.Value <> "" Then
-'        ActiveDocument.Variables("oSkorKorroz").Value = Format((UF1.otolsh.Value - UF1.otolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
-'        ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.odiam.Value) / (2 * 145 + (CDbl(UF1.RazreshaemoeP.Value) / 10)), "##0.0#")
 '    End If
-'    If UF1.dtolshfakt.Value <> "" Then
-'        ActiveDocument.Variables("dSkorKorroz").Value = Format((UF1.dtolsh.Value - UF1.dtolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
-'        ActiveDocument.Variables("dtolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.ddiam.Value) / (2 * 145 + (CDbl(UF1.RazreshaemoeP.Value) / 10)), "##0.0#")
+'    If UF1.ComboBoxRaschet.ListIndex = 4 Then  'ГОСТ 25215-82 баллоны
 '    End If
-    If Val(ActiveDocument.Variables("SrokSlugb").Value) < 31 Then ActiveDocument.Variables("KoefTT").Value = "1,0"
+'    If UF1.ComboBoxRaschet.ListIndex = 5 Then   'Справочник Лащинский
+'    End If
+''    ActiveDocument.Variables("SrokSlugb").Value = Year(Date) - Val(Right(UF1.DataVvoda.Value, 4))
+''    If UF1.otolshfakt.Value <> "" Then
+''        ActiveDocument.Variables("oSkorKorroz").Value = Format((UF1.otolsh.Value - UF1.otolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+''        ActiveDocument.Variables("otolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.odiam.Value) / (2 * 145 + (CDbl(UF1.RazreshaemoeP.Value) / 10)), "##0.0#")
+''    End If
+''    If UF1.dtolshfakt.Value <> "" Then
+''        ActiveDocument.Variables("dSkorKorroz").Value = Format((UF1.dtolsh.Value - UF1.dtolshfakt.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "#0.0##")
+''        ActiveDocument.Variables("dtolshrasch").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10 * CDbl(UF1.ddiam.Value) / (2 * 145 + (CDbl(UF1.RazreshaemoeP.Value) / 10)), "##0.0#")
+''    End If
+'End If
+    'Заполняем табличку-подсказку
     UF1.Inform.Caption = "Срок службы: " & ActiveDocument.Variables("SrokSlugb").Value & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("oSkorKorroz").Value & _
     " мм/год, расчетная толщина - " & ActiveDocument.Variables("otolshrasch").Value & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("dSkorKorroz").Value & " мм/год, расчетная толщина - " _
     & ActiveDocument.Variables("dtolshrasch").Value & Strings.Chr(13)
-End If
 End Sub
 
 'Public Function A1_Get()
@@ -147,11 +238,3 @@ Function Max(a, b)
 If a > b Then Max = a Else Max = b
 End Function
 
-Public Function Indx(ByRef Arr, str)
-    Indx = UBound(Arr)
-    Dim n As Long
-    For n = LBound(Arr) To UBound(Arr)
-        If Arr(n, 1) = str Then Indx = n - 1
-        If Indx <> UBound(Arr) Then Exit For
-    Next n
-End Function

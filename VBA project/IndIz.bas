@@ -104,7 +104,7 @@ End Sub
 Sub TruboprovPara()
     ActiveDocument.Variables("Izgotovitel6").Value = "Монтажная организация"
     ActiveDocument.Variables("SostElTrub").Value = "Дефекты трассы и опорно-подвесной системы отсутствуют, повреждений изоляции, и её внешнего кожуха, следов намокания, пропуска среды, не обнаружено. "
-'    If ActiveDocument.Bookmarks.Exists("R7p4") = True Then ActiveDocument.Bookmarks("R7p4").Range.Delete
+    If ActiveDocument.Bookmarks.Exists("Ne_peremesh") = True Then ActiveDocument.Bookmarks("Ne_peremesh").Range.Delete
     ActiveDocument.Variables("TempDeform").Value = ", температурными деформациями"
     ActiveDocument.Variables("punkt7-5-4Mat").Value = Strings.ChrW(31)
 End Sub
@@ -128,7 +128,7 @@ End Sub
 
 Sub TehnTruboprovod()
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары
-    ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. про оборудование котла
+'    ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. про оборудование котла
 '    ActiveDocument.Bookmarks("R7p4").Range.Delete 'Пункт про КИПиА
     ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода в холодном и горячем состоянии
     ActiveDocument.Tables(1).Cell(2, 2).Range.Text = "Труба"
@@ -172,11 +172,12 @@ Sub TehnTruboprovod()
     ActiveDocument.Variables("TTPoverRash").Value = " поверочного расчета для"
     ActiveDocument.Variables("korpusa").Value = Strings.ChrW(31)
     ActiveDocument.Variables("CBp466-1").Value = " и п. 177" & UF1.FNPTehnTrub.Value
+    If ActiveDocument.Bookmarks.Exists("Ne_peremesh") = True Then ActiveDocument.Bookmarks("Ne_peremesh").Range.Delete
    
 End Sub
 Sub TruboprovodKislota()
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары
-    ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. про оборудование котла
+'    ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. про оборудование котла
 '    ActiveDocument.Variables("MnNum1").Value = "сооружение"
 '    ActiveDocument.Variables("MnNum2").Value = "применяемый"
 '    ActiveDocument.Variables("MnNum3").Value = "применяемый"
