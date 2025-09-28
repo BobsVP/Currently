@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF1
    ClientHeight    =   8970.001
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   14010
+   ClientWidth     =   14295
    OleObjectBlob   =   "UF1.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -23,6 +23,9 @@ Public UstrIndxs As New Collection
 Public BaseElements As Variant
 Public BaseEPB As Variant
 Public BaseRemont As Variant
+Public BaseDocuments As Variant
+Public TipUstr As String
+Public UstrIdentifer As Integer
 
 Private Sub AktAED_Change()
 ActiveDocument.Variables("AktAED").Value = UF1.AktAED.Value
@@ -68,42 +71,26 @@ End If
 End Sub
 
 Private Sub CBFNPHOPO_Click()
-If UF1.CBFNPHOPO.Value = True Then
-    UF1.ExpertHim.Value = True
-Else
-    UF1.ExpertHim.Value = False
-End If
+    If UF1.CBFNPHOPO.Value = True Then UF1.ExpertHim.Value = True
 End Sub
 
 Private Sub CBFNPOPVB_Click()
-If UF1.CBFNPOPVB.Value = True Then
-    UF1.ExpertHim.Value = True
-Else
-    UF1.ExpertHim.Value = False
-End If
+    If UF1.CBFNPOPVB.Value = True Then UF1.ExpertHim.Value = True
 End Sub
 
 Private Sub CBFNPORPD_Click()
-If UF1.CBFNPORPD.Value = True Then UF1.ExpertORPD.Value = True
+    If UF1.CBFNPORPD.Value = True Then UF1.ExpertORPD.Value = True
 End Sub
 
 Private Sub CBFNPPBETT_Click()
-If UF1.CBFNPPBETT.Value = True Then
-    UF1.ExpertZS.Value = True
-Else
-    UF1.ExpertZS.Value = False
-End If
-
+    If UF1.CBFNPPBETT.Value = True Then
+        UF1.ExpertZS.Value = True
+        UF1.ExpertZSM.Value = True
+    End If
 End Sub
 
 Private Sub CBFNPPBSNN_Click()
-If UF1.CBFNPPBSNN.Value = True Then
-    UF1.ExpertZS.Value = True
-    UF1.ExpertSNN.Value = True
-Else
-    UF1.ExpertZS.Value = False
-    UF1.ExpertSNN.Value = False
-End If
+    If UF1.CBFNPPBSNN.Value = True Then UF1.ExpertSNN.Value = True
 End Sub
 
 Private Sub CBFNPSUG_Click()
@@ -120,7 +107,7 @@ End Sub
 
 Private Sub CBGOST34347_Click()
 If UF1.CBGOST34347.Value = True Then
-    ActiveDocument.Variables.Item("GOST34347").Value = UF1.GOST34347.Value
+    ActiveDocument.Variables.item("GOST34347").Value = UF1.GOST34347.Value
     ActiveDocument.Variables("GOST34347PMat").Value = "; п.п. 4.1.4, 5.9.1" & UF1.GOST34347.Value
     ActiveDocument.Variables("GOST34347PSosEl").Value = ActiveDocument.Variables("TckZpt").Value & " п. 5.10.2" & UF1.GOST34347.Value
     If UF1.CBVakuum.Value = True Or UF1.CBPodNaliv.Value = True Then
@@ -128,15 +115,15 @@ If UF1.CBGOST34347.Value = True Then
     Else
         ActiveDocument.Variables("GOST34347PGiI").Value = "; п.п. 7.11.3, 7.11.5, 7.11.10" & UF1.GOST34347.Value
     End If
-    ActiveDocument.Variables.Item("GOST34347PPiI").Value = "; п. 7.11.9" & UF1.GOST34347.Value
-    ActiveDocument.Variables("NTDAktNKGOST34347").Value = Strings.Chr(13) & Mid(UF1.GOST34347.Value, 2, 79) & "."
+    ActiveDocument.Variables.item("GOST34347PPiI").Value = "; п. 7.11.9" & UF1.GOST34347.Value
+'    ActiveDocument.Variables("NTDAktNKGOST34347").Value = Strings.Chr(13) & Mid(UF1.GOST34347.Value, 2, 79) & "."
 Else
-    ActiveDocument.Variables.Item("GOST34347").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("GOST34347").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GOST34347PSosEl").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GOST34347PMat").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GOST34347PGiI").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("GOST34347PPiI").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNKGOST34347").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("GOST34347PPiI").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKGOST34347").Value = Strings.ChrW(31)
 End If
 End Sub
 
@@ -147,34 +134,6 @@ End If
 If UF1.CBp100.Value = False Then
 ActiveDocument.Variables("p100FNPORPD").Value = Strings.ChrW(31)
 End If
-End Sub
-
-Private Sub CBp177_Click()
-If UF1.CBp177.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp178_Click()
-If UF1.CBp178.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp179_Click()
-If UF1.CBp179.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp185_Click()
-If UF1.CBp185.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp186_Click()
-If UF1.CBp186.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp187_Click()
-If UF1.CBp187.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
-End Sub
-
-Private Sub CBp188_Click()
-If UF1.CBp188.Value = True Then If UF1.PnIs.Value = True Then UF1.PnIs.Value = False
 End Sub
 
 Private Sub CBp348_Click()
@@ -202,22 +161,28 @@ End If
 End Sub
 
 Private Sub CBPodNaliv_Click()
-    BaseUstr(BaseUstrIndex, 15) = Trim$(UF1.CBPodNaliv.Value)
+    BaseUstr(BaseUstrIndex, 19) = Trim$(UF1.CBPodNaliv.Value)
     If UF1.CBPodNaliv.Value = True And UF1.CBVakuum.Value = True Then UF1.CBVakuum.Value = False
     If UF1.CBPodNaliv.Value = True Then
         UF1.CBSO439.Value = False
         ActiveDocument.Variables("p2-102RUA").Value = Strings.ChrW(31)
         ActiveDocument.Variables("p2-111RUA").Value = " 2.111,"
-        UF1.CBRUA93.Value = True
+'        UF1.CBRUA93.Value = True
         ActiveDocument.Variables("GOST34347PGiI").Value = Strings.ChrW(31)
-        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий без давления (под налив)"
+'        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий без давления (под налив)"
 '        UF1.NaznTehUstr.Value = "емкость"
         ActiveDocument.Variables("IspitatP").Value = "полный налив"
         ActiveDocument.Variables("VnutrIzbP").Value = "гидростатическим"
+        UF1.RaschetnP.Value = "под налив"
         UF1.RazreshaemoeP.Value = "под налив"
         UF1.IspitatP.Value = "наливом"
+        UF1.KolZicl.Visible = False
+        UF1.CBZikl.Visible = False
+        UF1.CBZikl.Value = False
+        UF1.Label18.Visible = False
+
     Else
-        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
+'        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
         ActiveDocument.Variables("VnutrIzbP").Value = "внутренним избыточным"
         ActiveDocument.Variables("IndxP").Value = Strings.ChrW(31)
         UF1.CBSO439.Value = True
@@ -242,7 +207,7 @@ Private Sub CBR10_Click()
         UF1.R10C6.Enabled = False
         UF1.R10C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 75 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR10.Value)
+    BaseElements(BaseUstrIndex, 73 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR10.Value)
 End Sub
 
 Private Sub CBR2_Change()
@@ -263,11 +228,11 @@ Private Sub CBR2_Change()
         UF1.R2C6.Enabled = False
         UF1.R2C7.Enabled = False
     End If
-    If IsNull(UF1.CBR2.Value) Then
-        BaseElements(BaseUstrIndex, 11 + (8 * (UF1.SpButElm.Value))) = UF1.CBR2.Value
-    Else
-        BaseElements(BaseUstrIndex, 11 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR2.Value)
-    End If
+'    If IsNull(UF1.CBR2.Value) Then
+'        BaseElements(BaseUstrIndex, 9 + (8 * (UF1.SpButElm.Value))) = UF1.CBR2.Value
+'    Else
+        BaseElements(BaseUstrIndex, 9 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR2.Value)
+'    End If
 End Sub
 
 Private Sub CBR3_Click()
@@ -288,7 +253,7 @@ Private Sub CBR3_Click()
         UF1.R3C6.Enabled = False
         UF1.R3C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 19 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR3.Value)
+    BaseElements(BaseUstrIndex, 17 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR3.Value)
 End Sub
 
 Private Sub CBR4_Click()
@@ -309,7 +274,7 @@ Private Sub CBR4_Click()
         UF1.R4C6.Enabled = False
         UF1.R4C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 27 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR4.Value)
+    BaseElements(BaseUstrIndex, 25 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR4.Value)
 End Sub
 
 Private Sub CBR5_Click()
@@ -330,7 +295,7 @@ Private Sub CBR5_Click()
         UF1.R5C6.Enabled = False
         UF1.R5C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 35 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR5.Value)
+    BaseElements(BaseUstrIndex, 33 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR5.Value)
 End Sub
 
 Private Sub CBR6_Click()
@@ -351,7 +316,7 @@ Private Sub CBR6_Click()
         UF1.R6C6.Enabled = False
         UF1.R6C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 43 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR6.Value)
+    BaseElements(BaseUstrIndex, 41 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR6.Value)
 End Sub
 
 Private Sub CBR7_Click()
@@ -372,7 +337,7 @@ Private Sub CBR7_Click()
         UF1.R7C6.Enabled = False
         UF1.R7C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 51 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR7.Value)
+    BaseElements(BaseUstrIndex, 49 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR7.Value)
 End Sub
 
 Private Sub CBR8_Click()
@@ -393,7 +358,7 @@ Private Sub CBR8_Click()
         UF1.R8C6.Enabled = False
         UF1.R8C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 59 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR8.Value)
+    BaseElements(BaseUstrIndex, 57 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR8.Value)
 End Sub
 
 Private Sub CBR9_Click()
@@ -414,7 +379,7 @@ Private Sub CBR9_Click()
         UF1.R9C6.Enabled = False
         UF1.R9C7.Enabled = False
     End If
-    BaseElements(BaseUstrIndex, 67 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR9.Value)
+    BaseElements(BaseUstrIndex, 65 + (8 * (UF1.SpButElm.Value))) = Trim$(UF1.CBR9.Value)
 End Sub
 
 Private Sub CBRD089595_Click()
@@ -424,31 +389,43 @@ If UF1.CBRD089595.Value = True Then
     ActiveDocument.Variables("DnichRez").Value = " п.п. 8.7, 8.8, 8.15" & UF1.RD089595.Value
     ActiveDocument.Variables("KrovlRez").Value = " п.п. 8.7, 8.8, 8.11" & UF1.RD089595.Value
     ActiveDocument.Variables("OtmRez").Value = " п. 5.6" & UF1.RD089595.Value
+    ActiveDocument.Variables("RezervuarTolch").Value = " требованиями п.п. 8.9, 8.10, 8.11" & UF1.RD089595.Value
+    ActiveDocument.Variables("RezervuarOtkOtVert").Value = " п. 8.12" & UF1.RD089595.Value
+    ActiveDocument.Variables("RezervuarOsadka").Value = " п. 8.16" & UF1.RD089595.Value
 Else
     ActiveDocument.Variables("SostKorpRD089595").Value = Strings.ChrW(31)
     ActiveDocument.Variables("DnichRezHlop").Value = Strings.ChrW(31)
     ActiveDocument.Variables("DnichRez").Value = Strings.ChrW(31)
     ActiveDocument.Variables("KrovlRez").Value = Strings.ChrW(31)
     ActiveDocument.Variables("OtmRez").Value = Strings.ChrW(31)
+    ActiveDocument.Variables("RezervuarTolch").Value = " расчетом на прочность"
+    ActiveDocument.Variables("RezervuarOtkOtVert").Value = " п. 4.20 СНиП III-18-75 " & Strings.Chr(171) & "Металлические конструкции" & Strings.Chr(187)
+    ActiveDocument.Variables("RezervuarOsadka").Value = " п. 4.20 СНиП III-18-75 " & Strings.Chr(171) & "Металлические конструкции" & Strings.Chr(187)
 End If
 End Sub
 
 Private Sub CBRD1533413752696_Change()
 If UF1.CBRD1533413752696.Value = True Then
-    ActiveDocument.Variables("NTDAktNKRD1533413752696").Value = Strings.Chr(13) & Mid(UF1.RD1533413752696.Value, 2, 104) & "." & Strings.Chr(13) & Mid(UF1.Snip31875.Value, 2, 42) & "."
-    ActiveDocument.Variables("SostKorpRDKisl").Value = " п.п. 11.2, 11.3, 11.9, 11.10 " & UF1.RD1533413752696.Value
+'    ActiveDocument.Variables("NTDAktNKRD1533413752696").Value = Strings.Chr(13) & Mid(UF1.RD1533413752696.Value, 2, 104) & "." & Strings.Chr(13) & Mid(UF1.Snip31875.Value, 2, 42) & "."
+    ActiveDocument.Variables("SostKorpRDKisl").Value = " п.п. 11.2, 11.3, 11.9, 11.10" & UF1.RD1533413752696.Value
+    ActiveDocument.Variables("RezervuarTolch").Value = " требованиями п. 11.10" & UF1.RD1533413752696.Value
+    ActiveDocument.Variables("CBp466-1").Value = " и п. 11.5" & UF1.RD1533413752696.Value
+    ActiveDocument.Variables("p1-pril8").Value = " и п. 11.10" & UF1.RD1533413752696.Value
 Else
-    ActiveDocument.Variables("NTDAktNKRD1533413752696").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKRD1533413752696").Value = Strings.ChrW(31)
     ActiveDocument.Variables("SostKorpRDKisl").Value = Strings.ChrW(31)
+    ActiveDocument.Variables("RezervuarTolch").Value = " расчетом на прочность"
+    ActiveDocument.Variables("CBp466-1").Value = Strings.ChrW(31)
+    ActiveDocument.Variables("p1-pril8").Value = Strings.ChrW(31)
 End If
 End Sub
 
 Private Sub CBRD2626012_Click()
 If UF1.CBRD2626012.Value = True Then
     ActiveDocument.Variables("ovalnrd").Value = ActiveDocument.Variables("ovalnrd").Value & "; п. 5.4.3.2" & UF1.RD26_260.Value
-    ActiveDocument.Variables("NTDAktNKRD2626012").Value = Strings.Chr(13) & Mid(UF1.RD26_260.Value, 2, 104) & "."
+'    ActiveDocument.Variables("NTDAktNKRD2626012").Value = Strings.Chr(13) & Mid(UF1.RD26_260.Value, 2, 104) & "."
 Else
-    ActiveDocument.Variables("NTDAktNKRD2626012").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKRD2626012").Value = Strings.ChrW(31)
 End If
 End Sub
 
@@ -456,64 +433,86 @@ Private Sub CBRekpoTT_Click()
 If UF1.CBRekpoTT.Value = True Then
     ActiveDocument.Variables("VikTT").Value = "; п.п. 332, 334, 435" & UF1.RekpoTT.Value
     ActiveDocument.Variables("UZKRekTT").Value = " п. 343" & UF1.RekpoTT.Value
-    ActiveDocument.Variables("ZDRekTT").Value = " п. 344" & UF1.RekpoTT.Value
+'    ActiveDocument.Variables("ZDRekTT").Value = " п. 344" & UF1.RekpoTT.Value
     ActiveDocument.Variables("GIRekTT").Value = "; п.п. 374, 375, 379, 384" & UF1.RekpoTT.Value
 Else
     ActiveDocument.Variables("VikTT").Value = Strings.ChrW(31)
     ActiveDocument.Variables("UZKRekTT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("ZDRekTT").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("ZDRekTT").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GIRekTT").Value = Strings.ChrW(31)
 End If
 End Sub
 
 Private Sub CBRUA93_Click()
 If UF1.CBRUA93.Value = True Then
-    ActiveDocument.Variables("p4-5RUA").Value = "; п. 3.1. " & Strings.Chr(171) & "г, з" & Strings.Chr(187) & UF1.RUA93.Value
+    ActiveDocument.Variables("p4-5RUA").Value = "; п.п. 2.51" & Strings.Chr(171) & "а" & Strings.Chr(187) & ", 3.1 " & Strings.Chr(171) & "г, з" & Strings.Chr(187) & UF1.RUA93.Value
     ActiveDocument.Variables("GIRUA93").Value = "; п.п." & ActiveDocument.Variables("p2-102RUA").Value & ActiveDocument.Variables("p2-111RUA").Value & " 2.113" & UF1.RUA93.Value
     ActiveDocument.Variables("UZKRUA").Value = "; п. 2.84" & UF1.RUA93.Value
-    ActiveDocument.Variables("NTDAktNKRUA93").Value = Strings.Chr(13) & Mid(UF1.RUA93.Value, 2, 140) & "."
+    ActiveDocument.Variables("RaschetRUA93").Value = "В соответствии с п. 3.1.б" & UF1.RUA93.Value & ", в качестве отбраковочной толщины обечайки корпуса принимается значение S=4,0 мм." & Strings.Chr(13)
+'    ActiveDocument.Variables("NTDAktNKRUA93").Value = Strings.Chr(13) & Mid(UF1.RUA93.Value, 2, 140) & "."
 Else
-    ActiveDocument.Variables("NTDAktNKRUA93").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKRUA93").Value = Strings.ChrW(31)
     ActiveDocument.Variables("p4-5RUA").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GIRUA93").Value = Strings.ChrW(31)
     ActiveDocument.Variables("UZKRUA").Value = Strings.ChrW(31)
+    ActiveDocument.Variables("RaschetRUA93").Value = Strings.ChrW(31)
 End If
 End Sub
 
 Private Sub CBRubashka_Change()
     If IsNull(UF1.CBRubashka.Value) Then
-        BaseUstr(BaseUstrIndex, 21) = UF1.CBRubashka.Value
+        BaseUstr(BaseUstrIndex, 25) = UF1.CBRubashka.Value
     Else
-        BaseUstr(BaseUstrIndex, 21) = Trim$(UF1.CBRubashka.Value)
+        BaseUstr(BaseUstrIndex, 25) = Trim$(UF1.CBRubashka.Value)
     End If
     If UF1.CBRubashka.Value = False Then
-        UF1.RaschetnPRub.Enabled = False
-        UF1.RaschetntRub.Enabled = False
-        UF1.VRub.Enabled = False
-        UF1.RaschSredaRub.Enabled = False
-        UF1.RabocheePRub.Enabled = False
-        UF1.RabTempRub.Enabled = False
-        UF1.RabSredaRub.Enabled = False
-        UF1.IspitatPRub.Enabled = False
+        UF1.Label480.Visible = False
+        UF1.RaschetnPRub.Visible = False
+        UF1.Label479.Visible = False
+        UF1.RaschetntRub.Visible = False
+        UF1.Label481.Visible = False
+        UF1.VRub.Visible = False
+        UF1.Label486.Visible = False
+        UF1.RaschSredaRub.Visible = False
+        UF1.Label487.Visible = False
+        UF1.RabocheePRub.Visible = False
+        UF1.Label482.Visible = False
+        UF1.RabTempRub.Visible = False
+        UF1.Label484.Visible = False
+        UF1.RabSredaRub.Visible = False
+        UF1.Label491.Visible = False
+        UF1.IspitatPRub.Visible = False
     Else
         If UF1.CBRubashka.Value = True Then
             UF1.CBRubashka.Caption = "Рубашка"
+            UF1.Label480.Caption = "В рубашке Р="
+            UF1.Label487.Caption = "В рубашке Р="
         Else
             UF1.CBRubashka.Caption = "Труб.сис."
+            UF1.Label480.Caption = "Труб. сис. Р="
+            UF1.Label487.Caption = "Труб. сис. Р="
         End If
         If UF1.OptionTruboprovod.Value = True Then
             UF1.CBRubashka.Caption = "РОУ"
             UF1.Label480.Caption = "после РОУ Р="
             UF1.Label487.Caption = "после РОУ Р="
         End If
-        UF1.RaschetnPRub.Enabled = True
-        UF1.RaschetntRub.Enabled = True
-        If UF1.OptionSosud.Value = True Then UF1.VRub.Enabled = True
-        UF1.RaschSredaRub.Enabled = True
-        UF1.RabocheePRub.Enabled = True
-        UF1.RabTempRub.Enabled = True
-        UF1.RabSredaRub.Enabled = True
-        UF1.IspitatPRub.Enabled = True
+        UF1.Label480.Visible = True
+        UF1.RaschetnPRub.Visible = True
+        UF1.Label479.Visible = True
+        UF1.RaschetntRub.Visible = True
+        UF1.Label481.Visible = True
+        UF1.VRub.Visible = True
+        UF1.Label486.Visible = True
+        UF1.RaschSredaRub.Visible = True
+        UF1.Label487.Visible = True
+        UF1.RabocheePRub.Visible = True
+        UF1.Label482.Visible = True
+        UF1.RabTempRub.Visible = True
+        UF1.Label484.Visible = True
+        UF1.RabSredaRub.Visible = True
+        UF1.Label491.Visible = True
+        UF1.IspitatPRub.Visible = True
     End If
 End Sub
 
@@ -523,11 +522,11 @@ If UF1.CBSO439.Value = True Then
     ActiveDocument.Variables("tverdSO439").Value = " п. 5.9" & UF1.SO439.Value
     ActiveDocument.Variables("UZKSO439").Value = "; п. 5.14" & UF1.SO439.Value
     ActiveDocument.Variables("ovalnrd").Value = "При измерениях овальности обечайки " & ActiveDocument.Variables("TechUsrtva").Value & " установлено, что овальность соответствует требованиям п. 5.6." & UF1.SO439.Value
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO439.Value, 2, 94) & "."
-    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO439.Value, 2, 94) & "."
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO439.Value, 2, 94) & "."
+'    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO439.Value, 2, 94) & "."
 Else
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
     ActiveDocument.Variables("VIKrdSO439").Value = Strings.ChrW(31)
     ActiveDocument.Variables("UZKSO439").Value = Strings.ChrW(31)
     ActiveDocument.Variables("tverdSO439").Value = Strings.ChrW(31)
@@ -542,16 +541,16 @@ If UF1.CBSO464.Value = True Then
     ActiveDocument.Variables("UZKSO469").Value = "; п. 5.19" & UF1.SO464.Value
     ActiveDocument.Variables("tverdSO464").Value = " п. 5.14" & UF1.SO464.Value
     ActiveDocument.Variables("GISO464").Value = "; раздела 4.8" & UF1.SO464.Value
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO464.Value, 2, 97) & "."
-    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO464.Value, 2, 97) & "."
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO464.Value, 2, 97) & "."
+'    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO464.Value, 2, 97) & "."
 Else
     ActiveDocument.Variables("VIKrdSO464").Value = Strings.ChrW(31)
     ActiveDocument.Variables("TolSte464").Value = Strings.ChrW(31)
     ActiveDocument.Variables("UZKSO469").Value = Strings.ChrW(31)
     ActiveDocument.Variables("tverdSO464").Value = Strings.ChrW(31)
     ActiveDocument.Variables("GISO464").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
 End If
 End Sub
 
@@ -562,21 +561,21 @@ If UF1.CBSO469.Value = True Then
     ActiveDocument.Variables("ovalnKG").Value = " п. 5.11" & UF1.SO469.Value
     ActiveDocument.Variables("ProgibCO").Value = " п. 5.13" & UF1.SO469.Value
     ActiveDocument.Variables("ovalnrd").Value = "При измерениях овальности барабанов котла установлено, что овальность соответствует требованиям п. 5.10." & UF1.SO469.Value
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO469.Value, 2, 188) & "."
-    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO469.Value, 2, 188) & "."
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.Chr(13) & Mid(UF1.SO469.Value, 2, 188) & "."
+'    ActiveDocument.Variables("NTDAktNK").Value = Mid(UF1.SO469.Value, 2, 188) & "."
 Else
     ActiveDocument.Variables("VIKrdSO469").Value = Strings.ChrW(31)
     ActiveDocument.Variables("tverdSO469").Value = Strings.ChrW(31)
     ActiveDocument.Variables("ovalnKG").Value = Strings.ChrW(31)
     ActiveDocument.Variables("ProgibCO").Value = Strings.ChrW(31)
     ActiveDocument.Variables("ovalnrd").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
-    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKPD").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNK").Value = Strings.ChrW(31)
 End If
 End Sub
 
 Private Sub CBVakuum_Click()
-    BaseUstr(BaseUstrIndex, 16) = Trim$(UF1.CBVakuum.Value)
+    BaseUstr(BaseUstrIndex, 20) = Trim$(UF1.CBVakuum.Value)
     If UF1.CBPodNaliv.Value = True And UF1.CBVakuum.Value = True Then UF1.CBPodNaliv.Value = False
     If UF1.CBVakuum.Value = True Then
         UF1.CBSO439.Value = False
@@ -615,9 +614,9 @@ Private Sub CBVM030104_Click()
 If UF1.CBVM030104.Value = True Then
     ActiveDocument.Variables("p4-5VM").Value = "; п. 4.5" & UF1.RDVM03.Value
     ActiveDocument.Variables("p4-7VM").Value = "; п. 4.7" & UF1.RDVM03.Value
-    ActiveDocument.Variables("NTDAktNKVM030104").Value = Strings.Chr(13) & Mid(UF1.RDVM03.Value, 2, 229) & "."
+'    ActiveDocument.Variables("NTDAktNKVM030104").Value = Strings.Chr(13) & Mid(UF1.RDVM03.Value, 2, 229) & "."
 Else
-    ActiveDocument.Variables("NTDAktNKVM030104").Value = Strings.ChrW(31)
+'    ActiveDocument.Variables("NTDAktNKVM030104").Value = Strings.ChrW(31)
     ActiveDocument.Variables("p4-5VM").Value = Strings.ChrW(31)
     ActiveDocument.Variables("p4-7VM").Value = Strings.ChrW(31)
 End If
@@ -625,148 +624,153 @@ End Sub
 
 Private Sub CBZikl_Change()
     If IsNull(UF1.CBZikl.Value) Then
-        BaseElements(BaseUstrIndex, 163) = "False"
+        BaseElements(BaseUstrIndex, 161) = "False"
     Else
-        BaseElements(BaseUstrIndex, 163) = Trim$(UF1.CBZikl.Value)
+        BaseElements(BaseUstrIndex, 161) = Trim$(UF1.CBZikl.Value)
     End If
     If UF1.CBZikl.Value = True Then
-        UF1.KolZicl.Enabled = True
+        UF1.KolZicl.Visible = True
+        UF1.Label18.Visible = True
     Else
-        UF1.KolZicl.Enabled = False
+        UF1.KolZicl.Visible = False
+        UF1.Label18.Visible = False
     End If
 End Sub
 
 Private Sub ClassOpasOPO_Change()
-    If UF1.ClassOpasOPO.ListIndex <> -1 And UF1.ClassOpasOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.RegNOPO.ListIndex = UF1.ClassOpasOPO.ListIndex
-    ActiveDocument.Variables("ClassOpasOPO").Value = ", " & Trim(UF1.ClassOpasOPO.Value)
-    If Trim(UF1.ClassOpasOPO.Value) = "" Then ActiveDocument.Variables("ClassOpasOPO").Value = Strings.ChrW(31)
-End Sub
-
-Private Sub ClassOpasOPO_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+'    If UF1.ClassOpasOPO.ListIndex <> -1 And UF1.ClassOpasOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.RegNOPO.ListIndex = UF1.ClassOpasOPO.ListIndex
+'    If UF1.ClassOpasOPO.ListIndex <> -1 Then
+'        UF1.RegNOPO.ListIndex = UF1.ClassOpasOPO.ListIndex
+'        UF1.NazvOPO.ListIndex = UF1.ClassOpasOPO.ListIndex
+'    End If
+    If Trim(UF1.ClassOpasOPO.Value) = "" Then
+        ActiveDocument.Variables("ClassOpasOPO").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("ClassOpasOPO").Value = ", " & Trim(UF1.ClassOpasOPO.Value)
+    End If
     BaseOPO(BaseOPOIndex, 3) = Trim(UF1.ClassOpasOPO.Value)
 End Sub
 
 Private Sub ComboBoxRaschet_Change()
 If UF1.ComboBoxRaschet.ListIndex = 0 Then
-    ActiveDocument.Variables.Item("PassatT").Value = ", для проведения поверочного расчета на прочность использована программа " & Strings.Chr(171) & "Пассат" & Strings.Chr(187) & ", разработанная ООО " & Strings.Chr(171) & "НТП Трубопровод" & Strings.Chr(187)
-    ActiveDocument.Variables.Item("OzOsR").Value = "ГОСТ 34233.1-2017, ГОСТ 34233.2-2017, ГОСТ 34233.6-2017"
+    ActiveDocument.Variables.item("PassatT").Value = ", для проведения поверочного расчета на прочность использована программа " & Strings.Chr(171) & "Пассат" & Strings.Chr(187) & ", разработанная ООО " & Strings.Chr(171) & "НТП Трубопровод" & Strings.Chr(187)
+    ActiveDocument.Variables.item("OzOsR").Value = "ГОСТ 34233.1-2017, ГОСТ 34233.2-2017, ГОСТ 34233.6-2017"
 End If
 If UF1.ComboBoxRaschet.ListIndex = 1 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("OzOsR").Value = Trim(UF1.RD1024998.Value)
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = Trim(UF1.RD1024998.Value)
 End If
 If UF1.ComboBoxRaschet.ListIndex = 2 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("OzOsR").Value = "п. 11.10" & UF1.RD1533413752696.Value
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = "п. 11.10" & UF1.RD1533413752696.Value
 End If
 If UF1.ComboBoxRaschet.ListIndex = 3 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
     ActiveDocument.Variables("OzOsR").Value = Trim(UF1.GOST32388.Value)
 End If
 If UF1.ComboBoxRaschet.ListIndex = 4 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("OzOsR").Value = UF1.GOST25215.Value
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = UF1.GOST25215.Value
 End If
 If UF1.ComboBoxRaschet.ListIndex = 5 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("OzOsR").Value = " справочника " & Strings.Chr(171) & "Основы конструирования и расчета химической аппаратуры" & Strings.Chr(187)
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = " справочника " & Strings.Chr(171) & "Основы конструирования и расчета химической аппаратуры" & Strings.Chr(187)
 End If
 If UF1.ComboBoxRaschet.ListIndex = 6 Then
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("OzOsR").Value = "п. 6.1 и таблицы А.1 приложения А " & UF1.GOST32106.Value
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = "п. 6.1 и таблицы А.1 приложения А " & UF1.GOST32106.Value
+End If
+If UF1.ComboBoxRaschet.ListIndex = 7 Then
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("OzOsR").Value = "НТД"
 End If
     Call RaschOstRes
 End Sub
 
 Private Sub ComboBoxTechUsrtvo_Change()
-If UF1.ComboBoxTechUsrtvo.ListIndex = 0 Then
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 0 Then
         ActiveDocument.Variables("TechUsrtva").Value = "котла"
         ActiveDocument.Variables("TechUsrtvo").Value = "котел"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 1 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 1 Then
         ActiveDocument.Variables("TechUsrtva").Value = "экономайзера"
         ActiveDocument.Variables("TechUsrtvo").Value = "экономайзер"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 2 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 2 Then
         ActiveDocument.Variables("TechUsrtva").Value = "сосуда"
         ActiveDocument.Variables("TechUsrtvo").Value = "сосуд"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 3 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 3 Then
         ActiveDocument.Variables("TechUsrtva").Value = "трубопровода"
         ActiveDocument.Variables("TechUsrtvo").Value = "трубопровод"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 4 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 4 Then
         ActiveDocument.Variables("TechUsrtva").Value = "воздухосборника"
         ActiveDocument.Variables("TechUsrtvo").Value = "воздухосборник"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 5 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 5 Then
         ActiveDocument.Variables("TechUsrtva").Value = "газификатора"
         ActiveDocument.Variables("TechUsrtvo").Value = "газификатор"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 6 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 6 Then
         ActiveDocument.Variables("TechUsrtva").Value = "подогревателя"
         ActiveDocument.Variables("TechUsrtvo").Value = "подогреватель"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 7 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 7 Then
         ActiveDocument.Variables("TechUsrtva").Value = "автоклава"
         ActiveDocument.Variables("TechUsrtvo").Value = "автоклав"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 8 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 8 Then
         ActiveDocument.Variables("TechUsrtva").Value = "емкости"
         ActiveDocument.Variables("TechUsrtvo").Value = "емкость"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 9 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 9 Then
         ActiveDocument.Variables("TechUsrtva").Value = "баллона"
         ActiveDocument.Variables("TechUsrtvo").Value = "баллон"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 10 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 10 Then
         ActiveDocument.Variables("TechUsrtva").Value = "баллонов"
         ActiveDocument.Variables("TechUsrtvo").Value = "баллоны"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 11 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 11 Then
         ActiveDocument.Variables("TechUsrtva").Value = "бака"
         ActiveDocument.Variables("TechUsrtvo").Value = "бак"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 12 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 12 Then
         ActiveDocument.Variables("TechUsrtva").Value = "резервуара"
         ActiveDocument.Variables("TechUsrtvo").Value = "резервуар"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 13 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 13 Then
         ActiveDocument.Variables("TechUsrtva").Value = "технологического трубопровода"
         ActiveDocument.Variables("TechUsrtvo").Value = "технологический трубопровод"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 14 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 14 Then
         ActiveDocument.Variables("TechUsrtva").Value = "теплообменника"
         ActiveDocument.Variables("TechUsrtvo").Value = "теплообменник"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
-If UF1.ComboBoxTechUsrtvo.ListIndex = 15 Then
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 15 Then
         ActiveDocument.Variables("TechUsrtva").Value = "насоса"
         ActiveDocument.Variables("TechUsrtvo").Value = "насос"
-        ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
-End If
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 16 Then
+        ActiveDocument.Variables("TechUsrtva").Value = "компрессора"
+        ActiveDocument.Variables("TechUsrtvo").Value = "компрессор"
+    End If
+    If UF1.ComboBoxTechUsrtvo.ListIndex = 17 Then
+        ActiveDocument.Variables("TechUsrtva").Value = "мерника"
+        ActiveDocument.Variables("TechUsrtvo").Value = "мерник"
+    End If
+
+    ActiveDocument.Variables("TechUsrtvoB").Value = UCase(Left(ActiveDocument.Variables("TechUsrtvo").Value, 1)) & LCase(Mid(ActiveDocument.Variables("TechUsrtvo").Value, 2)) 'Делаем первую букву большой
+
 End Sub
 
 Private Sub ComboBoxTechUsrtvo_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    BaseUstr(BaseUstrIndex, 13) = UF1.ComboBoxTechUsrtvo.Value
+    BaseUstr(BaseUstrIndex, 17) = UF1.ComboBoxTechUsrtvo.Value
 End Sub
 
 Private Sub ComboBoxTipUstroistva_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    BaseUstr(BaseUstrIndex, 12) = UF1.ComboBoxTipUstroistva.Value
+    BaseUstr(BaseUstrIndex, 3) = UF1.ComboBoxTipUstroistva.Value
 End Sub
 
 Private Sub ConfigSave_Click()
@@ -774,44 +778,41 @@ Private Sub ConfigSave_Click()
 '    For i = 1 To UBound(BaseRemont, 2)
 '        artmp(i) = BaseRemont(UstrIndx, i)
 '    Next i
-'    DateBase.Workbooks("data_base.xls").Worksheets("Remont").Range("B" & UBound(BaseRemont, 1) + 2 & ":R" & UBound(BaseRemont, 1) + 2).Value = artmp 'сохранить одну строку
+'    DateBase.Worksheets("Remont").Range("B" & UBound(BaseRemont, 1) + 2 & ":R" & UBound(BaseRemont, 1) + 2).Value = artmp 'сохранить одну строку
 If UF1.Predpriyatie.ListIndex = -1 Then
-    DateBase.Workbooks("data_base.xls").Worksheets("Predpriyatiya").Range("B2:I" & UBound(BasePredp, 1) + 1).Value = BasePredp
+    DateBase.Worksheets("Predpriyatiya").Range("B2:I" & UBound(BasePredp, 1) + 1).Value = BasePredp
 Else
-    DateBase.Workbooks("data_base.xls").Worksheets("Predpriyatiya").Range("B2:I" & UBound(BasePredp, 1)).Value = BasePredp
+    DateBase.Worksheets("Predpriyatiya").Range("B2:I" & UBound(BasePredp, 1)).Value = BasePredp
 End If
 If UF1.RegNOPO.ListIndex = -1 Then
-    DateBase.Workbooks("data_base.xls").Worksheets("OPO").Range("B2:D" & UBound(BaseOPO, 1) + 1).Value = BaseOPO
+    DateBase.Worksheets("OPO").Range("B2:D" & UBound(BaseOPO, 1) + 1).Value = BaseOPO
 Else
-    DateBase.Workbooks("data_base.xls").Worksheets("OPO").Range("B2:D" & UBound(BaseOPO, 1)).Value = BaseOPO
+    DateBase.Worksheets("OPO").Range("B2:D" & UBound(BaseOPO, 1)).Value = BaseOPO
 End If
-If UF1.RegN.ListIndex = -1 Then
-    If UF1.RegN.Value <> "" Then
+If UF1.NazvTehUstr.ListIndex = -1 Then
+'
         BaseUstr(BaseUstrIndex, 1) = UF1.RegNOPO.Value
-        If UF1.OptionKotel.Value = True Then BaseUstr(BaseUstrIndex, 2) = "Котел"
-        If UF1.OptionSosud.Value = True Then BaseUstr(BaseUstrIndex, 2) = "Сосуд"
-        If UF1.OptionTruboprovod.Value = True Then BaseUstr(BaseUstrIndex, 2) = "Трубопровод"
-        If UF1.OptionSoorugenie.Value = True Then BaseUstr(BaseUstrIndex, 2) = "Сооружение"
-        If UF1.OptionOstalnoe.Value = True Then BaseUstr(BaseUstrIndex, 2) = "Остальное"
-        BaseElements(BaseUstrIndex, 1) = UF1.ZavN.Value
-        BaseElements(BaseUstrIndex, 2) = UF1.RegN.Value
-        BaseElements(BaseUstrIndex, 3) = "True"
-        BaseEPB(BaseUstrIndex, 1) = UF1.ZavN.Value
-        BaseEPB(BaseUstrIndex, 2) = UF1.RegN.Value
-        BaseRemont(BaseUstrIndex, 1) = UF1.ZavN.Value
-        BaseRemont(BaseUstrIndex, 2) = UF1.RegN.Value
-    End If
-    DateBase.Workbooks("data_base.xls").Worksheets("Ustroystva").Range("B2:AM" & UBound(BaseUstr, 1) + 1).Value = BaseUstr
-    DateBase.Workbooks("data_base.xls").Worksheets("Elements").Range("B2:FI" & UBound(BaseUstr, 1) + 1).Value = BaseElements
-    DateBase.Workbooks("data_base.xls").Worksheets("EPB").Range("B2:R" & UBound(BaseUstr, 1) + 1).Value = BaseEPB
-    DateBase.Workbooks("data_base.xls").Worksheets("Remont").Range("B2:R" & UBound(BaseUstr, 1) + 1).Value = BaseRemont
+        BaseUstr(BaseUstrIndex, 2) = TipUstr
+'        BaseElements(BaseUstrIndex, 1) = UF1.ZavN.Value
+'        BaseElements(BaseUstrIndex, 2) = UF1.RegN.Value
+        BaseElements(BaseUstrIndex, 1) = "True"
+'        BaseEPB(BaseUstrIndex, 1) = UF1.ZavN.Value
+'        BaseEPB(BaseUstrIndex, 2) = UF1.RegN.Value
+'        BaseRemont(BaseUstrIndex, 1) = UF1.ZavN.Value
+'        BaseRemont(BaseUstrIndex, 2) = UF1.RegN.Value
+'    End If
+    DateBase.Worksheets("Ustroystva").Range("B2:AP" & UBound(BaseUstr, 1) + 1).Value = BaseUstr
+    DateBase.Worksheets("Elements").Range("B2:FG" & UBound(BaseUstr, 1) + 1).Value = BaseElements
+    DateBase.Worksheets("EPB").Range("B2:U" & UBound(BaseUstr, 1) + 1).Value = BaseEPB
+    DateBase.Worksheets("Remont").Range("B2:U" & UBound(BaseUstr, 1) + 1).Value = BaseRemont
+    DateBase.Worksheets("Documents").Range("B2:U" & UBound(BaseUstr, 1) + 1).Value = BaseDocuments
 Else
-    DateBase.Workbooks("data_base.xls").Worksheets("Ustroystva").Range("B2:AM" & UBound(BaseUstr, 1)).Value = BaseUstr
-    DateBase.Workbooks("data_base.xls").Worksheets("Elements").Range("B2:FI" & UBound(BaseUstr, 1)).Value = BaseElements
-    DateBase.Workbooks("data_base.xls").Worksheets("EPB").Range("B2:R" & UBound(BaseUstr, 1)).Value = BaseEPB
-    DateBase.Workbooks("data_base.xls").Worksheets("Remont").Range("B2:R" & UBound(BaseUstr, 1)).Value = BaseRemont
+    DateBase.Worksheets("Ustroystva").Range("B2:AP" & UBound(BaseUstr, 1)).Value = BaseUstr
+    DateBase.Worksheets("Elements").Range("B2:FG" & UBound(BaseUstr, 1)).Value = BaseElements
+    DateBase.Worksheets("EPB").Range("B2:U" & UBound(BaseUstr, 1)).Value = BaseEPB
+    DateBase.Worksheets("Remont").Range("B2:U" & UBound(BaseUstr, 1)).Value = BaseRemont
+    DateBase.Worksheets("Documents").Range("B2:U" & UBound(BaseUstr, 1)).Value = BaseDocuments
 End If
-'    Call Save_File("Page1", UF1.OpenFile.TabIndex - 1, "")'
 End Sub
 
 Private Sub DataAktPoRez_Change()
@@ -822,7 +823,7 @@ End If
 End Sub
 
 Private Sub DataIzg_Change()
-    BaseUstr(BaseUstrIndex, 8) = UF1.DataIzg.Value
+    BaseUstr(BaseUstrIndex, 6) = UF1.DataIzg.Value
     If IsNumeric(Right(UF1.DataIzg.Value, 4)) Then
         ActiveDocument.Variables("DataIzg").Value = Trim(UF1.DataIzg.Value) & " г."
     Else
@@ -831,13 +832,34 @@ Private Sub DataIzg_Change()
     If UF1.DataIzg.Value = "-" Or UF1.DataIzg.Value = "" Then ActiveDocument.Variables("DataIzg").Value = Strings.ChrW(31)
 End Sub
 
+Private Sub DataIzg_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If Right(UF1.DataIzg.Value, 1) = "г" Then UF1.DataIzg.Value = Left(UF1.DataIzg.Value, Len(UF1.DataIzg.Value) - 1)
+    If Right(UF1.DataIzg.Value, 2) = "г." Then UF1.DataIzg.Value = Left(UF1.DataIzg.Value, Len(UF1.DataIzg.Value) - 2)
+End Sub
+
+Private Sub DataMontaga_Change()
+    If IsNumeric(Right(UF1.DataMontaga.Value, 4)) Then
+        ActiveDocument.Variables("DataMontaga").Value = Trim(UF1.DataMontaga.Value) & " г."
+    Else
+        ActiveDocument.Variables("DataMontaga").Value = Trim(UF1.DataMontaga.Value)
+    End If
+    If UF1.DataMontaga.Value = "-" Or UF1.DataMontaga.Value = "" Then ActiveDocument.Variables("DataMontaga").Value = Strings.ChrW(31)
+    BaseUstr(BaseUstrIndex, 9) = UF1.DataMontaga.Value
+End Sub
+
+Private Sub DataRegistracii_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If Right(UF1.DataRegistracii.Value, 1) = "г" Then UF1.DataRegistracii.Value = Left(UF1.DataRegistracii.Value, Len(UF1.DataRegistracii.Value) - 1)
+    If Right(UF1.DataRegistracii.Value, 2) = "г." Then UF1.DataRegistracii.Value = Left(UF1.DataRegistracii.Value, Len(UF1.DataRegistracii.Value) - 2)
+End Sub
+
 Private Sub DataVvoda_Change()
-    BaseUstr(BaseUstrIndex, 9) = UF1.DataVvoda.Value
+    BaseUstr(BaseUstrIndex, 10) = UF1.DataVvoda.Value
     If IsNumeric(Val(Right(UF1.DataVvoda.Value, 4))) Then
         UF1.DataVvoda.Value = Trim(UF1.DataVvoda.Value)
         ActiveDocument.Variables("DataVvoda").Value = UF1.DataVvoda.Value & " г."
         ActiveDocument.Variables("SrokSlugb").Value = Year(Date) - Val(Right(UF1.DataVvoda.Value, 4))
-        UF1.Inform.Caption = "Срок службы: " & ActiveDocument.Variables("SrokSlugb").Value & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("oSkorKorroz").Value & " мм/год" & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("dSkorKorroz").Value & " мм/год" & Strings.Chr(13)
+        UF1.Inform.Caption = "Срок службы: " & ActiveDocument.Variables("SrokSlugb").Value & Strings.Chr(13) & "Скорость коррозии: " & _
+        ActiveDocument.Variables("oSkorKorroz").Value & " мм/год" & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("dSkorKorroz").Value & " мм/год" & Strings.Chr(13)
     End If
 End Sub
 
@@ -846,13 +868,17 @@ UF1.ddiam.Value = Trim(UF1.ddiam.Value)
 ActiveDocument.Variables("ddiam").Value = UF1.ddiam.Value
 End Sub
 
+Private Sub Documents_Change()
+    BaseDocuments(BaseUstrIndex, UF1.SpButDocuments.Value) = UF1.Documents.Value
+End Sub
+
 Private Sub Dogovor_Change()
-    ActiveDocument.Variables("Dogovor").Value = Trim(UF1.Dogovor.Value)
+    ActiveDocument.Variables("Dogovor").Value = Trim$(UF1.Dogovor.Value)
     BasePredp(BasePredpIndex, 7) = UF1.Dogovor.Value
 End Sub
 
 Private Sub DogovorData_Change()
-    ActiveDocument.Variables("DogovorData").Value = Trim(UF1.DogovorData.Value)
+    ActiveDocument.Variables("DogovorData").Value = Trim$(UF1.DogovorData.Value)
     BasePredp(BasePredpIndex, 8) = UF1.DogovorData.Value
 End Sub
 
@@ -878,6 +904,9 @@ Private Sub dtolsh_Change()
     UF1.dtolsh.Value = Trim(UF1.dtolsh.Value)
     UF1.dtolsh.Value = Replace(UF1.dtolsh.Value, ".", ",")
     ActiveDocument.Variables("dtolsh").Value = UF1.dtolsh.Value
+    If UF1.ComboBoxRaschet.ListIndex = 7 Then
+        If IsNumeric(UF1.dtolsh.Value) Then UF1.Koof_fid.Value = MinusDopusk(UF1.dtolsh.Value)
+    End If
 End Sub
 
 Private Sub dtolshfakt_Change()
@@ -930,8 +959,12 @@ Private Sub ExpertZSM_Click()
 End Sub
 
 Private Sub FlanzSoed_Change()
-    BaseUstr(BaseUstrIndex, 34) = UF1.FlanzSoed.Value
-    ActiveDocument.Variables("FlanzSoed").Value = Trim(UF1.FlanzSoed.Value)
+    If UF1.FlanzSoed.Value = "" Then
+        ActiveDocument.Variables("FlanzSoed").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("FlanzSoed").Value = Trim(UF1.FlanzSoed.Value)
+    End If
+    BaseUstr(BaseUstrIndex, 38) = UF1.FlanzSoed.Value
 End Sub
 
 Private Sub FormSobstv_Change()
@@ -940,7 +973,7 @@ Private Sub FormSobstv_Change()
 End Sub
 
 Private Sub IspitatPRub_Change()
-    BaseUstr(BaseUstrIndex, 33) = UF1.IspitatPRub.Value
+    BaseUstr(BaseUstrIndex, 37) = UF1.IspitatPRub.Value
 End Sub
 
 Private Sub KartOvalnD_Change()
@@ -997,29 +1030,102 @@ Private Sub Koof_fio_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call RaschOstRes
 End Sub
 
+Private Sub Label498_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
+    Dim tmp
+    tmp = DatePart("yyyy", DateAdd("yyyy", -4, Date))
+    UF1.SvedOEPB.Value = tmp & " г. - ООО " & Strings.Chr(171) & "Сибирская Экспертная Компания" & Strings.Chr(187) & " проведена экспертиза промышленной безопасности (закл.№ рег.№60-ТУ-000000-" _
+    & tmp & " от " & DateAdd("yyyy", -4, Date) & " г.), по результатам которой определена возможность дальнейшей эксплуатации на установленных параметрах (Р=" & UF1.RazreshaemoeP.Value _
+    & " кгс/см" & Strings.ChrW(178) & ", t=" & UF1.RabTemp.Value & Strings.Chr(176) & "С), сроком на 4 года, до " & Date & " г."
+End Sub
+
+Private Sub MontagOrg_Change()
+    If UF1.MontagOrg.Value = "-" Or UF1.MontagOrg.Value = "" Then
+        ActiveDocument.Variables("MontagOrg").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("MontagOrg").Value = Trim(UF1.MontagOrg.Value)
+    End If
+    BaseUstr(BaseUstrIndex, 8) = UF1.MontagOrg.Value
+End Sub
+
 Private Sub NaNLet_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If Not IsNumeric(UF1.NaNLet.Value) Then MsgBox ("Нужно ввести число")
 End Sub
 
 Private Sub NaznTehUstr_Change()
-    BaseUstr(BaseUstrIndex, 14) = UF1.NaznTehUstr.Value
+    BaseUstr(BaseUstrIndex, 18) = UF1.NaznTehUstr.Value
     ActiveDocument.Variables("NaznTehUstr").Value = Trim(UF1.NaznTehUstr.Value)
 End Sub
 
 Private Sub NazvOPO_Change()
-    If UF1.NazvOPO.ListIndex <> -1 And UF1.NazvOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.RegNOPO.ListIndex = UF1.NazvOPO.ListIndex
+'    If UF1.NazvOPO.ListIndex <> -1 Then
+'        UF1.RegNOPO.ListIndex = UF1.NazvOPO.ListIndex
+''        UF1.ClassOpasOPO.ListIndex = UF1.NazvOPO.ListIndex
+'    End If
     ActiveDocument.Variables("NazvOPO").Value = Trim(UF1.NazvOPO.Value)
     If Trim(UF1.NazvOPO.Value) = "" Then ActiveDocument.Variables("NazvOPO").Value = Strings.ChrW(31)
-    If UF1.NazvOPO.Value Like "*[Гг]аз*" Then UF1.ExpertGas.Value = True
-End Sub
-
-Private Sub NazvOPO_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If UF1.NazvOPO.Value Like "*[Гг]азо*" Then UF1.ExpertGas.Value = True
     BaseOPO(BaseOPOIndex, 2) = Trim(UF1.NazvOPO.Value)
 End Sub
 
 Private Sub NazvTehUstr_Change()
-    BaseUstr(BaseUstrIndex, 11) = UF1.NazvTehUstr.Value
+    If UF1.NazvTehUstr.ListIndex <> -1 Then
+        BaseUstrIndex = UstrIndxs.item(UF1.NazvTehUstr.ListIndex + 1)
+'    Else
+'        BaseUstrIndex = UBound(BaseUstr, 1)
+    End If
+        Call FillOutFormUstr(BaseUstrIndex, BaseUstr)
+        Call FillOutElements(BaseUstrIndex, BaseElements)
+        UF1.SpButRemont.Value = 1
+        UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value)
+        UF1.SpButEPB.Value = 1
+        UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value)
+        UF1.SpButDocuments.Value = 1
+        UF1.Documents.Value = BaseDocuments(BaseUstrIndex, UF1.SpButDocuments.Value)
     ActiveDocument.Variables("NazvTehUstr").Value = Trim(UF1.NazvTehUstr.Value)
+End Sub
+
+Private Sub NazvTehUstr_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    BaseUstr(BaseUstrIndex, 4) = Trim(UF1.NazvTehUstr.Value)
+'    If UF1.NazvTehUstr.ListIndex = -1 Then Call NewDevice_Click
+End Sub
+
+Private Sub NewDevice_Click()
+    BaseUstrIndex = UBound(BaseUstr, 1)
+    BaseUstr(BaseUstrIndex, 3) = UF1.ComboBoxTipUstroistva.Value
+    BaseUstr(BaseUstrIndex, 17) = UF1.ComboBoxTechUsrtvo.Value
+    BaseUstr(BaseUstrIndex, 19) = "False"
+    BaseUstr(BaseUstrIndex, 20) = "False"
+    BaseUstr(BaseUstrIndex, 25) = "False"
+    BaseElements(BaseUstrIndex, 161) = Trim$(UF1.CBZikl.Value)
+    BaseElements(BaseUstrIndex, 1) = "True"
+    UF1.NazvTehUstr.Clear
+    UF1.NazvTehUstr.Value = BaseUstr(BaseUstrIndex, 4)
+'    UF1.RegN.Value = ""
+'    UF1.ZavN.Value = ""
+'    For i = 9 To 153 Step 8
+'        BaseElements(BaseUstrIndex, i) = "False"
+'    Next i
+    Call FillOutFormUstr(BaseUstrIndex, BaseUstr)
+    Call FillOutElements(BaseUstrIndex, BaseElements)
+    UF1.SpButRemont.Value = 1
+    UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value)
+    UF1.SpButEPB.Value = 1
+    UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value)
+    UF1.SpButDocuments.Value = 1
+    UF1.Documents.Value = BaseDocuments(BaseUstrIndex, UF1.SpButDocuments.Value)
+    If BaseUstr(BaseUstrIndex, 18) = "" Then
+        If UstrIdentifer = 1 Then UF1.NaznTehUstr.Value = "сосуд для хранения "
+        If UstrIdentifer = 2 Then UF1.NaznTehUstr.Value = "сосуд для хранения СО2"
+        If UstrIdentifer = 4 Then UF1.NaznTehUstr.Value = "для хранения и транспортировки СУГ"
+    End If
+    If BaseDocuments(BaseUstrIndex, 1) = "" Then UF1.Vladelez.Value = "не перемещался"
+    If BaseUstr(BaseUstrIndex, 38) = "" Then UF1.FlanzSoed.Value = "сварка ручная электродуговая, автоматическая"
+    If BaseUstr(BaseUstrIndex, 39) = "" Then UF1.PrimSvMat.Value = "нет данных"
+    If BaseUstr(BaseUstrIndex, 40) = "" Then UF1.ZavKontr.Value = "нет данных"
+    If BaseRemont(BaseUstrIndex, 1) = "" Then UF1.SvedORemonte.Value = "нет данных"
+    If BaseEPB(BaseUstrIndex, 1) = "" Then UF1.SvedOEPB.Value = "Экспертиза промышленной безопасности проводится впервые"
+    If BaseDocuments(BaseUstrIndex, 1) = "" Then UF1.Documents.Value = "паспорт " & ActiveDocument.Variables("TechUsrtva").Value & ", рег.№" & ", зав.№ - 1 л"
+
 End Sub
 
 Private Sub odiam_Change()
@@ -1050,73 +1156,78 @@ End Sub
 
 Private Sub OptionOstalnoe_Click()
 If UF1.OptionOstalnoe.Value = True Then
+    TipUstr = "Остальное"
     With UF1.ComboBoxTipUstroistva
         .Clear
-        .AddItem "Мазутный насос"
+        .AddItem "Насос"
+        .AddItem "Компрессор"
     End With
-    UF1.ComboBoxTechUsrtvo.ListIndex = 15
-    UF1.KolZicl.Visible = False
-    UF1.CBZikl.Visible = False
-    UF1.CBZikl.Value = False
-    UF1.Label18.Visible = False
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
+'    UF1.KolZicl.Visible = False
+'    UF1.CBZikl.Visible = False
+'    UF1.CBZikl.Value = False
+'    UF1.Label18.Visible = False
     ActiveDocument.Variables("P7RabSredaTopl").Value = "рабочая среда"
     UF1.VikMK.Value = False
     
-    Set UstrIndxs = Nothing
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    For i = 1 To UBound(BaseUstr, 1) - 1
-        If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = "Остальное" Then
-            UF1.ZavN.AddItem BaseUstr(i, 7)
-            UF1.RegN.AddItem BaseUstr(i, 4)
-            UstrIndxs.Add i
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = TipUstr Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
         End If
-    Next i
-    If UF1.RegN.ListCount <> 0 Then
-        UF1.RegN.ListIndex = 0
-    Else
-        BaseUstrIndex = UBound(BaseUstr, 1)
     End If
-    Call FillOutElements(BaseUstrIndex, BaseElements)
+
+    
 End If
 End Sub
 
 Private Sub OptionSoorugenie_Change()
 If UF1.OptionSoorugenie.Value = True Then
+    TipUstr = "Сооружение"
     With UF1.ComboBoxTipUstroistva
         .Clear
-        .AddItem "бак кислоты"
         .AddItem "технологический трубопровод"
-        .AddItem "трубопровод кислота"
-        .AddItem "резервуар мазутный"
+        .AddItem "резервуар"
     End With
-    UF1.ComboBoxTechUsrtvo.ListIndex = 11
-    UF1.KolZicl.Visible = False
-    UF1.CBZikl.Visible = False
-    UF1.CBZikl.Value = False
-    UF1.Label18.Visible = False
-    UF1.Label5.Caption = "Монт. орг."
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
     UF1.ExpertZS.Value = True
     ActiveDocument.Variables("P7RabSredaTopl").Value = "рабочая среда"
     ActiveDocument.Variables("PunktPril8ORPD").Value = ", п.п. 3, 5 Приложения №8"
     UF1.VikMK.Value = False
+    UF1.ExpertZS.Value = True
+    UF1.ExpertZSM.Value = True
+    ActiveDocument.Variables("DopDoc").Value = Strings.Chr(13) & "- проектная документация;"
     
-    Set UstrIndxs = Nothing
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    For i = 1 To UBound(BaseUstr, 1) - 1
-        If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = "Сооружение" Then
-            UF1.ZavN.AddItem BaseUstr(i, 7)
-            UF1.RegN.AddItem BaseUstr(i, 4)
-            UstrIndxs.Add i
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = TipUstr Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
         End If
-    Next i
-    If UF1.RegN.ListCount <> 0 Then
-        UF1.RegN.ListIndex = 0
-    Else
-        BaseUstrIndex = UBound(BaseUstr, 1)
     End If
-    Call FillOutElements(BaseUstrIndex, BaseElements)
 End If
 End Sub
 
@@ -1124,29 +1235,125 @@ Private Sub otolshfakt_Change()
     UF1.otolshfakt.Value = Trim(UF1.otolshfakt.Value)
     UF1.otolshfakt.Value = Replace(UF1.otolshfakt.Value, ".", ",")
     ActiveDocument.Variables("otolshfakt").Value = UF1.otolshfakt.Value
-'    UF1.Inform.Caption = "Срок службы: " & ActiveDocument.Variables("SrokSlugb").Value & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("oSkorKorroz").Value & " мм/год" & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("dSkorKorroz").Value & " мм/год" & Strings.Chr(13)
+'    UF1.Inform.Caption = "Срок службы: " & ActiveDocument.Variables("SrokSlugb").Value & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("oSkorKorroz").Value & _
+'" мм/год" & Strings.Chr(13) & "Скорость коррозии: " & ActiveDocument.Variables("dSkorKorroz").Value & " мм/год" & Strings.Chr(13)
 End Sub
 
 Private Sub otolshfakt_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     Call RaschOstRes
 End Sub
 
-Private Sub PasportKolStr_Change()
-    BaseUstr(BaseUstrIndex, 37) = UF1.PasportKolStr.Value
-    If UF1.PasportKolStr.Value = "" Then
-        ActiveDocument.Variables("PasportKolStr").Value = = Strings.ChrW(31)
+Private Sub ParceFile_Click()
+Dim fName, str As String, RegNOPO As String
+Dim lRetVal As Long
+Dim objWrd As Object
+Dim objDoc As Object
+Dim coll As Collection, collPunkt As New Collection
+
+    With Application.Dialogs(wdDialogFileOpen)
+        lRetVal = .Display
+        fName = .Name
+        If Not fName Like "*:*" Then fName = Options.DefaultFilePath(wdCurrentFolderPath) & "\" & Replace(fName, """", "")
+    End With
+    If lRetVal <> -1 Then Exit Sub
+    Set objWrd = CreateObject("Word.Application")
+    Set objDoc = objWrd.Documents.Open(fName)
+    
+    'Титул
+    str = SearchAndCopy(objDoc, "БЕЗОПАСНОСТИ", "Директор")
+    collPunkt.Add str
+    If str <> "" Then RegNOPO = RegExpExtract(str, "[AА]?\d{2}.\d{5}.\d{3,4}")
+    If str <> "" Then str = Titul(str)
+    BaseUstrIndex = UBound(BaseUstr, 1)
+    BaseUstr(BaseUstrIndex, 4) = str
+    UF1.NazvTehUstr.Value = str
+    
+    'Заключение распространяется на
+    str = SearchAndCopy(objDoc, "РАСПРОСТРАНЯЕТСЯ", "ЗАКАЗЧИКЕ")
+    str = FirstLastAbzaz(str)
+    collPunkt.Add str
+    If RegNOPO = "" And str <> "" Then RegNOPO = RegExpExtract(str, "[AА]?\d{2}.\d{5}.\d{3,4}")
+    If RegNOPO <> "" Then
+            If Len(RegNOPO) < 14 Then
+                If Len(RegExpExtract(RegNOPO, "[AА]?\d{2}.")) < 4 Then RegNOPO = "А" & RegNOPO
+                If Len(RegExpExtract(RegNOPO, ".\d{3,4}", 2)) < 5 Then RegNOPO = Left(RegNOPO, 10) & "0" & Right(RegNOPO, 3)
+            End If
+            tmp = RegExpExtract(RegNOPO, "\d{5}")
+            For i = 1 To UBound(BasePredp, 1)
+                If BasePredp(i, 4) Like "*" & tmp & "*" Then
+                    UF1.Predpriyatie.Value = BasePredp(i, 1)
+                    UF1.RegNOPO.Value = RegNOPO
+                    Exit For
+                End If
+            Next i
+    End If
+    
+    'Сведения о заказчике
+    str = SearchAndCopy(objDoc, "ЗАКАЗЧИКЕ", "ЦЕЛЬ")
+    str = FirstLastAbzaz(str)
+    collPunkt.Add str
+    
+    'Цель экспертизы
+    str = SearchAndCopy(objDoc, "ЦЕЛЬ", "ПРОЦЕССЕ")
+    str = FirstLastAbzaz(str)
+    collPunkt.Add str
+    
+    'Сведения о документах
+    str = SearchAndCopy(objDoc, "ПРОЦЕССЕ", "НАЗНАЧЕНИЕ")
+    str = FirstLastAbzaz(str)
+    collPunkt.Add str
+    Call SplitDocuments(str, BaseDocuments)
+    
+    'Характеристика объекта
+    str = SearchAndCopy(objDoc, "НАЗНАЧЕНИЕ", "РЕЗУЛЬТАТЫ П")
+    str = FirstLastAbzaz(str)
+    collPunkt.Add str
+    Set coll = SplitSvedeniya(str)
+    Set coll = ExtractSvedeniya(coll)
+    Set coll = ExtractSvedeniyaData(coll)
+    Set coll = ExtractSvedeniyaRegN(coll)
+    Set coll = ExtractSvedeniyaRaschParam(coll)
+    Call ExtractElements(objDoc)
+    Set coll = RecRem(coll)
+    
+    Call DeviceDefinition(collPunkt)
+
+Dim fruit As Variant
+For Each fruit In coll
+MsgBox (fruit)
+Next fruit
+
+    objWrd.Visible = True
+
+Call NewDevice_Click
+End Sub
+
+Private Sub polePosition_Change()
+    BaseUstr(BaseUstrIndex, 14) = UF1.polePosition.Value
+    If UF1.polePosition.Value = "-" Or UF1.polePosition.Value = "" Then
+        ActiveDocument.Variables("polePosition").Value = Strings.ChrW(31)
     Else
-        ActiveDocument.Variables("PasportKolStr").Value = " - " & Trim(UF1.PasportKolStr.Value) & " л."
+        ActiveDocument.Variables("polePosition").Value = UF1.polePosition.Value '& "№"
     End If
 End Sub
 
 Private Sub poleRegNum_Change()
-    If BaseUstrIndex = UBound(BaseUstr, 1) Then BaseUstr(BaseUstrIndex, 3) = UF1.poleRegNum.Value
+    BaseUstr(BaseUstrIndex, 11) = UF1.poleRegNum.Value
     If UF1.poleRegNum.Value = "-" Or UF1.poleRegNum.Value = "" Then
         ActiveDocument.Variables("No").Value = Strings.ChrW(31)
     Else
-        ActiveDocument.Variables("No").Value = UF1.poleRegNum.Value & "№"
+        ActiveDocument.Variables("No").Value = UF1.poleRegNum.Value '& "№"
     End If
+End Sub
+
+Private Sub Position_Change()
+    If UF1.Position.Value = "-" Or UF1.Position.Value = "" Then
+        ActiveDocument.Variables("Position").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("Position").Value = UF1.Position.Value
+    End If
+    BaseUstr(BaseUstrIndex, 15) = UF1.Position.Value
+
 End Sub
 
 Private Sub Predpriyatie_Change()
@@ -1156,13 +1363,12 @@ Private Sub Predpriyatie_Change()
     
     sText = Trim(UF1.Predpriyatie.Value)
     indks = Predpriyatie.ListIndex
-    TT = UF1.Predpriyatie.List
+'    TT = UF1.Predpriyatie.List
     If Len(sText) <> 0 And indks = -1 Then
         UF1.Predpriyatie.Clear
         For i = 1 To UBound(BasePredp) - 1
             If BasePredp(i, 1) Like "*" & sText & "*" Or BasePredp(i, 2) Like "*" & sText & "*" Then UF1.Predpriyatie.AddItem BasePredp(i, 1)
         Next i
-'    If indks = -1 Then cmbSource.Filter = "names Like '*" & sText & "*'"
     ElseIf indks = -1 Then
         UF1.Predpriyatie.Clear
         For i = 1 To UBound(BasePredp, 1) - 1
@@ -1179,50 +1385,63 @@ Private Sub Predpriyatie_Change()
                 UF1.OPOKolStr.Value = BasePredp(BasePredpIndex, 6)
                 UF1.Dogovor.Value = BasePredp(BasePredpIndex, 7)
                 UF1.DogovorData.Value = BasePredp(BasePredpIndex, 8)
+                UF1.RegNOPO.Clear
+'                UF1.ClassOpasOPO.Clear
+'                UF1.NazvOPO.Clear
+                For n = 1 To UBound(BaseOPO, 1) - 1
+                    If BaseOPO(n, 1) Like BasePredp(BasePredpIndex, 4) & "*" Then
+'                        UF1.NazvOPO.AddItem BaseOPO(n, 2)
+'                        UF1.ClassOpasOPO.AddItem BaseOPO(n, 3)
+                        UF1.RegNOPO.AddItem BaseOPO(n, 1)
+                    End If
+                Next n
+                If UF1.RegNOPO.ListCount <> 0 Then UF1.RegNOPO.ListIndex = 0
+                Exit For
             End If
         Next i
     End If
-'
-'    If cmbSource.RecordCount = 0 Then
-'        Predpriyatie.List = Array("[не найдено соответствия]")
-'        Exit Sub
-'    End If
-'
-'    cmbSource.MoveFirst
-'    Predpriyatie.Column = cmbSource.GetRows
+
+    BaseUstrIndex = UBound(BaseUstr, 1)
     Predpriyatie.DropDown
 End Sub
 
 Private Sub Predpriyatie_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    UF1.RegNOPO.Clear
-    UF1.ClassOpasOPO.Clear
-    UF1.NazvOPO.Clear
+'    UF1.regNOPO.Clear
+'    UF1.ClassOpasOPO.Clear
+'    UF1.NazvOPO.Clear
+'    UF1.OptionKotel.Value = False
+'    UF1.OptionSosud.Value = False
+'    UF1.OptionTruboprovod.Value = False
+'    UF1.OptionSoorugenie.Value = False
+'    UF1.OptionOstalnoe.Value = False
+'    UF1.ComboBoxTipUstroistva.ListIndex = -1
+'    UF1.ComboBoxTechUsrtvo.ListIndex = -1
 If UF1.Predpriyatie.ListIndex = -1 Then
     BasePredpIndex = UBound(BasePredp, 1)
     BasePredp(BasePredpIndex, 1) = UF1.Predpriyatie.Value
 Else
-    For i = 1 To UBound(BasePredp, 1)
-        If BasePredp(i, 1) = Trim(UF1.Predpriyatie.Value) Then
-            BasePredpIndex = i
-            For n = 1 To UBound(BaseOPO, 1) - 1
-                If BaseOPO(n, 1) Like BasePredp(i, 4) & "*" Then
-                    UF1.NazvOPO.AddItem BaseOPO(n, 2)
-                    UF1.ClassOpasOPO.AddItem BaseOPO(n, 3)
-                    UF1.RegNOPO.AddItem BaseOPO(n, 1)
-                End If
-            Next n
-            Exit For
-        End If
-    Next i
-    If UF1.RegNOPO.ListCount <> 0 Then UF1.RegNOPO.ListIndex = 0
+'    For n = 1 To UBound(BaseOPO, 1) - 1
+'        If BaseOPO(n, 1) Like BasePredp(BasePredpIndex, 4) & "*" Then
+'            UF1.NazvOPO.AddItem BaseOPO(n, 2)
+'            UF1.ClassOpasOPO.AddItem BaseOPO(n, 3)
+'            UF1.regNOPO.AddItem BaseOPO(n, 1)
+'        End If
+'    Next n
+'    For i = 1 To UBound(BasePredp, 1)
+'        If BasePredp(i, 1) = Trim(UF1.Predpriyatie.Value) Then
+'            BasePredpIndex = i
+'            Exit For
+'        End If
+'    Next i
+'    If UF1.RegNOPO.ListCount <> 0 Then UF1.RegNOPO.ListIndex = 0
 End If
-    UF1.PredpriyatieKrNaimen.Value = BasePredp(BasePredpIndex, 2)
-    UF1.FormSobstv.Value = BasePredp(BasePredpIndex, 3)
-    UF1.OPONum.Value = BasePredp(BasePredpIndex, 4)
-    UF1.OPOData.Value = BasePredp(BasePredpIndex, 5)
-    UF1.OPOKolStr.Value = BasePredp(BasePredpIndex, 6)
-    UF1.Dogovor.Value = BasePredp(BasePredpIndex, 7)
-    UF1.DogovorData.Value = BasePredp(BasePredpIndex, 8)
+'    UF1.PredpriyatieKrNaimen.Value = BasePredp(BasePredpIndex, 2)
+'    UF1.FormSobstv.Value = BasePredp(BasePredpIndex, 3)
+'    UF1.OPONum.Value = BasePredp(BasePredpIndex, 4)
+'    UF1.OPOData.Value = BasePredp(BasePredpIndex, 5)
+'    UF1.OPOKolStr.Value = BasePredp(BasePredpIndex, 6)
+'    UF1.Dogovor.Value = BasePredp(BasePredpIndex, 7)
+'    UF1.DogovorData.Value = BasePredp(BasePredpIndex, 8)
 End Sub
 
 Private Sub PredpriyatieKrNaimen_Change()
@@ -1249,8 +1468,12 @@ Private Sub PribNaKorro_Exit(ByVal Cancel As MSForms.ReturnBoolean)
 End Sub
 
 Private Sub PrimSvMat_Change()
-    BaseUstr(BaseUstrIndex, 35) = UF1.PrimSvMat.Value
-    ActiveDocument.Variables("PrimSvMat").Value = Trim(UF1.PrimSvMat.Value)
+    If UF1.PrimSvMat.Value = "" Then
+        ActiveDocument.Variables("PrimSvMat").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("PrimSvMat").Value = Trim(UF1.PrimSvMat.Value)
+    End If
+    BaseUstr(BaseUstrIndex, 39) = UF1.PrimSvMat.Value
 End Sub
 
 Private Sub Progib_Change()
@@ -1307,8 +1530,9 @@ End Sub
 
 Private Sub AktGID_Change()
 If IsDate(UF1.AktGID.Value) Then
-    ActiveDocument.Variables("DoNgoda").Value = Format(DateAdd("yyyy", Val(UF1.NaNLet.Value), UF1.AktGID.Value), "dd.mm.yyyy")
-    ActiveDocument.Variables("DoNgodaOsv").Value = Format(DateAdd("yyyy", 3, UF1.AktGID.Value), "dd.mm.yyyy")
+    Call Sroki
+'    ActiveDocument.Variables("DoNgoda").Value = Format(DateAdd("yyyy", Val(UF1.NaNLet.Value), UF1.AktGID.Value), "dd.mm.yyyy")
+'    ActiveDocument.Variables("DoNgodaOsv").Value = Format(DateAdd("yyyy", 3, UF1.AktGID.Value), "dd.mm.yyyy")
     ActiveDocument.Variables("AktGID").Value = UF1.AktGID.Value
     ActiveDocument.Variables("AktGIData").Value = FormDat(UF1.AktGID.Value)
     UF1.AktAED.Value = UF1.AktGID.Value
@@ -1402,18 +1626,21 @@ End Sub
 Private Sub dp17_Change()
 ActiveDocument.Variables("pribor17").Value = UF1.pribor17.Value & UF1.dp17.Value
 End Sub
+Private Sub dp18_Change()
+ActiveDocument.Variables("pribor18").Value = UF1.pribor18.Value & UF1.dp18.Value
+End Sub
 
 Private Sub IspitatP_Change()
     UF1.IspitatP.Value = Trim(UF1.IspitatP.Value)
     UF1.IspitatP.Value = Replace(UF1.IspitatP.Value, ".", ",")
-    BaseUstr(BaseUstrIndex, 32) = UF1.IspitatP.Value
     If IsNumeric(UF1.RazreshaemoeP.Value) And IsNumeric(UF1.IspitatP.Value) Then
-        ActiveDocument.Variables("IspitatP").Value = Format(UF1.IspitatP.Value, "###0.0#####") & " кгс/см" & Strings.ChrW(178)
-        ActiveDocument.Variables("IspitatPMP").Value = Format(CDbl(UF1.IspitatP.Value) / 10, "###0.0#####") & " МПа"
+        ActiveDocument.Variables("IspitatP").Value = Format(UF1.IspitatP.Value, "0.0#####") & " кгс/см" & Strings.ChrW(178)
+        ActiveDocument.Variables("IspitatPMP").Value = Format(CDbl(UF1.IspitatP.Value) / 10, "0.0#####") & " МПа"
     Else
         ActiveDocument.Variables("IspitatP").Value = UF1.IspitatP.Value
         ActiveDocument.Variables("IspitatPMP").Value = Strings.ChrW(31)
     End If
+    BaseUstr(BaseUstrIndex, 36) = UF1.IspitatP.Value
 End Sub
 
 Private Sub KartOvaln_Change()
@@ -1428,10 +1655,7 @@ End Sub
 Private Sub NaNLet_Change()
 UF1.NaNLet.Value = Trim(UF1.NaNLet.Value)
 If IsNumeric(UF1.NaNLet.Value) Then 'Если в поле число то добавляем год, года или лет
-    If (Val(UF1.NaNLet.Value) = 1) Then ActiveDocument.Variables("NaNLet").Value = UF1.NaNLet.Value & " год"
-    If (Val(UF1.NaNLet.Value) > 1 And Val(UF1.NaNLet.Value) < 5) Then ActiveDocument.Variables("NaNLet").Value = UF1.NaNLet & " года"
-    If (Val(UF1.NaNLet.Value) > 4) Then ActiveDocument.Variables("NaNLet").Value = UF1.NaNLet.Value & " лет"
-'    ActiveDocument.Variables("DoNgoda").Value = Format(DateAdd("yyyy", Val(UF1.NaNLet.Value), UF1.AktGID.Value), "dd.mm.yyyy")
+    Call Sroki
 Else
     MsgBox ("Нужно ввести число")
 End If
@@ -1444,16 +1668,18 @@ End If
 End Sub
 
 Private Sub DataRegistracii_Change()
-    BaseUstr(BaseUstrIndex, 5) = UF1.DataRegistracii.Value
+    BaseUstr(BaseUstrIndex, 13) = Trim(UF1.DataRegistracii.Value)
     If UF1.DataRegistracii.Value = "-" Or UF1.DataRegistracii.Value = "" Then
         ActiveDocument.Variables("DataRegistracii").Value = Strings.ChrW(31)
     Else
-        ActiveDocument.Variables("DataRegistracii").Value = UF1.DataRegistracii.Value
+        ActiveDocument.Variables("DataRegistracii").Value = ", " & Trim(UF1.DataRegistracii.Value)
         If IsDate(Trim(UF1.DataRegistracii.Value)) Then ActiveDocument.Variables("DataRegistracii").Value = ActiveDocument.Variables("DataRegistracii").Value & " г."
     End If
 End Sub
 
 Private Sub DataVvoda_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If Right(UF1.DataVvoda.Value, 1) = "г" Then UF1.DataVvoda.Value = Left(UF1.DataVvoda.Value, Len(UF1.DataVvoda.Value) - 1)
+    If Right(UF1.DataVvoda.Value, 2) = "г." Then UF1.DataVvoda.Value = Left(UF1.DataVvoda.Value, Len(UF1.DataVvoda.Value) - 2)
     If Val(ActiveDocument.Variables("SrokSlugb").Value) > 100 Or UF1.DataVvoda.Value = "" Then MsgBox ("Неправильный формат даты")
     Call RaschOstRes
 End Sub
@@ -1478,44 +1704,51 @@ UF1.AktVIKMK.Value = Format(Val(UF1.AktVIK.Value) + 1, "000")
 End Sub
 
 Private Sub Button1_Click()
-Application.ScreenUpdating = False
 
+If BaseUstrIndex = UBound(BaseUstr, 1) Then
+    msg = MsgBox("Сохранить данные?", vbYesNo)
+    If msg = vbYes Then
+    Call ConfigSave_Click
+    End If
+End If
+
+Application.ScreenUpdating = False
 If UF1.OptionKotel.Value = True Then ' Если составляем заключение для котлов
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары и сооружения
     If ActiveDocument.Bookmarks.Exists("P7p1mat") = True Then ActiveDocument.Bookmarks("P7p1mat").Range.Delete ' пункт 7.1. материалы
-    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
+'    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
     If ActiveDocument.Bookmarks.Exists("TipSvS") = True Then ActiveDocument.Bookmarks("TipSvS").Range.Delete ' пункт в УЗК - тип сварного соединения
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
     ActiveDocument.Variables("p12-1pril2").Value = " п. 12.1. Приложения №2, п.п. 2, 3, 4 Приложения №8" & UF1.FNPORPDR.Value
     ActiveDocument.Variables("VIKrd").Value = " п.п. 5.4, 5.5, 5.15"
 '    ActiveDocument.Variables("ovalnrd").Value = "При измерениях овальности барабанов котла установлено, что овальность соответствует требованиям п. 5.10." & UF1.SO469.Value
     ActiveDocument.Variables("RabSredaTopl").Value = "Вид топлива"
-    ActiveDocument.Variables("RabSredaToplRasch").Value = "Вид топлива"
+'    ActiveDocument.Variables("RabSredaToplRasch").Value = "Вид топлива - " & UF1.RaschSreda.Value & ","
     ActiveDocument.Tables(2).Cell(Row:=4, Column:=1).Range = "Вид топлива"
-    ActiveDocument.Variables("punkt7-3-1").Value = "Установка и оснащение "
 End If
 If UF1.OptionSosud.Value = True Then ' Если составляем заключение для сосудов
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары и сооружения
 '    If ActiveDocument.Bookmarks.Exists("KotlObor") = True Then ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. оборудование котла
     If ActiveDocument.Bookmarks.Exists("TipSvS") = True Then ActiveDocument.Bookmarks("TipSvS").Range.Delete ' пункт в УЗК - тип сварного соединения
-    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
+'    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
     If UF1.Ovalnost.Value = True And UF1.CBSO439.Value = True Then ActiveDocument.Variables("VIKrdSO439").Value = "; п.п. 5.4, 5.6, 5.7, 5.8, 5.10" & UF1.SO439.Value
     Call DeleteBookmarks("MetKonstrKotla") ' Металлоконструкции котла
+    ActiveDocument.Variables("punkt7-3-1").Value = "Установка и оснащение "
 End If
 If UF1.OptionTruboprovod.Value = True Then ' Если составляем заключение для трубопровода
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары и сооружения
     If ActiveDocument.Bookmarks.Exists("P7p1mat") = True Then ActiveDocument.Bookmarks("P7p1mat").Range.Delete ' пункт 7.1. материалы
 '    If ActiveDocument.Bookmarks.Exists("KotlObor") = True Then ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. оборудование котла
-    If ActiveDocument.Bookmarks.Exists("VikRezKontr") = True Then ActiveDocument.Bookmarks("VikRezKontr").Range.Delete ' ВИК результаты осмотра
+'    If ActiveDocument.Bookmarks.Exists("VikRezKontr") = True Then ActiveDocument.Bookmarks("VikRezKontr").Range.Delete ' ВИК результаты осмотра
     ActiveDocument.Variables("punkt7-3-1").Value = "Прокладка и оснащение "
 '    ActiveDocument.Variables("punkt7-3").Value = Strings.ChrW(31)
-    ActiveDocument.Variables.Item("PassatT").Value = Strings.ChrW(31)
+    ActiveDocument.Variables.item("PassatT").Value = Strings.ChrW(31)
     ActiveDocument.Variables("korpusa").Value = Strings.ChrW(31)
 End If
 If UF1.OptionOstalnoe.Value = True Then
     Call DeleteBookmarks("Rezervuar") ' удаляем часть про резервуары и сооружения
 '    If ActiveDocument.Bookmarks.Exists("KotlObor") = True Then ActiveDocument.Bookmarks("KotlObor").Range.Delete ' пункт 7.3. оборудование котла
-    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
+'    If ActiveDocument.Bookmarks.Exists("VikRezTruboprov") = True Then ActiveDocument.Bookmarks("VikRezTruboprov").Range.Delete ' ВИК результаты осмотра трубопровода
 End If
 If UF1.CBZikl.Value = True Then
     If Val(UF1.KolZicl.Value) > 1000 Then ActiveDocument.Bookmarks("ziklmen1000").Range.Delete
@@ -1525,7 +1758,6 @@ End If
 
 Call OsnovnPunkt
 'Индивидуальные изменения для каждого техустройства
-If UF1.ComboBoxTipUstroistva.Value = "Воздухосборник" Then Call Vozduhosbornik
 If UF1.ComboBoxTipUstroistva.Value = "НЖУ, ЦЖУ, УДХ" Then Call NGUCGUUDH
 If UF1.ComboBoxTipUstroistva.Value = "Баллоны групповой установки" Then Call BallGroUst
 If UF1.ComboBoxTipUstroistva.Value = "Баллон" Then Call Ballon
@@ -1534,7 +1766,7 @@ If UF1.ComboBoxTipUstroistva.Value = "Подогреватель" Then Call Podogrevatel
 If UF1.ComboBoxTipUstroistva.Value = "Газификатор ГХК" Then Call Gasifikator
 If UF1.ComboBoxTipUstroistva.Value = "Сосуд с вакуумом" Then Call VakuumSosud
 If UF1.ComboBoxTipUstroistva.Value = "Сосуд под налив" Then Call SosudPodNaliv
-If UF1.ComboBoxTipUstroistva.Value = "Бак кислотный" Then Call SosudHOPO
+If UF1.ComboBoxTipUstroistva.Value = "Бак прямоугольный" Then Call SosudHOPO
 If UF1.ComboBoxTipUstroistva.Value = "водогрейный котел" Then Call VodgKotl
 If UF1.ComboBoxTipUstroistva.Value = "экономайзер" Then Call Ekonomayzer
 If UF1.ComboBoxTipUstroistva.Value = "электрический котел" Then Call ElektroKotel
@@ -1542,8 +1774,9 @@ If UF1.ComboBoxTipUstroistva.Value = "паровой котел" Then Call ParKotl
 If UF1.ComboBoxTipUstroistva.Value = "трубопровод пара" Then Call TruboprovPara
 If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then Call TehnTruboprovod
 If UF1.ComboBoxTipUstroistva.Value = "трубопровод кислота" Then Call TruboprovodKislota
-If UF1.ComboBoxTipUstroistva.Value = "резервуар мазутный" Then Call RezervuarMazut
-If UF1.ComboBoxTipUstroistva.Value = "Мазутный насос" Then Call Nasos
+If UF1.ComboBoxTipUstroistva.Value = "резервуар" Then Call RezervuarMazut
+If UF1.ComboBoxTipUstroistva.Value = "Насос" Then Call Nasos
+If UF1.ComboBoxTipUstroistva.Value = "Компрессор" Then Call Nasos
 
 'Эксперты по газу и сооружениям
 If UF1.ExpertGas.Value = False Then
@@ -1603,99 +1836,127 @@ If (UF1.ProtokolVD.Visible = False) Then
     Call DeleteBookmarks("ProtokolVD")
 End If
 'Подготавливаем вариант гидравлического или пневматического испытания
-If (UF1.PnIs.Value = False) Then
+If (UF1.PnIs.Value = True) Then
     Call DeleteBookmarks("PnevmatIsp")
 Else
-    Call DeleteBookmarks("GidroIsp")
+    If (UF1.PnIs.Value = False) Then
+        Call DeleteBookmarks("PnevmatIsp")
+        Call DeleteBookmarks("GidroIsp")
+    Else
+        Call DeleteBookmarks("GidroIsp")
+    End If
 End If
 'Индивидуальные изменения для резервуаров
 If UF1.ComboBoxTipUstroistva.Value = "бак кислоты" Then Call BakKislota
+If UF1.ComboBoxTipUstroistva.Value = "резервуар" Then Call DeleteBookmarks("TehnichUstr")     ' удаляем пункты про техустройства
+
 Call TckZpt 'Расставление запятых
 
 'Заполняем таблицу элементов
-Z = 3
+z = 1
 For i = 1 To 20
-    If BaseElements(BaseUstrIndex, Z) = "True" Then
+    If BaseElements(BaseUstrIndex, z) = "True" Then
         If i > 1 Then ActiveDocument.Tables(1).Rows.Add
-        Z = Z + 1
-        X = ActiveDocument.Tables(1).Rows.Count
+        z = z + 1
+        x = ActiveDocument.Tables(1).Rows.Count
         For n = 1 To 6
-            If n = 5 Then Z = Z + 1
-            ActiveDocument.Tables(1).Cell(Row:=X, Column:=n + 1).Range = BaseElements(BaseUstrIndex, Z)
-            Z = Z + 1
+            If n = 1 Then ActiveDocument.Bookmarks("RezervuarTabl").Range.Tables(1).Cell(Row:=i + 1, Column:=1).Range = BaseElements(BaseUstrIndex, z)
+            If n = 4 Then ActiveDocument.Bookmarks("RezervuarTabl").Range.Tables(1).Cell(Row:=i + 1, Column:=2).Range = BaseElements(BaseUstrIndex, z)
+            If n = 5 Then ActiveDocument.Bookmarks("RezervuarTabl").Range.Tables(1).Cell(Row:=i + 1, Column:=3).Range = BaseElements(BaseUstrIndex, z)
+            If n = 5 Then z = z + 1
+            ActiveDocument.Tables(1).Cell(Row:=x, Column:=n + 1).Range = BaseElements(BaseUstrIndex, z)
+            z = z + 1
         Next n
     Else
-        Z = Z + 8
+        z = z + 8
     End If
 Next i
 
 'Заполняем сведения о ремонтах и экспертизах
-ActiveDocument.Variables("SvedORemonte").Value = BaseRemont(BaseUstrIndex, 3)
-ActiveDocument.Variables("SvedOEPB").Value = BaseEPB(BaseUstrIndex, 3)
-For i = 4 To 17
+ActiveDocument.Variables("SvedORemonte").Value = BaseRemont(BaseUstrIndex, 1)
+ActiveDocument.Variables("SvedOEPB").Value = BaseEPB(BaseUstrIndex, 1)
+ActiveDocument.Variables("Documents").Value = "- " & BaseDocuments(BaseUstrIndex, 1) & ";" & Strings.Chr(13) & "- справка о режиме работы и фактических рабочих параметрах, выданная владельцем - 1 л;"
+For i = 2 To 20
     If BaseRemont(BaseUstrIndex, i) <> "" Then ActiveDocument.Variables("SvedORemonte").Value = ActiveDocument.Variables("SvedORemonte").Value & "." & Strings.Chr(13) & BaseRemont(BaseUstrIndex, i)
     If BaseEPB(BaseUstrIndex, i) <> "" Then ActiveDocument.Variables("SvedOEPB").Value = ActiveDocument.Variables("SvedOEPB").Value & "." & Strings.Chr(13) & BaseEPB(BaseUstrIndex, i)
+    If BaseDocuments(BaseUstrIndex, i) <> "" Then ActiveDocument.Variables("Documents").Value = ActiveDocument.Variables("Documents").Value & Strings.Chr(13) & "- " & BaseDocuments(BaseUstrIndex, i) & ";"
 Next i
 
 'Собираем заголовок для сохранения файла
 ActiveDocument.BuiltInDocumentProperties("Title").Value = Replace(UF1.NazvTehUstr.Value & " рег.№" & UF1.RegN.Value & "(" & Year(Date) & ")", "/", "-")
 ActiveDocument.BuiltInDocumentProperties("Title").Value = Replace(ActiveDocument.BuiltInDocumentProperties("Title").Value, "\", "-")
+
+'Анализ заключений
+If BaseEPB(BaseUstrIndex, 4) = "" Then
+    ActiveDocument.Variables("AnalizZakl").Value = "Анализ заключения, проведенной ранее, экспертизы промышленной безопасности "
+    ActiveDocument.Variables("AnalizZaklRezervuar").Value = " (в т.ч. при предыдущей экспертизе промышленной безопасности)"
+    If BaseEPB(BaseUstrIndex, 3) Like "*[Вв]первые*" Then
+        ActiveDocument.Bookmarks("AnalizZ").Range.Text = "Экспертиза промышленной безопасности проводится впервые"
+        ActiveDocument.Variables("AnalizZaklRezervuar").Value = Strings.ChrW(31)
+    End If
+End If
+
 'Unload Me
 UF1.hide
 End Sub
 
 Private Sub dstal_Change()
-UF1.dstal.Value = Trim(UF1.dstal.Value)
-ActiveDocument.Variables("dstal").Value = UF1.dstal.Value
+    UF1.dstal.Value = Trim(UF1.dstal.Value)
+    ActiveDocument.Variables("dstal").Value = UF1.dstal.Value
+    If UF1.ComboBoxRaschet.ListIndex = 7 Then
+        If UF1.dstal Like "*[Сс]т3*" Then UF1.DopuskNaprd.Value = 240
+        If UF1.dstal Like "09Г2*" Then UF1.DopuskNaprd.Value = 335
+'        UF1.Koof_fid.Value = MinusDopusk(UF1.dtolsh.Value)
+'        Call RaschOstRes
+    End If
 End Sub
 
 Private Sub KolZicl_Change()
-    BaseElements(BaseUstrIndex, 164) = Trim$(UF1.KolZicl.Value)
+    BaseElements(BaseUstrIndex, 162) = Trim$(UF1.KolZicl.Value)
     ActiveDocument.Variables("KolZicl").Value = Val(Trim(UF1.KolZicl.Value))
 End Sub
 
 Private Sub ComboBoxTipUstroistva_Change()
 Dim SelectComboBox()
+Call ClearAllF
+Call ClearComboBox
+UF1.RabSredaKlassOpasn.Clear
+Call OformlenBase
 If UF1.OptionSosud.Value = True Then
-    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then 'Сосуд под давлением
+        UstrIdentifer = 1
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Воздух"
+            .AddItem "Азот"
+            .AddItem "Водород"
+            .AddItem "Кислород"
+        End With
+'        UF1.ExpertORPD.Value = True
+        UF1.ComboBoxTechUsrtvo.ListIndex = 2
+        UF1.ComboBoxRaschet.ListIndex = 0
+        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
+'        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "сосуд для хранения "
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBSO439.Value = True
+'        UF1.CBGOST34347.Value = True
+        Call UstSosAktNK(0, 1, 1, 1, 1, 0, 0, 0, 1)
+    End If
+    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then 'НЖУ, ЦЖУ, УДХ
+        UstrIdentifer = 2
         UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 2
         UF1.ComboBoxRaschet.ListIndex = 0
         ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "сосуд для хранения "
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO439.Value = True
-        UF1.CBGOST34347.Value = True
-        Call UstSosAktNK(0, 1, 1, 1, 1, 0, 0, 0, 0)
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
-        Call ClearAllF
-        UF1.ExpertORPD.Value = True
-        UF1.ComboBoxTechUsrtvo.ListIndex = 4
-        UF1.ComboBoxRaschet.ListIndex = 0
-        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "сосуд для накопления и хранения сжатого воздуха"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO439.Value = True
-        UF1.CBGOST34347.Value = True
-        Call UstSosAktNK(0, 1, 1, 1, 1, 0, 0, 0, 0)
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then
-        Call ClearAllF
-        UF1.ExpertORPD.Value = True
-        UF1.ComboBoxTechUsrtvo.ListIndex = 2
-        UF1.ComboBoxRaschet.ListIndex = 0
-        ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "сосуд для хранения СО2"
+'        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "сосуд для хранения СО2"
         UF1.CBFNPORPD.Value = True
         UF1.CBSO439.Value = True
         UF1.CBGOST34347.Value = True
         UF1.CBRD2626012.Value = True
-        Call UstSosAktNK(0, 1, 1, 1, 1, 0, 0, 0, 1)
+        Call UstSosAktNK(0, 1, 1, 1, 1, 0, 0, 0, "")
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 3 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then 'Баллоны групповой установки
+        UstrIdentifer = 3
         SelectComboBox = Array(2, 3, 10, 175, 179, 185, 186, 187, 188, 465, 468, 469, 471, 538, 539, 540, 577, 589)
         Call SetComboBox(SelectComboBox, "CBp")
         UF1.ExpertORPD.Value = True
@@ -1706,28 +1967,34 @@ If UF1.OptionSosud.Value = True Then
         UF1.CBFNPORPD.Value = True
         UF1.CBSO439.Value = True
         UF1.CBGOST34347.Value = True
-        Call UstSosAktNK(0, 1, 0, 1, 1, 0, 0, 0, 0)
+        Call UstSosAktNK(0, 1, 0, 1, 1, 0, 0, 0, 1)
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 4 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 178, 185, 187, 188, 338, 339, 340, 343, 353, 465, 468, 519, 521, 523)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
-        UF1.ExpertGas.Value = True
+    If UF1.ComboBoxTipUstroistva.ListIndex = 3 Then 'Автоцистерна для СУГ
+        UstrIdentifer = 4
+        
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "СУГ"
+        End With
+        UF1.RabSredaKlassOpasn.ListIndex = 0
+'        SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 178, 185, 187, 188, 338, 339, 340, 343, 353, 465, 468, 519, 521, 523)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
+'        UF1.ExpertGas.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 2
         UF1.ComboBoxRaschet.ListIndex = 0
         ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "для хранения и транспортировки СУГ"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBFNPSUG.Value = True
-        UF1.CBSO439.Value = True
-        UF1.CBGOST34347.Value = True
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBFNPSUG.Value = True
+'        UF1.CBSO439.Value = True
+'        UF1.CBGOST34347.Value = True
 '        UF1.CBRD2626012.Value = True
-        Call UstSosAktNK(0, 1, 1, 0, 0, 0, 0, 0, 0)
+        Call UstSosAktNK(0, 1, 1, 0, 0, 0, 0, 0, 1)
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 5 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 68, 69, 100, 175, 178, 185, 186, 187, 188, 338, 339, 340, 341, 343, 353, 465, 468)
+    If UF1.ComboBoxTipUstroistva.ListIndex = 4 Then 'Подогреватель
+        UstrIdentifer = 5
+        SelectComboBox = Array(2, 3, 10, 68, 69, 100, 175, 178, 185, 186, 187, 188, 338, 339, 340, 341, 343, 353, 465, 468, 469)
         Call SetComboBox(SelectComboBox, "CBp")
         UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 6
@@ -1738,21 +2005,30 @@ If UF1.OptionSosud.Value = True Then
         UF1.CBSO439.Value = True
         UF1.CBGOST34347.Value = True
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 6 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 190, 338, 339, 340, 341, 343, 353, 465, 468, 471)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
+    If UF1.ComboBoxTipUstroistva.ListIndex = 5 Then 'Газификатор ГХК
+        UstrIdentifer = 6
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Кислород"
+            .AddItem "Азот"
+        End With
+'        SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 190, 338, 339, 340, 341, 343, 353, 465, 468, 471)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 5
         UF1.ComboBoxRaschet.ListIndex = 0
+        UF1.NaNLet.Value = 5
         ActiveDocument.Variables("TipTehUstr").Value = "сосуд, работающий под давлением"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "хранение сжиженных криопродуктов"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBVM030104.Value = True
-        Call UstSosAktNK(0, 0, 0, 0, 0, 0, 0, 0, 1)
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBVM030104.Value = True
+        UF1.CBPodNaliv.Visible = False
+        UF1.CBVakuum.Visible = False
+        UF1.CBRubashka.Visible = False
+        Call UstSosAktNK(0, 0, 0, 0, 0, 0, 0, 0, "")
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 7 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 6 Then 'Сосуд с вакуумом
+        UstrIdentifer = 7
         SelectComboBox = Array(161, 164, 169, 177, 178, 179)
         Call SetComboBox(SelectComboBox, "CBvb")
         UF1.ExpertHim.Value = True
@@ -1766,8 +2042,8 @@ If UF1.OptionSosud.Value = True Then
         UF1.CBFNPOPVB.Value = True
         UF1.CBGOST34347.Value = True
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 8 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 7 Then 'Сосуд под налив
+        UstrIdentifer = 8
         SelectComboBox = Array(11, 12, 15, 132, 135, 136, 137, 140)
         Call SetComboBox(SelectComboBox, "CBho")
         SelectComboBox = Array(9, 161, 164, 169, 177, 178, 179)
@@ -1784,23 +2060,38 @@ If UF1.OptionSosud.Value = True Then
         UF1.CBFNPOPVB.Value = True
         UF1.CBGOST34347.Value = True
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 9 Then
-        Call ClearAllF
-        SelectComboBox = Array(11, 12, 15, 132, 135, 137, 140, 233, 234, 255, 267)
-        Call SetComboBox(SelectComboBox, "CBho")
-        UF1.ExpertHim.Value = True
+    If UF1.ComboBoxTipUstroistva.ListIndex = 8 Then 'Бак квадратный
+        UstrIdentifer = 9
+        
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Щелочь, кислота"
+            .AddItem "Гидразин"
+        End With
         UF1.ComboBoxTechUsrtvo.ListIndex = 11
-        UF1.ComboBoxRaschet.ListIndex = 2
+        UF1.ComboBoxRaschet.ListIndex = 5
         ActiveDocument.Variables("TipTehUstr").Value = "емкость"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "емкость под налив"
+        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "емкость для хранения"
+        UF1.Label487.Visible = True
+        UF1.Label487.Caption = "Выс. налива"
+        UF1.Label482.Visible = True
+        UF1.Label482.Caption = Strings.ChrW(961)
+        UF1.Label501.Caption = "Днище"
+        UF1.Label502.Caption = "Бок.стенка"
+        UF1.RabTempRub.Visible = True
+        UF1.RabTempRub.ControlTipText = "Плотность рабочей среды"
+        UF1.Label432.Caption = "Ширина"
+        UF1.RabocheePRub.Visible = True
+        UF1.CBRubashka.Visible = False
+        UF1.CBVakuum.Visible = False
         ActiveDocument.Variables("p2-102RUA").Value = Strings.ChrW(31)
         ActiveDocument.Variables("p2-111RUA").Value = " 2.111,"
-        UF1.CBZikl.Value = False
-        UF1.CBFNPHOPO.Value = True
+'        UF1.CBZikl.Value = False
+'        UF1.CBFNPHOPO.Value = True
         UF1.CBRUA93.Value = True
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 10 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 9 Then 'Баллон
+        UstrIdentifer = 10
         SelectComboBox = Array(2, 3, 10, 175, 179, 185, 186, 187, 188, 465, 468, 469, 471, 538, 539, 540, 577, 589)
         Call SetComboBox(SelectComboBox, "CBp")
         UF1.ExpertORPD.Value = True
@@ -1813,60 +2104,72 @@ If UF1.OptionSosud.Value = True Then
     End If
 End If
 If UF1.OptionKotel.Value = True Then
-    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 38, 39, 43, 45, 47, 49, 50, 100, 154, 175, 177, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 469, 471)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
+    With UF1.RabSredaKlassOpasn
+        .Clear
+        .AddItem "Уголь"
+        .AddItem "Газ"
+    End With
+    UF1.CBRubashka.Visible = False
+    UF1.Label511.Caption = "Вид топлива"
+    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then 'Паровой котел
+        UstrIdentifer = 11
+'        SelectComboBox = Array(2, 3, 10, 38, 39, 43, 45, 47, 49, 50, 100, 154, 175, 177, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 469, 471)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 0
         UF1.ComboBoxRaschet.ListIndex = 1
         ActiveDocument.Variables("TipTehUstr").Value = "паровой котел"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "выработка пара"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO469.Value = True
-        Call UstSosAktNK(1, 1, 1, 1, 1, 1, 1, 1, 0)
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBSO469.Value = True
+        Call UstSosAktNK(1, 1, 1, 1, 1, 1, 1, 1, 1)
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 38, 39, 45, 46, 47, 50, 154, 175, 177, 185, 186, 187, 188, 267, 271, 465, 468, 469, 471)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
+    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then 'Водогрейный котел
+        UstrIdentifer = 12
+'        SelectComboBox = Array(2, 3, 10, 38, 39, 45, 46, 47, 50, 154, 175, 177, 185, 186, 187, 188, 267, 271, 465, 468, 469, 471)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 0
         UF1.ComboBoxRaschet.ListIndex = 1
         ActiveDocument.Variables("TipTehUstr").Value = "водогрейный котел"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "нагрев сетевой воды"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO469.Value = True
-        Call UstSosAktNK(1, 1, 1, 1, 1, 0, 0, 1, 0)
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBSO469.Value = True
+        Call UstSosAktNK(1, 1, 1, 1, 1, 0, 0, 1, 1)
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 22, 39, 43, 50, 100, 154, 175, 178, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 471, 500, 502, 503, 505, 506)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
-        UF1.ComboBoxTechUsrtvo.ListIndex = 0
-        UF1.ComboBoxRaschet.ListIndex = 0
-        ActiveDocument.Variables("TipTehUstr").Value = "электрокотел"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "выработка пара"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO469.Value = True
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 3 Then
-        Call ClearAllF
-        SelectComboBox = Array(2, 3, 10, 45, 61, 64, 175, 177, 185, 186, 187, 188, 267, 268, 269, 270, 271, 465, 468, 469, 471)
-        Call SetComboBox(SelectComboBox, "CBp")
-        UF1.ExpertORPD.Value = True
+    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then 'Экономайзер
+        UstrIdentifer = 13
+'        SelectComboBox = Array(2, 3, 10, 45, 61, 64, 175, 177, 185, 186, 187, 188, 267, 268, 269, 270, 271, 465, 468, 469, 471)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
         UF1.ComboBoxTechUsrtvo.ListIndex = 1
         UF1.ComboBoxRaschet.ListIndex = 1
         ActiveDocument.Variables("TipTehUstr").Value = "водяной экономайзер"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "подогрев питательной воды"
-        UF1.CBFNPORPD.Value = True
-        UF1.CBSO469.Value = True
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBSO469.Value = True
+        Call UstSosAktNK(0, 0, 0, 0, 1, 0, 0, 0, 1)
+    End If
+    If UF1.ComboBoxTipUstroistva.ListIndex = 3 Then 'Электрокотел
+        UstrIdentifer = 14
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Электричество"
+        End With
+'        SelectComboBox = Array(2, 3, 10, 22, 39, 43, 50, 100, 154, 175, 178, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 471, 500, 502, 503, 505, 506)
+'        Call SetComboBox(SelectComboBox, "CBp")
+'        UF1.ExpertORPD.Value = True
+        UF1.ComboBoxTechUsrtvo.ListIndex = 0
+        UF1.ComboBoxRaschet.ListIndex = 0
+        ActiveDocument.Variables("TipTehUstr").Value = "электрокотел"
+        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "выработка пара"
+'        UF1.CBFNPORPD.Value = True
+'        UF1.CBSO469.Value = True
     End If
 End If
 If UF1.OptionTruboprovod.Value = True Then
-    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then 'трубопровод пара
+        UstrIdentifer = 15
 '        SelectComboBox = Array(2, 3, 10, 71, 80, 81, 85, 86, 90, 91, 154, 156, 175, 184, 185, 187, 188, 372, 373, 374, 394, 465, 468, 469, 471)
 '        Call SetComboBox(SelectComboBox, "CBp")
         UF1.ExpertORPD.Value = True
@@ -1876,10 +2179,10 @@ If UF1.OptionTruboprovod.Value = True Then
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "транспортировка пара"
         UF1.CBFNPORPD.Value = True
         UF1.CBSO464.Value = True
-        Call UstSosAktNK(0, 1, 1, 0, 1, 0, 0, 1, 0)
+        Call UstSosAktNK(0, 1, 1, 0, 1, 0, 0, 1, 1)
     End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
-        Call ClearAllF
+    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then 'трубопровод горячей воды
+        UstrIdentifer = 16
         SelectComboBox = Array(2, 3, 10, 71, 80, 81, 85, 86, 90, 91, 154, 156, 175, 184, 185, 187, 188, 372, 373, 374, 394, 465, 468, 469, 471)
         Call SetComboBox(SelectComboBox, "CBp")
         UF1.ExpertORPD.Value = True
@@ -1893,82 +2196,147 @@ If UF1.OptionTruboprovod.Value = True Then
 End If
 If UF1.OptionSoorugenie.Value = True Then
     If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then
-        Call ClearAllF
-        SelectComboBox = Array(11, 12, 15, 132, 135, 137, 140, 233, 234, 255, 267)
-        Call SetComboBox(SelectComboBox, "CBho")
-        UF1.ExpertHim.Value = True
-        UF1.ComboBoxTechUsrtvo.ListIndex = 11
-        UF1.ComboBoxRaschet.ListIndex = 0
-        ActiveDocument.Variables("TipTehUstr").Value = "резервуар"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "емкость для хранения"
-        UF1.CBFNPHOPO.Value = True
-        UF1.CBRD1533413752696.Value = True
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
-        SelectComboBox = Array(30, 119, 161, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
-        Call SetComboBox(SelectComboBox, "CBvb")
-        SelectComboBox = Array(15, 132, 135, 136, 137, 149, 150, 151, 152)
-        Call SetComboBox(SelectComboBox, "CBho")
-        SelectComboBox = Array(27, 29, 35, 36, 59, 65, 85, 94, 141, 145, 148, 190, 191)
-        Call SetComboBox(SelectComboBox, "CBtt")
-        SelectComboBox = Array(137, 141, 142, 144, 146, 147, 148, 149, 150)
-        Call SetComboBox(SelectComboBox, "CBsn")
-        UF1.ExpertHim.Value = True
+        UstrIdentifer = 17
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Водород"
+            .AddItem "Кислород"
+            .AddItem "Щелочь, кислота"
+            .AddItem "Мазут"
+        End With
         UF1.ComboBoxTechUsrtvo.ListIndex = 13
         UF1.ComboBoxRaschet.ListIndex = 3
+'        UF1.Label8.Caption = "Дата монтажа"
         UF1.Label501.Caption = "Труба"
         UF1.Label502.Caption = "Труба"
-        UF1.ZavN.Value = "б/н"
         ActiveDocument.Variables("TipTehUstr").Value = "технологический трубопровод"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "транспортировка "
-        UF1.CBFNPHOPO.Value = True
-        UF1.CBFNPPBETT.Value = True
+    End If
+'    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
+'        UstrIdentifer = 18
+'        SelectComboBox = Array(11, 12, 15, 132, 135, 137, 140, 233, 234, 255, 267)
+'        Call SetComboBox(SelectComboBox, "CBho")
+'        UF1.ExpertHim.Value = True
+'        UF1.ComboBoxTechUsrtvo.ListIndex = 11
+'        UF1.ComboBoxRaschet.ListIndex = 0
+'        ActiveDocument.Variables("TipTehUstr").Value = "резервуар"
+'        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "емкость для хранения"
+'        UF1.CBFNPHOPO.Value = True
+'        UF1.CBRD1533413752696.Value = True
+'    End If
+'    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then
+'        UstrIdentifer = 19
+'        SelectComboBox = Array(15, 132, 135, 136, 137, 140, 149, 150, 151, 152, 234, 238, 240, 241, 242, 244, 246, 247, 248)
+'        Call SetComboBox(SelectComboBox, "CBho")
+'        SelectComboBox = Array(30, 161, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
+'        Call SetComboBox(SelectComboBox, "CBvb")
+'        SelectComboBox = Array(27, 29, 35, 36, 44, 59, 65, 85, 94, 100, 141, 145, 148)
+'        Call SetComboBox(SelectComboBox, "CBtt")
+'        UF1.ExpertHim.Value = True
+'        UF1.ComboBoxTechUsrtvo.ListIndex = 13
+'        UF1.ComboBoxRaschet.ListIndex = 3
+'        ActiveDocument.Variables("TipTehUstr").Value = "технологический трубопровод"
+'        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "транспортировка "
+'        UF1.Label501.Caption = "Труба"
+'        UF1.Label502.Caption = "Труба"
+'        UF1.CBFNPHOPO.Value = True
+'        UF1.CBFNPPBETT.Value = True
 '        UF1.CBRekpoTT.Value = True
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 2 Then
-        SelectComboBox = Array(15, 132, 135, 136, 137, 140, 149, 150, 151, 152, 234, 238, 240, 241, 242, 244, 246, 247, 248)
-        Call SetComboBox(SelectComboBox, "CBho")
-        SelectComboBox = Array(30, 161, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
-        Call SetComboBox(SelectComboBox, "CBvb")
-        SelectComboBox = Array(27, 29, 35, 36, 44, 59, 65, 85, 94, 100, 141, 145, 148)
-        Call SetComboBox(SelectComboBox, "CBtt")
-        UF1.ExpertHim.Value = True
-        UF1.ComboBoxTechUsrtvo.ListIndex = 13
-        UF1.ComboBoxRaschet.ListIndex = 3
-        ActiveDocument.Variables("TipTehUstr").Value = "технологический трубопровод"
-        If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "транспортировка "
-        UF1.Label501.Caption = "Труба"
-        UF1.Label502.Caption = "Труба"
-        UF1.CBFNPHOPO.Value = True
-        UF1.CBFNPPBETT.Value = True
-        UF1.CBRekpoTT.Value = True
-    End If
-    If UF1.ComboBoxTipUstroistva.ListIndex = 3 Then
-        Call ClearAllF
-        SelectComboBox = Array(120, 121, 164, 177, 178, 179)
-        Call SetComboBox(SelectComboBox, "CBvb")
-        SelectComboBox = Array(77, 81, 87, 94, 98, 102, 104, 105)
-        Call SetComboBox(SelectComboBox, "CBsn")
-        UF1.ExpertHim.Value = True
+'    End If
+    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
+        UstrIdentifer = 20
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Мазут"
+            .AddItem "Авиатопливо"
+            .AddItem "Щелочь, кислота"
+        End With
+'        SelectComboBox = Array(120, 121, 164, 177, 178, 179)
+'        Call SetComboBox(SelectComboBox, "CBvb")
+'        SelectComboBox = Array(77, 81, 82, 87, 90, 94, 98, 102, 104, 105)
+'        Call SetComboBox(SelectComboBox, "CBsn")
+        UF1.CBVakuum.Visible = False
+        UF1.CBRubashka.Visible = False
+        UF1.Label480.Visible = True
+        UF1.Label480.Caption = "Выс. резерв."
+        UF1.RaschetnPRub.Visible = True
+        UF1.Label487.Visible = True
+        UF1.Label487.Caption = "Выс. налива"
+        UF1.RabocheePRub.Visible = True
+        UF1.Label479.Visible = True
+        UF1.Label479.Caption = "n="
+        UF1.Label462.Caption = "Мин. допуск"
+        UF1.RaschetntRub.Visible = True
+        UF1.RaschetntRub.ControlTipText = "Количество поясов корпуса"
+        UF1.Label482.Visible = True
+        UF1.Label482.Caption = Strings.ChrW(961)
+        UF1.RabTempRub.Visible = True
+        UF1.RabTempRub.ControlTipText = "Плотность рабочей среды"
+        UF1.Label501.Caption = "1 пояс"
+        UF1.Label502.Caption = "2 пояс"
         UF1.ComboBoxTechUsrtvo.ListIndex = 12
-        UF1.ComboBoxRaschet.ListIndex = 0
-        ActiveDocument.Variables("TipTehUstr").Value = "резервуар"
+        UF1.ComboBoxRaschet.ListIndex = 7
+        ActiveDocument.Variables("TipTehUstr").Value = "цилиндрический резервуар вертикальный стальной"
         If BaseUstrIndex = UBound(BaseUstr, 1) Then UF1.NaznTehUstr.Value = "резервуар для хранения"
-        UF1.CBFNPPBSNN.Value = True
-        UF1.CBFNPOPVB.Value = True
-        UF1.CBRD089595.Value = True
+'        UF1.CBFNPPBSNN.Value = True
+'        UF1.CBFNPOPVB.Value = True
+'        UF1.CBRD089595.Value = True
+        Call UstSosAktNK(0, 1, 0, 0, 0, 0, 0, 0, 0)
     End If
 End If
 If UF1.OptionOstalnoe.Value = True Then
     If UF1.ComboBoxTipUstroistva.ListIndex = 0 Then
+        UstrIdentifer = 21
+        
+        With UF1.RabSredaKlassOpasn
+            .Clear
+            .AddItem "Мазут"
+            .AddItem "Щелочь, кислота"
+        End With
+
         ActiveDocument.Variables("TipTehUstr").Value = "насос"
         ActiveDocument.Variables("NaznTehUstr").Value = "предназначен для перекачки "
         ActiveDocument.Variables("MnNum7").Value = "Позиция по технологической схеме"
-        UF1.Label476.Caption = "P"
+        
+        UF1.CBPodNaliv.Visible = False
+        UF1.CBRubashka.Visible = False
         UF1.Label475.Caption = "напор"
-        UF1.Label474.Caption = "Q"
+        UF1.Label479.Caption = "об."
+        UF1.Label480.Caption = "Двиг. мощ."
+        UF1.RaschetnPRub.Visible = True
+        UF1.RaschetntRub.Visible = True
         UF1.ComboBoxRaschet.ListIndex = 6
         UF1.ComboBoxTechUsrtvo.ListIndex = 15
+        UF1.ProtokolVD.Visible = True
+        UF1.ProtokolVDD.Visible = True
+        UF1.Label465.Visible = True
+        UF1.Label466.Visible = True
+'        Call ClearAllF
+'        SelectComboBox = Array(43, 47, 48, 53, 161, 164, 177, 178, 179, 184, 185, 186, 189, 190)
+'        Call SetComboBox(SelectComboBox, "CBvb")
+'        UF1.CBFNPOPVB.Value = True
+'        SelectComboBox = Array(156, 157, 159, 160, 162, 167, 168, 171)
+'        Call SetComboBox(SelectComboBox, "CBsn")
+'        SelectComboBox = Array(12, 15, 126, 132, 135, 136, 137, 140, 142, 144, 145)
+'        Call SetComboBox(SelectComboBox, "CBho")
+'        UF1.CBFNPHOPO.Value = True
+        Call UstSosAktNK(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    End If
+    If UF1.ComboBoxTipUstroistva.ListIndex = 1 Then
+        UstrIdentifer = 22
+        ActiveDocument.Variables("TipTehUstr").Value = "компрессор"
+        ActiveDocument.Variables("NaznTehUstr").Value = "предназначен для сжатия "
+        ActiveDocument.Variables("MnNum7").Value = "Позиция по технологической схеме"
+        
+        UF1.CBPodNaliv.Visible = False
+        UF1.CBRubashka.Visible = False
+        UF1.Label475.Caption = "напор"
+        UF1.Label479.Caption = "об."
+        UF1.Label480.Caption = "Двиг. мощ."
+        UF1.RaschetnPRub.Visible = True
+        UF1.RaschetntRub.Visible = True
+        UF1.ComboBoxRaschet.ListIndex = 6
+        UF1.ComboBoxTechUsrtvo.ListIndex = 16
         UF1.ProtokolVD.Visible = True
         UF1.ProtokolVDD.Visible = True
         UF1.Label465.Visible = True
@@ -1976,17 +2344,35 @@ If UF1.OptionOstalnoe.Value = True Then
         Call ClearAllF
         SelectComboBox = Array(43, 47, 48, 53, 161, 164, 177, 178, 179, 184, 185, 186, 189, 190)
         Call SetComboBox(SelectComboBox, "CBvb")
-        SelectComboBox = Array(156, 157, 159, 160, 167, 168, 171)
+        SelectComboBox = Array(156, 157, 159, 160, 162, 167, 168, 171)
         Call SetComboBox(SelectComboBox, "CBsn")
         SelectComboBox = Array(11, 12, 15, 126, 132, 135, 136, 137, 140, 142, 144, 145)
         Call SetComboBox(SelectComboBox, "CBho")
-    Else
-        UF1.ProtokolVD.Visible = False
-        UF1.ProtokolVDD.Visible = False
-        UF1.Label465.Visible = False
-        UF1.Label466.Visible = False
+        UF1.CBFNPHOPO.Value = True
+        Call UstSosAktNK(0, 0, 0, 0, 0, 0, 0, 0, 0)
     End If
 End If
+
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 3) = Me.ComboBoxTipUstroistva.Value Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount <> 0 Then
+            UF1.NazvTehUstr.ListIndex = 0
+        Else
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
+        End If
+    End If
+'    Call FillOutElements(BaseUstrIndex, BaseElements)
 
 End Sub
 
@@ -2010,61 +2396,69 @@ End If
 End Sub
 
 Private Sub ogost_Change()
-UF1.ogost.Value = Trim(UF1.ogost.Value)
-UF1.dgost.Value = UF1.ogost.Value
-ActiveDocument.Variables("ogost").Value = UF1.ogost.Value
+    UF1.ogost.Value = Trim(UF1.ogost.Value)
+    UF1.dgost.Value = UF1.ogost.Value
+    If UF1.ogost.Value <> "" Then
+        ActiveDocument.Variables("ogost").Value = UF1.ogost.Value
+    Else
+        ActiveDocument.Variables("ogost").Value = "-"
+    End If
 End Sub
 
 Private Sub OptionKotel_Change()
 If UF1.OptionKotel.Value = True Then
+    TipUstr = "Котел"
     Me.ComboBoxTipUstroistva.Clear
-    Me.ComboBoxTipUstroistva.List = Array("паровой котел", "водогрейный котел", "электрический котел", "экономайзер")
-    UF1.CBVakuum.Enabled = False
-    UF1.CBPodNaliv.Enabled = False
-    UF1.VikMK.Value = True
-    UF1.KontrGibCh.Value = True
-    UF1.ComboBoxTechUsrtvo.ListIndex = 0
+    Me.ComboBoxTipUstroistva.List = Array("паровой котел", "водогрейный котел", "экономайзер", "электрический котел")
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+'    UF1.CBVakuum.Enabled = False
+'    UF1.CBPodNaliv.Enabled = False
+'    UF1.VikMK.Value = True
+'    UF1.KontrGibCh.Value = True
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
     UF1.ComboBoxRaschet.ListIndex = 1
-    UF1.Label418.Caption = "Вид топлива"
-    UF1.KolZicl.Visible = False
-    UF1.CBZikl.Visible = False
-    UF1.CBZikl.Value = False
-    UF1.Label18.Visible = False
-    UF1.Label5.Caption = "Завод изг."
-    UF1.Label501.Caption = "Обечайка"
-    UF1.Label502.Caption = "Днище"
+'    UF1.Label418.Caption = "топл."
+'    UF1.Label485.Caption = "топл."
+'    UF1.KolZicl.Visible = False
+'    UF1.CBZikl.Visible = False
+'    UF1.CBZikl.Value = False
+'    UF1.Label18.Visible = False
+'    UF1.Label5.Caption = "Завод изг."
+'    UF1.Label501.Caption = "Обечайка"
+'    UF1.Label502.Caption = "Днище"
     ActiveDocument.Variables("TimeGI").Value = "20 минут"
     ActiveDocument.Variables("P7RabSredaTopl").Value = "вид топлива"
     SelectComboBox = Array(2, 3, 10, 38, 39, 43, 45, 47, 49, 50, 100, 154, 175, 177, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 471)
     Call SetComboBox(SelectComboBox, "CBp")
     ActiveDocument.Variables("PunktPril8ORPD").Value = ", п.п. 2, 3, 4, 5 Приложения №8"
     
-    Set UstrIndxs = Nothing
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    For i = 1 To UBound(BaseUstr, 1) - 1
-        If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = "Котел" Then
-            UF1.ZavN.AddItem BaseUstr(i, 7)
-            UF1.RegN.AddItem BaseUstr(i, 4)
-            UstrIndxs.Add i
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = TipUstr Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
         End If
-    Next i
-    If UF1.RegN.ListCount <> 0 Then
-        UF1.RegN.ListIndex = 0
-    Else
-        BaseUstrIndex = UBound(BaseUstr, 1)
     End If
-    Call FillOutElements(BaseUstrIndex, BaseElements)
 
 End If
 End Sub
 
 Private Sub OptionSosud_Change()
 If UF1.OptionSosud.Value = True Then
+    TipUstr = "Сосуд"
     With UF1.ComboBoxTipUstroistva
         .Clear
         .AddItem "Сосуд под давлением"
-        .AddItem "Воздухосборник"
         .AddItem "НЖУ, ЦЖУ, УДХ"
         .AddItem "Баллоны групповой установки"
         .AddItem "Автоцистерна для СУГ"
@@ -2072,21 +2466,21 @@ If UF1.OptionSosud.Value = True Then
         .AddItem "Газификатор ГХК"
         .AddItem "Сосуд с вакуумом"
         .AddItem "Сосуд под налив"
-        .AddItem "Бак кислотный"
+        .AddItem "Бак прямоугольный"
         .AddItem "Баллон"
     End With
-    UF1.ComboBoxTechUsrtvo.ListIndex = 2
-    UF1.ComboBoxRaschet.ListIndex = 0
-    UF1.CBVakuum.Enabled = True
-    UF1.CBPodNaliv.Enabled = True
-    UF1.KolZicl.Visible = True
-    UF1.CBZikl.Visible = True
-    UF1.CBZikl.Value = True
-    UF1.VKorp.Enabled = True
-    UF1.Label18.Visible = True
-    UF1.Label5.Caption = "Завод изг."
-    UF1.Label501.Caption = "Обечайка"
-    UF1.Label502.Caption = "Днище"
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
+'    UF1.CBVakuum.Enabled = True
+'    UF1.CBPodNaliv.Enabled = True
+'    UF1.KolZicl.Visible = True
+'    UF1.CBZikl.Visible = True
+'    UF1.CBZikl.Value = True
+'    UF1.VKorp.Enabled = True
+'    UF1.Label18.Visible = True
+'    UF1.Label5.Caption = "Завод изг."
+'    UF1.Label501.Caption = "Обечайка"
+'    UF1.Label502.Caption = "Днище"
     ActiveDocument.Variables("TimeGI").Value = "10 минут"
     ActiveDocument.Variables("P7RabSredaTopl").Value = "рабочая среда"
     SelectComboBox = Array(30, 161, 164, 169, 177, 178, 179)
@@ -2101,44 +2495,48 @@ If UF1.OptionSosud.Value = True Then
     UF1.ProgibCb.Value = False
     UF1.KontrGibCh.Value = False
     
-    Set UstrIndxs = Nothing
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    For i = 1 To UBound(BaseUstr, 1) - 1
-        If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = "Сосуд" Then
-            UF1.ZavN.AddItem BaseUstr(i, 7)
-            UF1.RegN.AddItem BaseUstr(i, 4)
-            UstrIndxs.Add i
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = TipUstr Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
         End If
-    Next i
-    If UF1.RegN.ListCount <> 0 Then
-        UF1.RegN.ListIndex = 0
-    Else
-        BaseUstrIndex = UBound(BaseUstr, 1)
     End If
-    Call FillOutElements(BaseUstrIndex, BaseElements)
+
+    
 End If
 End Sub
 
 Private Sub OptionTruboprovod_Change()
 If UF1.OptionTruboprovod.Value = True Then
+    TipUstr = "Трубопровод"
     With UF1.ComboBoxTipUstroistva
         .Clear
         .AddItem "трубопровод пара"
         .AddItem "трубопровод горячей воды"
     End With
-    UF1.ComboBoxTechUsrtvo.ListIndex = 3
-    UF1.ComboBoxRaschet.ListIndex = 1
-    UF1.VKorp.Enabled = False
-    UF1.VRub.Enabled = False
-    UF1.KolZicl.Visible = False
-    UF1.CBZikl.Visible = False
-    UF1.CBZikl.Value = False
-    UF1.CBRubashka.Caption = "РОУ"
-    UF1.Label18.Visible = False
-    UF1.Label5.Caption = "Монт. орг."
-    UF1.Label501.Caption = "Труба"
-    UF1.Label502.Caption = "Труба"
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
+'    UF1.VKorp.Enabled = False
+'    UF1.VRub.Enabled = False
+'    UF1.KolZicl.Visible = False
+'    UF1.CBZikl.Visible = False
+'    UF1.CBZikl.Value = False
+'    UF1.CBRubashka.Caption = "РОУ"
+'    UF1.Label18.Visible = False
+'    UF1.Label5.Caption = "Монт. орг."
+'    UF1.Label501.Caption = "Труба"
+'    UF1.Label502.Caption = "Труба"
     ActiveDocument.Variables("TimeGI").Value = "10 минут"
     ActiveDocument.Variables("P7RabSredaTopl").Value = "рабочая среда"
     SelectComboBox = Array(2, 3, 10, 71, 80, 81, 85, 86, 90, 91, 154, 156, 175, 184, 185, 187, 188, 372, 373, 374, 394, 465, 468, 469, 471)
@@ -2149,37 +2547,48 @@ If UF1.OptionTruboprovod.Value = True Then
     UF1.ProgibCb.Value = False
     UF1.KontrGibCh.Value = False
     
-    Set UstrIndxs = Nothing
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    For i = 1 To UBound(BaseUstr, 1) - 1
-        If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = "Трубопровод" Then
-            UF1.ZavN.AddItem BaseUstr(i, 7)
-            UF1.RegN.AddItem BaseUstr(i, 4)
-            UstrIndxs.Add i
+    If UF1.NazvTehUstr.ListIndex = -1 Then
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) And BaseUstr(i, 2) = TipUstr Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
         End If
-    Next i
-    If UF1.RegN.ListCount <> 0 Then
-        UF1.RegN.ListIndex = 0
-    Else
-        BaseUstrIndex = UBound(BaseUstr, 1)
     End If
-    Call FillOutElements(BaseUstrIndex, BaseElements)
+    
     UF1.VKorp.Value = ""
     UF1.VRub.Value = ""
 End If
 End Sub
 
 Private Sub ostal_Change()
-UF1.ostal.Value = Trim(UF1.ostal.Value)
-UF1.dstal.Value = UF1.ostal.Value
-ActiveDocument.Variables("ostal").Value = UF1.ostal.Value
+    UF1.ostal.Value = Trim(UF1.ostal.Value)
+    UF1.dstal.Value = UF1.ostal.Value
+    ActiveDocument.Variables("ostal").Value = UF1.ostal.Value
+    If UF1.ComboBoxRaschet.ListIndex = 7 Then
+        If UF1.ostal Like "*[Сс]т3*" Then UF1.DopuskNapro.Value = 240
+        If UF1.ostal Like "09Г2*" Then UF1.DopuskNapro.Value = 335
+'        UF1.Koof_fio.Value = MinusDopusk(UF1.otolsh.Value)
+'        Call RaschOstRes
+    End If
 End Sub
 
 Private Sub otolsh_Change()
     UF1.otolsh.Value = Trim(UF1.otolsh.Value)
     UF1.otolsh.Value = Replace(UF1.otolsh.Value, ".", ",")
     UF1.dtolsh.Value = UF1.otolsh.Value
+    If UF1.ComboBoxRaschet.ListIndex = 7 Then
+        If IsNumeric(UF1.otolsh.Value) Then UF1.Koof_fio.Value = MinusDopusk(UF1.otolsh.Value)
+    End If
     ActiveDocument.Variables("otolsh").Value = UF1.otolsh.Value
 End Sub
 
@@ -2214,19 +2623,19 @@ End If
 End Sub
 
 Private Sub R10C1_Change()
-    BaseElements(BaseUstrIndex, 76 + (8 * (UF1.SpButElm.Value))) = UF1.R10C1.Value
+    BaseElements(BaseUstrIndex, 74 + (8 * (UF1.SpButElm.Value))) = UF1.R10C1.Value
 End Sub
 
 Private Sub R10C2_Change()
-    BaseElements(BaseUstrIndex, 77 + (8 * (UF1.SpButElm.Value))) = UF1.R10C2.Value
+    BaseElements(BaseUstrIndex, 75 + (8 * (UF1.SpButElm.Value))) = UF1.R10C2.Value
 End Sub
 
 Private Sub R10C3_Change()
-    BaseElements(BaseUstrIndex, 78 + (8 * (UF1.SpButElm.Value))) = UF1.R10C3.Value
+    BaseElements(BaseUstrIndex, 76 + (8 * (UF1.SpButElm.Value))) = UF1.R10C3.Value
 End Sub
 
 Private Sub R10C4_Change()
-    BaseElements(BaseUstrIndex, 79 + (8 * (UF1.SpButElm.Value))) = UF1.R10C4.Value
+    BaseElements(BaseUstrIndex, 77 + (8 * (UF1.SpButElm.Value))) = UF1.R10C4.Value
 End Sub
 
 Private Sub R10C5_Change()
@@ -2235,38 +2644,34 @@ Private Sub R10C5_Change()
     Else
         UF1.LabelR10.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 80 + (8 * (UF1.SpButElm.Value))) = UF1.R10C5.Value
+    BaseElements(BaseUstrIndex, 78 + (8 * (UF1.SpButElm.Value))) = UF1.R10C5.Value
 End Sub
 
 Private Sub R10C6_Change()
-    BaseElements(BaseUstrIndex, 81 + (8 * (UF1.SpButElm.Value))) = UF1.R10C6.Value
+    BaseElements(BaseUstrIndex, 79 + (8 * (UF1.SpButElm.Value))) = UF1.R10C6.Value
 End Sub
 
 Private Sub R10C7_Change()
-    BaseElements(BaseUstrIndex, 82 + (8 * (UF1.SpButElm.Value))) = UF1.R10C7.Value
+    BaseElements(BaseUstrIndex, 80 + (8 * (UF1.SpButElm.Value))) = UF1.R10C7.Value
 End Sub
 
 Private Sub R1C1_Change()
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=2).Range = UF1.R1C1.Value
-    BaseElements(BaseUstrIndex, 4 + (8 * (UF1.SpButElm.Value))) = UF1.R1C1.Value
+    BaseElements(BaseUstrIndex, 2 + (8 * (UF1.SpButElm.Value))) = UF1.R1C1.Value
 End Sub
 
 Private Sub R1C2_Change()
     UF1.odlina.Value = UF1.R1C2.Value
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=3).Range = UF1.R1C2.Value
-    BaseElements(BaseUstrIndex, 5 + (8 * (UF1.SpButElm.Value))) = UF1.R1C2.Value
+    BaseElements(BaseUstrIndex, 3 + (8 * (UF1.SpButElm.Value))) = UF1.R1C2.Value
 End Sub
 
 Private Sub R1C3_Change()
     UF1.odiam.Value = UF1.R1C3.Value
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=4).Range = UF1.R1C3.Value
-    BaseElements(BaseUstrIndex, 6 + (8 * (UF1.SpButElm.Value))) = UF1.R1C3.Value
+    BaseElements(BaseUstrIndex, 4 + (8 * (UF1.SpButElm.Value))) = UF1.R1C3.Value
 End Sub
 
 Private Sub R1C4_Change()
     UF1.otolsh.Value = UF1.R1C4.Value
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=5).Range = UF1.R1C4.Value
-    BaseElements(BaseUstrIndex, 7 + (8 * (UF1.SpButElm.Value))) = UF1.R1C4.Value
+    BaseElements(BaseUstrIndex, 5 + (8 * (UF1.SpButElm.Value))) = UF1.R1C4.Value
 End Sub
 
 Private Sub R1C5_Change()
@@ -2276,38 +2681,36 @@ Private Sub R1C5_Change()
     Else
         UF1.LabelR1.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 8 + (8 * (UF1.SpButElm.Value))) = UF1.R1C5.Value
+    BaseElements(BaseUstrIndex, 6 + (8 * (UF1.SpButElm.Value))) = UF1.R1C5.Value
 End Sub
 
 Private Sub R1C6_Change()
     UF1.ostal.Value = UF1.R1C6.Value
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=6).Range = UF1.R1C6.Value
-    BaseElements(BaseUstrIndex, 9 + (8 * (UF1.SpButElm.Value))) = UF1.R1C6.Value
+    BaseElements(BaseUstrIndex, 7 + (8 * (UF1.SpButElm.Value))) = UF1.R1C6.Value
 End Sub
 
 Private Sub R1C7_Change()
     UF1.ogost.Value = UF1.R1C7.Value
-'    ActiveDocument.Tables(1).Cell(Row:=2, Column:=7).Range = UF1.R1C7.Value
-    BaseElements(BaseUstrIndex, 10 + (8 * (UF1.SpButElm.Value))) = UF1.R1C7.Value
+    BaseElements(BaseUstrIndex, 8 + (8 * (UF1.SpButElm.Value))) = UF1.R1C7.Value
 End Sub
 
 Private Sub R2C1_Change()
-    BaseElements(BaseUstrIndex, 12 + (8 * (UF1.SpButElm.Value))) = UF1.R2C1.Value
+    BaseElements(BaseUstrIndex, 10 + (8 * (UF1.SpButElm.Value))) = UF1.R2C1.Value
 End Sub
 
 Private Sub R2C2_Change()
     UF1.ddlina.Value = UF1.R2C2.Value
-    BaseElements(BaseUstrIndex, 13 + (8 * (UF1.SpButElm.Value))) = UF1.R2C2.Value
+    BaseElements(BaseUstrIndex, 11 + (8 * (UF1.SpButElm.Value))) = UF1.R2C2.Value
 End Sub
 
 Private Sub R2C3_Change()
     UF1.ddiam.Value = UF1.R2C3.Value
-    BaseElements(BaseUstrIndex, 14 + (8 * (UF1.SpButElm.Value))) = UF1.R2C3.Value
+    BaseElements(BaseUstrIndex, 12 + (8 * (UF1.SpButElm.Value))) = UF1.R2C3.Value
 End Sub
 
 Private Sub R2C4_Change()
     UF1.dtolsh.Value = UF1.R2C4.Value
-    BaseElements(BaseUstrIndex, 15 + (8 * (UF1.SpButElm.Value))) = UF1.R2C4.Value
+    BaseElements(BaseUstrIndex, 13 + (8 * (UF1.SpButElm.Value))) = UF1.R2C4.Value
 End Sub
 
 Private Sub R2C5_Change()
@@ -2317,33 +2720,33 @@ Private Sub R2C5_Change()
     Else
         UF1.LabelR2.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 16 + (8 * (UF1.SpButElm.Value))) = UF1.R2C5.Value
+    BaseElements(BaseUstrIndex, 14 + (8 * (UF1.SpButElm.Value))) = UF1.R2C5.Value
 End Sub
 
 Private Sub R2C6_Change()
     UF1.dstal.Value = UF1.R2C6.Value
-    BaseElements(BaseUstrIndex, 17 + (8 * (UF1.SpButElm.Value))) = UF1.R2C6.Value
+    BaseElements(BaseUstrIndex, 15 + (8 * (UF1.SpButElm.Value))) = UF1.R2C6.Value
 End Sub
 
 Private Sub R2C7_Change()
     UF1.dgost.Value = UF1.R2C7.Value
-    BaseElements(BaseUstrIndex, 18 + (8 * (UF1.SpButElm.Value))) = UF1.R2C7.Value
+    BaseElements(BaseUstrIndex, 16 + (8 * (UF1.SpButElm.Value))) = UF1.R2C7.Value
 End Sub
 
 Private Sub R3C1_Change()
-    BaseElements(BaseUstrIndex, 20 + (8 * (UF1.SpButElm.Value))) = UF1.R3C1.Value
+    BaseElements(BaseUstrIndex, 18 + (8 * (UF1.SpButElm.Value))) = UF1.R3C1.Value
 End Sub
 
 Private Sub R3C2_Change()
-    BaseElements(BaseUstrIndex, 21 + (8 * (UF1.SpButElm.Value))) = UF1.R3C2.Value
+    BaseElements(BaseUstrIndex, 19 + (8 * (UF1.SpButElm.Value))) = UF1.R3C2.Value
 End Sub
 
 Private Sub R3C3_Change()
-    BaseElements(BaseUstrIndex, 22 + (8 * (UF1.SpButElm.Value))) = UF1.R3C3.Value
+    BaseElements(BaseUstrIndex, 20 + (8 * (UF1.SpButElm.Value))) = UF1.R3C3.Value
 End Sub
 
 Private Sub R3C4_Change()
-    BaseElements(BaseUstrIndex, 23 + (8 * (UF1.SpButElm.Value))) = UF1.R3C4.Value
+    BaseElements(BaseUstrIndex, 21 + (8 * (UF1.SpButElm.Value))) = UF1.R3C4.Value
 End Sub
 
 Private Sub R3C5_Change()
@@ -2352,31 +2755,31 @@ Private Sub R3C5_Change()
     Else
         UF1.LabelR3.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 24 + (8 * (UF1.SpButElm.Value))) = UF1.R3C5.Value
+    BaseElements(BaseUstrIndex, 22 + (8 * (UF1.SpButElm.Value))) = UF1.R3C5.Value
 End Sub
 
 Private Sub R3C6_Change()
-    BaseElements(BaseUstrIndex, 25 + (8 * (UF1.SpButElm.Value))) = UF1.R3C6.Value
+    BaseElements(BaseUstrIndex, 23 + (8 * (UF1.SpButElm.Value))) = UF1.R3C6.Value
 End Sub
 
 Private Sub R3C7_Change()
-    BaseElements(BaseUstrIndex, 26 + (8 * (UF1.SpButElm.Value))) = UF1.R3C7.Value
+    BaseElements(BaseUstrIndex, 24 + (8 * (UF1.SpButElm.Value))) = UF1.R3C7.Value
 End Sub
 
 Private Sub R4C1_Change()
-    BaseElements(BaseUstrIndex, 28 + (8 * (UF1.SpButElm.Value))) = UF1.R4C1.Value
+    BaseElements(BaseUstrIndex, 26 + (8 * (UF1.SpButElm.Value))) = UF1.R4C1.Value
 End Sub
 
 Private Sub R4C2_Change()
-    BaseElements(BaseUstrIndex, 29 + (8 * (UF1.SpButElm.Value))) = UF1.R4C2.Value
+    BaseElements(BaseUstrIndex, 27 + (8 * (UF1.SpButElm.Value))) = UF1.R4C2.Value
 End Sub
 
 Private Sub R4C3_Change()
-    BaseElements(BaseUstrIndex, 30 + (8 * (UF1.SpButElm.Value))) = UF1.R4C3.Value
+    BaseElements(BaseUstrIndex, 28 + (8 * (UF1.SpButElm.Value))) = UF1.R4C3.Value
 End Sub
 
 Private Sub R4C4_Change()
-    BaseElements(BaseUstrIndex, 31 + (8 * (UF1.SpButElm.Value))) = UF1.R4C4.Value
+    BaseElements(BaseUstrIndex, 29 + (8 * (UF1.SpButElm.Value))) = UF1.R4C4.Value
 End Sub
 
 Private Sub R4C5_Change()
@@ -2385,31 +2788,31 @@ Private Sub R4C5_Change()
     Else
         UF1.LabelR4.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 32 + (8 * (UF1.SpButElm.Value))) = UF1.R4C5.Value
+    BaseElements(BaseUstrIndex, 30 + (8 * (UF1.SpButElm.Value))) = UF1.R4C5.Value
 End Sub
 
 Private Sub R4C6_Change()
-    BaseElements(BaseUstrIndex, 33 + (8 * (UF1.SpButElm.Value))) = UF1.R4C6.Value
+    BaseElements(BaseUstrIndex, 31 + (8 * (UF1.SpButElm.Value))) = UF1.R4C6.Value
 End Sub
 
 Private Sub R4C7_Change()
-    BaseElements(BaseUstrIndex, 34 + (8 * (UF1.SpButElm.Value))) = UF1.R4C7.Value
+    BaseElements(BaseUstrIndex, 32 + (8 * (UF1.SpButElm.Value))) = UF1.R4C7.Value
 End Sub
 
 Private Sub R5C1_Change()
-    BaseElements(BaseUstrIndex, 36 + (8 * (UF1.SpButElm.Value))) = UF1.R5C1.Value
+    BaseElements(BaseUstrIndex, 34 + (8 * (UF1.SpButElm.Value))) = UF1.R5C1.Value
 End Sub
 
 Private Sub R5C2_Change()
-    BaseElements(BaseUstrIndex, 37 + (8 * (UF1.SpButElm.Value))) = UF1.R5C2.Value
+    BaseElements(BaseUstrIndex, 35 + (8 * (UF1.SpButElm.Value))) = UF1.R5C2.Value
 End Sub
 
 Private Sub R5C3_Change()
-    BaseElements(BaseUstrIndex, 38 + (8 * (UF1.SpButElm.Value))) = UF1.R5C3.Value
+    BaseElements(BaseUstrIndex, 36 + (8 * (UF1.SpButElm.Value))) = UF1.R5C3.Value
 End Sub
 
 Private Sub R5C4_Change()
-    BaseElements(BaseUstrIndex, 39 + (8 * (UF1.SpButElm.Value))) = UF1.R5C4.Value
+    BaseElements(BaseUstrIndex, 37 + (8 * (UF1.SpButElm.Value))) = UF1.R5C4.Value
 End Sub
 
 Private Sub R5C5_Change()
@@ -2418,31 +2821,31 @@ Private Sub R5C5_Change()
     Else
         UF1.LabelR5.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 40 + (8 * (UF1.SpButElm.Value))) = UF1.R5C5.Value
+    BaseElements(BaseUstrIndex, 38 + (8 * (UF1.SpButElm.Value))) = UF1.R5C5.Value
 End Sub
 
 Private Sub R5C6_Change()
-    BaseElements(BaseUstrIndex, 41 + (8 * (UF1.SpButElm.Value))) = UF1.R5C6.Value
+    BaseElements(BaseUstrIndex, 39 + (8 * (UF1.SpButElm.Value))) = UF1.R5C6.Value
 End Sub
 
 Private Sub R5C7_Change()
-    BaseElements(BaseUstrIndex, 42 + (8 * (UF1.SpButElm.Value))) = UF1.R5C7.Value
+    BaseElements(BaseUstrIndex, 40 + (8 * (UF1.SpButElm.Value))) = UF1.R5C7.Value
 End Sub
 
 Private Sub R6C1_Change()
-    BaseElements(BaseUstrIndex, 44 + (8 * (UF1.SpButElm.Value))) = UF1.R6C1.Value
+    BaseElements(BaseUstrIndex, 42 + (8 * (UF1.SpButElm.Value))) = UF1.R6C1.Value
 End Sub
 
 Private Sub R6C2_Change()
-    BaseElements(BaseUstrIndex, 45 + (8 * (UF1.SpButElm.Value))) = UF1.R6C2.Value
+    BaseElements(BaseUstrIndex, 43 + (8 * (UF1.SpButElm.Value))) = UF1.R6C2.Value
 End Sub
 
 Private Sub R6C3_Change()
-    BaseElements(BaseUstrIndex, 46 + (8 * (UF1.SpButElm.Value))) = UF1.R6C3.Value
+    BaseElements(BaseUstrIndex, 44 + (8 * (UF1.SpButElm.Value))) = UF1.R6C3.Value
 End Sub
 
 Private Sub R6C4_Change()
-    BaseElements(BaseUstrIndex, 47 + (8 * (UF1.SpButElm.Value))) = UF1.R6C4.Value
+    BaseElements(BaseUstrIndex, 45 + (8 * (UF1.SpButElm.Value))) = UF1.R6C4.Value
 End Sub
 
 Private Sub R6C5_Change()
@@ -2451,31 +2854,31 @@ Private Sub R6C5_Change()
     Else
         UF1.LabelR6.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 48 + (8 * (UF1.SpButElm.Value))) = UF1.R6C5.Value
+    BaseElements(BaseUstrIndex, 46 + (8 * (UF1.SpButElm.Value))) = UF1.R6C5.Value
 End Sub
 
 Private Sub R6C6_Change()
-    BaseElements(BaseUstrIndex, 49 + (8 * (UF1.SpButElm.Value))) = UF1.R6C6.Value
+    BaseElements(BaseUstrIndex, 47 + (8 * (UF1.SpButElm.Value))) = UF1.R6C6.Value
 End Sub
 
 Private Sub R6C7_Change()
-    BaseElements(BaseUstrIndex, 50 + (8 * (UF1.SpButElm.Value))) = UF1.R6C7.Value
+    BaseElements(BaseUstrIndex, 48 + (8 * (UF1.SpButElm.Value))) = UF1.R6C7.Value
 End Sub
 
 Private Sub R7C1_Change()
-    BaseElements(BaseUstrIndex, 52 + (8 * (UF1.SpButElm.Value))) = UF1.R7C1.Value
+    BaseElements(BaseUstrIndex, 50 + (8 * (UF1.SpButElm.Value))) = UF1.R7C1.Value
 End Sub
 
 Private Sub R7C2_Change()
-    BaseElements(BaseUstrIndex, 53 + (8 * (UF1.SpButElm.Value))) = UF1.R7C2.Value
+    BaseElements(BaseUstrIndex, 51 + (8 * (UF1.SpButElm.Value))) = UF1.R7C2.Value
 End Sub
 
 Private Sub R7C3_Change()
-    BaseElements(BaseUstrIndex, 54 + (8 * (UF1.SpButElm.Value))) = UF1.R7C3.Value
+    BaseElements(BaseUstrIndex, 52 + (8 * (UF1.SpButElm.Value))) = UF1.R7C3.Value
 End Sub
 
 Private Sub R7C4_Change()
-    BaseElements(BaseUstrIndex, 55 + (8 * (UF1.SpButElm.Value))) = UF1.R7C4.Value
+    BaseElements(BaseUstrIndex, 53 + (8 * (UF1.SpButElm.Value))) = UF1.R7C4.Value
 End Sub
 
 Private Sub R7C5_Change()
@@ -2484,31 +2887,31 @@ Private Sub R7C5_Change()
     Else
         UF1.LabelR7.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 56 + (8 * (UF1.SpButElm.Value))) = UF1.R7C5.Value
+    BaseElements(BaseUstrIndex, 54 + (8 * (UF1.SpButElm.Value))) = UF1.R7C5.Value
 End Sub
 
 Private Sub R7C6_Change()
-    BaseElements(BaseUstrIndex, 57 + (8 * (UF1.SpButElm.Value))) = UF1.R7C6.Value
+    BaseElements(BaseUstrIndex, 55 + (8 * (UF1.SpButElm.Value))) = UF1.R7C6.Value
 End Sub
 
 Private Sub R7C7_Change()
-    BaseElements(BaseUstrIndex, 58 + (8 * (UF1.SpButElm.Value))) = UF1.R7C7.Value
+    BaseElements(BaseUstrIndex, 56 + (8 * (UF1.SpButElm.Value))) = UF1.R7C7.Value
 End Sub
 
 Private Sub R8C1_Change()
-    BaseElements(BaseUstrIndex, 60 + (8 * (UF1.SpButElm.Value))) = UF1.R8C1.Value
+    BaseElements(BaseUstrIndex, 58 + (8 * (UF1.SpButElm.Value))) = UF1.R8C1.Value
 End Sub
 
 Private Sub R8C2_Change()
-    BaseElements(BaseUstrIndex, 61 + (8 * (UF1.SpButElm.Value))) = UF1.R8C2.Value
+    BaseElements(BaseUstrIndex, 59 + (8 * (UF1.SpButElm.Value))) = UF1.R8C2.Value
 End Sub
 
 Private Sub R8C3_Change()
-    BaseElements(BaseUstrIndex, 62 + (8 * (UF1.SpButElm.Value))) = UF1.R8C3.Value
+    BaseElements(BaseUstrIndex, 60 + (8 * (UF1.SpButElm.Value))) = UF1.R8C3.Value
 End Sub
 
 Private Sub R8C4_Change()
-    BaseElements(BaseUstrIndex, 63 + (8 * (UF1.SpButElm.Value))) = UF1.R8C4.Value
+    BaseElements(BaseUstrIndex, 61 + (8 * (UF1.SpButElm.Value))) = UF1.R8C4.Value
 End Sub
 
 Private Sub R8C5_Change()
@@ -2517,31 +2920,31 @@ Private Sub R8C5_Change()
     Else
         UF1.LabelR8.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 64 + (8 * (UF1.SpButElm.Value))) = UF1.R8C5.Value
+    BaseElements(BaseUstrIndex, 62 + (8 * (UF1.SpButElm.Value))) = UF1.R8C5.Value
 End Sub
 
 Private Sub R8C6_Change()
-    BaseElements(BaseUstrIndex, 65 + (8 * (UF1.SpButElm.Value))) = UF1.R8C6.Value
+    BaseElements(BaseUstrIndex, 63 + (8 * (UF1.SpButElm.Value))) = UF1.R8C6.Value
 End Sub
 
 Private Sub R8C7_Change()
-    BaseElements(BaseUstrIndex, 66 + (8 * (UF1.SpButElm.Value))) = UF1.R8C7.Value
+    BaseElements(BaseUstrIndex, 64 + (8 * (UF1.SpButElm.Value))) = UF1.R8C7.Value
 End Sub
 
 Private Sub R9C1_Change()
-    BaseElements(BaseUstrIndex, 68 + (8 * (UF1.SpButElm.Value))) = UF1.R9C1.Value
+    BaseElements(BaseUstrIndex, 66 + (8 * (UF1.SpButElm.Value))) = UF1.R9C1.Value
 End Sub
 
 Private Sub R9C2_Change()
-    BaseElements(BaseUstrIndex, 69 + (8 * (UF1.SpButElm.Value))) = UF1.R9C2.Value
+    BaseElements(BaseUstrIndex, 67 + (8 * (UF1.SpButElm.Value))) = UF1.R9C2.Value
 End Sub
 
 Private Sub R9C3_Change()
-    BaseElements(BaseUstrIndex, 70 + (8 * (UF1.SpButElm.Value))) = UF1.R9C3.Value
+    BaseElements(BaseUstrIndex, 68 + (8 * (UF1.SpButElm.Value))) = UF1.R9C3.Value
 End Sub
 
 Private Sub R9C4_Change()
-    BaseElements(BaseUstrIndex, 71 + (8 * (UF1.SpButElm.Value))) = UF1.R9C4.Value
+    BaseElements(BaseUstrIndex, 69 + (8 * (UF1.SpButElm.Value))) = UF1.R9C4.Value
 End Sub
 
 Private Sub R9C5_Change()
@@ -2550,23 +2953,24 @@ Private Sub R9C5_Change()
     Else
         UF1.LabelR9.Caption = "" '"Скор.корроз. = " & Format((UF1.R1C4.Value - UF1.R1C5.Value) / Val(ActiveDocument.Variables("SrokSlugb").Value), "0.0###")
     End If
-    BaseElements(BaseUstrIndex, 72 + (8 * (UF1.SpButElm.Value))) = UF1.R9C5.Value
+    BaseElements(BaseUstrIndex, 70 + (8 * (UF1.SpButElm.Value))) = UF1.R9C5.Value
 End Sub
 
 Private Sub R9C6_Change()
-    BaseElements(BaseUstrIndex, 73 + (8 * (UF1.SpButElm.Value))) = UF1.R9C6.Value
+    BaseElements(BaseUstrIndex, 71 + (8 * (UF1.SpButElm.Value))) = UF1.R9C6.Value
 End Sub
 
 Private Sub R9C7_Change()
-    BaseElements(BaseUstrIndex, 74 + (8 * (UF1.SpButElm.Value))) = UF1.R9C7.Value
+    BaseElements(BaseUstrIndex, 72 + (8 * (UF1.SpButElm.Value))) = UF1.R9C7.Value
 End Sub
 
 Private Sub RabocheePRub_Change()
-    BaseUstr(BaseUstrIndex, 29) = UF1.RabocheePRub.Value
+    BaseUstr(BaseUstrIndex, 33) = UF1.RabocheePRub.Value
+    ActiveDocument.Variables("RabocheePRub").Value = Trim(UF1.RabocheePRub.Value)
 End Sub
 
 Private Sub RabSreda_Change()
-    BaseUstr(BaseUstrIndex, 28) = UF1.RabSreda.Value
+    BaseUstr(BaseUstrIndex, 32) = UF1.RabSreda.Value
     ActiveDocument.Variables("RabSreda").Value = Trim(UF1.RabSreda.Value)
 End Sub
 
@@ -2574,82 +2978,302 @@ Private Sub RabSreda_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If UF1.RabSreda.Value Like "[Вв]одород*" Then
         UF1.CBp354.Value = True
     End If
-    If UF1.RabSreda.Value Like "*[Мм]азут*" Then
-        UF1.CBFNPOPVB.Value = True
-        UF1.CBFNPPBSNN.Value = True
+End Sub
+
+Private Sub RabSredaKlassOpasn_Change()
+'    .AddItem "Уголь"
+'    .AddItem "Газ"
+'    .AddItem "Электричество"
+'    .AddItem "Воздух"
+'    .AddItem "Азот"
+'    .AddItem "Кислород"
+'    .AddItem "Водород"
+'    .AddItem "СУГ"
+'    .AddItem "Пар"
+'    .AddItem "Вода"
+'    .AddItem "Кислород"
+'    .AddItem "Щелочь, кислота"
+'    .AddItem "Гидразин"
+'    .AddItem "Мазут"
+    
+    Call ClearAllF
+    Call ClearComboBox
+    
+'    Котлы
+    If UF1.RabSredaKlassOpasn.Value = "Газ" Or UF1.RabSredaKlassOpasn.Value = "Уголь" Then
+        Call SetFNP(True, False, False, False, False)
+        Call SetExpert(True, False, False, False, False, False)
+        UF1.CBSO469.Value = True
+        If UF1.ComboBoxTipUstroistva.Value = "паровой котел" Then
+            SelectComboBox = Array(2, 3, 10, 38, 39, 43, 45, 47, 49, 50, 100, 154, 175, 177, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 469, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "водогрейный котел" Then
+            SelectComboBox = Array(2, 3, 10, 38, 39, 45, 46, 47, 50, 154, 175, 177, 185, 186, 187, 188, 267, 271, 465, 468, 469, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "экономайзер" Then
+            SelectComboBox = Array(2, 3, 10, 45, 61, 64, 175, 177, 185, 186, 187, 188, 267, 268, 269, 270, 271, 465, 468, 469, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+        End If
     End If
-    If UF1.RabSreda.Value Like "*СУГ*" Then
-        MsgBox ("СУГ")
+    If UF1.RabSredaKlassOpasn.Value = "Электричество" Then
+        SelectComboBox = Array(2, 3, 10, 22, 39, 43, 50, 100, 154, 175, 178, 185, 186, 187, 188, 257, 258, 260, 267, 271, 465, 468, 471, 500, 502, 503, 505, 506)
+        Call SetComboBox(SelectComboBox, "CBp")
+        Call SetFNP(True, False, False, False, False)
+        Call SetExpert(True, False, False, False, False, False)
+        UF1.CBSO469.Value = True
     End If
-    If UF1.RabSreda.Value Like "*[Кк]ислород*" Then MsgBox ("Кислород")
-    If UF1.RabSreda.Value Like "*[Щщ][её]лочь*" Then MsgBox ("Щелочь")
-    If UF1.RabSreda.Value Like "*[Кк]ислота*" Then MsgBox ("Кислота")
-    If UF1.RabSreda.Value Like "*[Аа]цетилен*" Then MsgBox ("Ацетилен")
+
+    If UF1.RabSredaKlassOpasn.Value = "Воздух" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Сосуд под давлением" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 154, 175, 178, 185, 187, 188, 338, 339, 340, 341, 343, 353, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Азот" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Сосуд под давлением" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 154, 175, 178, 185, 187, 188, 338, 339, 340, 341, 343, 353, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "Газификатор ГХК" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 190, 338, 339, 340, 341, 343, 353, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+            UF1.CBVM030104.Value = True
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Кислород" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Сосуд под давлением" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 154, 175, 178, 185, 187, 188, 338, 339, 340, 341, 343, 353, 354, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "Газификатор ГХК" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 190, 338, 339, 340, 341, 343, 353, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+            UF1.CBVM030104.Value = True
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+            Call SetFNP(False, True, False, True, False)
+            Call SetExpert(True, True, False, True, False, False)
+            SelectComboBox = Array(30, 161, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(25, 27, 29, 35, 36, 65, 85, 94, 100, 141, 148, 190, 191)
+            Call SetComboBox(SelectComboBox, "CBtt")
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Водород" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Сосуд под давлением" Then
+            Call SetFNP(True, False, False, False, False)
+            Call SetExpert(True, False, False, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 154, 175, 178, 185, 187, 188, 338, 339, 340, 341, 343, 353, 354, 465, 468, 471)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+            Call SetFNP(False, True, False, True, False)
+            Call SetExpert(True, True, False, True, False, False)
+            SelectComboBox = Array(30, 161, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(25, 27, 29, 35, 36, 65, 85, 94, 100, 141, 148, 190, 191)
+            Call SetComboBox(SelectComboBox, "CBtt")
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "СУГ" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Автоцистерна для СУГ" Then
+            Call SetFNP(True, False, False, False, False)
+            UF1.CBFNPSUG.Value = True
+            Call SetExpert(True, True, True, False, False, False)
+            SelectComboBox = Array(2, 3, 10, 65, 68, 69, 100, 154, 175, 178, 185, 187, 188, 338, 339, 340, 343, 353, 465, 468, 519, 521, 523)
+            Call SetComboBox(SelectComboBox, "CBp")
+            UF1.CBSO439.Value = True
+            UF1.CBGOST34347.Value = True
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Мазут" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Насос" Then
+            Call SetFNP(False, True, False, False, True)
+            Call SetExpert(True, True, False, False, False, True)
+            SelectComboBox = Array(43, 47, 48, 53, 161, 164, 177, 178, 179, 184, 185, 186, 189, 190)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(156, 157, 159, 160, 162, 167, 168, 171)
+            Call SetComboBox(SelectComboBox, "CBsn")
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "резервуар" Then
+            Call SetFNP(False, True, False, False, True)
+            Call SetExpert(True, True, False, True, False, True)
+            SelectComboBox = Array(120, 121, 164, 177, 178, 179)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(77, 81, 87, 90, 94, 98, 102, 104, 105)
+            Call SetComboBox(SelectComboBox, "CBsn")
+            UF1.CBRD089595.Value = True
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+            Call SetFNP(False, True, False, True, True)
+            Call SetExpert(True, True, False, True, True, True)
+            SelectComboBox = Array(30, 164, 169, 177, 178, 179, 193, 196, 197, 198, 199, 203)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(27, 29, 35, 59, 65, 94, 141, 145, 148, 190, 191)
+            Call SetComboBox(SelectComboBox, "CBtt")
+            SelectComboBox = Array(137, 140, 141, 142, 144, 147, 148, 149, 150, 151)
+            Call SetComboBox(SelectComboBox, "CBsn")
+            UF1.CBRD089595.Value = True
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Авиатопливо" Then
+        If UF1.ComboBoxTipUstroistva.Value = "резервуар" Then
+            Call SetFNP(False, True, False, False, True)
+            Call SetExpert(True, True, False, True, False, True)
+            SelectComboBox = Array(120, 121, 164, 177, 178, 179)
+            Call SetComboBox(SelectComboBox, "CBvb")
+            SelectComboBox = Array(81, 82, 87, 90, 94, 98)
+            Call SetComboBox(SelectComboBox, "CBsn")
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Щелочь, кислота" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Бак прямоугольный" Or UF1.ComboBoxTipUstroistva.Value = "резервуар" Then
+            Call SetFNP(False, False, True, False, False)
+            Call SetExpert(True, True, False, False, False, False)
+            If UF1.ComboBoxTipUstroistva.Value = "резервуар" Then Call SetExpert(True, True, False, True, True, False)
+            SelectComboBox = Array(12, 15, 132, 135, 136, 137, 140, 233, 234, 255, 267)
+            Call SetComboBox(SelectComboBox, "CBho")
+            UF1.CBRUA93.Value = True
+            UF1.CBRD1533413752696.Value = True
+            UF1.NaNLet.Value = 5
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "Насос" Then
+            Call SetFNP(False, False, True, False, False)
+            Call SetExpert(True, True, False, False, False, False)
+            SelectComboBox = Array(11, 12, 15, 126, 132, 135, 136, 137, 140, 142, 144, 145)
+            Call SetComboBox(SelectComboBox, "CBho")
+        End If
+        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+            Call SetFNP(False, False, True, True, False)
+            Call SetExpert(True, True, False, True, True, False)
+            SelectComboBox = Array(15, 132, 135, 136, 137, 140, 149, 150, 151, 152, 234, 240, 241, 242, 244, 246, 247, 248)
+            Call SetComboBox(SelectComboBox, "CBho")
+            SelectComboBox = Array(27, 29, 35, 36, 59, 65, 85, 94, 100, 141, 145, 148, 190, 191)
+            Call SetComboBox(SelectComboBox, "CBtt")
+        End If
+    End If
+    If UF1.RabSredaKlassOpasn.Value = "Гидразин" Then
+        If UF1.ComboBoxTipUstroistva.Value = "Бак прямоугольный" Then
+            Call SetFNP(False, False, True, False, False)
+            Call SetExpert(True, True, False, False, False, False)
+            SelectComboBox = Array(11, 12, 15, 132, 135, 136, 137, 140)
+            Call SetComboBox(SelectComboBox, "CBho")
+            UF1.CBRUA93.Value = True
+        End If
+    End If
+    If UF1.NazvOPO.Value Like "*[Гг]азо*" Then UF1.ExpertGas.Value = True
+    If UF1.NazvOPO.Value Like "*[Мм]азут*" Then UF1.ExpertSNN.Value = True
+
 End Sub
 
 Private Sub RabSredaRub_Change()
-    BaseUstr(BaseUstrIndex, 31) = UF1.RabSredaRub.Value
+    BaseUstr(BaseUstrIndex, 35) = UF1.RabSredaRub.Value
 End Sub
 
 Private Sub RabTemp_Change()
-    BaseUstr(BaseUstrIndex, 27) = UF1.RabTemp.Value
+    BaseUstr(BaseUstrIndex, 31) = UF1.RabTemp.Value
     If UF1.RabTemp.Value = "" Then
         ActiveDocument.Variables("RabTemp").Value = Strings.ChrW(31)
         ActiveDocument.Variables("RabTempP6").Value = Strings.ChrW(31)
-    Else
+    ElseIf UF1.RabTemp.Value Like "*[0-9]*" Then
         ActiveDocument.Variables("RabTemp").Value = UF1.RabTemp.Value
         ActiveDocument.Variables("RabTempP6").Value = ", t=" & Trim(UF1.RabTemp.Value) & Strings.ChrW(176) & "С"
+    Else
+        ActiveDocument.Variables("RabTemp").Value = UF1.RabTemp.Value
+        ActiveDocument.Variables("RabTempP6").Value = ", t=" & Trim(UF1.RabTemp.Value)
     End If
 End Sub
 
 Private Sub RabTempRub_Change()
-    BaseUstr(BaseUstrIndex, 30) = UF1.RabTempRub.Value
+    BaseUstr(BaseUstrIndex, 34) = UF1.RabTempRub.Value
+    ActiveDocument.Variables("RabTempRub").Value = UF1.RabTempRub.Value
 End Sub
 
 Private Sub RaschetnP_Change()
-UF1.RaschetnP.Value = Trim(UF1.RaschetnP.Value)
-UF1.RaschetnP.Value = Replace(UF1.RaschetnP.Value, ".", ",")
-BaseUstr(BaseUstrIndex, 17) = UF1.RaschetnP.Value
-If IsNumeric(UF1.RazreshaemoeP.Value) Then
-    ActiveDocument.Variables("RaschetnP").Value = Format(UF1.RaschetnP.Value, "###0.0#####") & " кгс/см" & Strings.ChrW(178)
-Else
-    ActiveDocument.Variables("RaschetnP").Value = UF1.RaschetnP.Value
-End If
+    UF1.RaschetnP.Value = Replace(UF1.RaschetnP.Value, ".", ",")
+    If IsNumeric(UF1.RaschetnP.Value) Then
+        ActiveDocument.Variables("RaschetnP").Value = Format(UF1.RaschetnP.Value, "0.0#####") & " кгс/см" & Strings.ChrW(178)
+    Else
+        ActiveDocument.Variables("RaschetnP").Value = UF1.RaschetnP.Value
+    End If
+    BaseUstr(BaseUstrIndex, 21) = UF1.RaschetnP.Value
 End Sub
 
 Private Sub RaschetnP_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    UF1.RazreshaemoeP.Value = UF1.RaschetnP.Value
+    UF1.RaschetnP.Value = Trim(UF1.RaschetnP.Value)
+    If UF1.RazreshaemoeP.Value = "" Then UF1.RazreshaemoeP.Value = UF1.RaschetnP.Value
 End Sub
 
 Private Sub RaschetnPRub_Change()
     UF1.RaschetnPRub.Value = Replace(UF1.RaschetnPRub.Value, ".", ",")
-    BaseUstr(BaseUstrIndex, 22) = UF1.RaschetnPRub.Value
+    BaseUstr(BaseUstrIndex, 26) = UF1.RaschetnPRub.Value
+    ActiveDocument.Variables("RaschetnPRub").Value = UF1.RaschetnPRub.Value
+End Sub
+
+Private Sub RaschetnPRub_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     UF1.RabocheePRub.Value = UF1.RaschetnPRub.Value
 End Sub
 
 Private Sub Raschetnt_Change()
-    BaseUstr(BaseUstrIndex, 18) = UF1.Raschetnt.Value
-    UF1.RabTemp.Value = UF1.Raschetnt.Value
+    BaseUstr(BaseUstrIndex, 22) = UF1.Raschetnt.Value
     If UF1.Raschetnt.Value = "" Then
         ActiveDocument.Variables("Raschetnt").Value = Strings.ChrW(31)
-    Else
+    ElseIf UF1.Raschetnt.Value Like "*[0-9]*" Then
         ActiveDocument.Variables("Raschetnt").Value = ", t=" & Trim(UF1.Raschetnt.Value) & Strings.ChrW(176) & "С"
+    Else
+        ActiveDocument.Variables("Raschetnt").Value = ", t=" & Trim(UF1.Raschetnt.Value)
     End If
 End Sub
 
+Private Sub Raschetnt_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If UF1.RabTemp.Value = "" Then UF1.RabTemp.Value = UF1.Raschetnt.Value
+End Sub
+
 Private Sub RaschetntRub_Change()
-    BaseUstr(BaseUstrIndex, 23) = UF1.RaschetntRub.Value
+    If UF1.RaschetntRub.Value <> "" Then
+        ActiveDocument.Variables("RaschetntRub").Value = UF1.RaschetntRub.Value
+    Else
+        ActiveDocument.Variables("RaschetntRub").Value = Strings.ChrW(31)
+    End If
+    BaseUstr(BaseUstrIndex, 27) = UF1.RaschetntRub.Value
+End Sub
+
+Private Sub RaschetntRub_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     UF1.RabTempRub.Value = UF1.RaschetntRub.Value
 End Sub
 
 Private Sub RaschSreda_Change()
-    BaseUstr(BaseUstrIndex, 20) = UF1.RaschSreda.Value
+    BaseUstr(BaseUstrIndex, 24) = UF1.RaschSreda.Value
     ActiveDocument.Variables("RaschSreda").Value = UF1.RaschSreda.Value & ","
     UF1.RabSreda.Value = UF1.RaschSreda.Value
 End Sub
 
 Private Sub RaschSredaRub_Change()
-    BaseUstr(BaseUstrIndex, 25) = UF1.RaschSredaRub.Value
+    BaseUstr(BaseUstrIndex, 29) = UF1.RaschSredaRub.Value
     UF1.RabSredaRub.Value = UF1.RaschSredaRub.Value
 End Sub
 
@@ -2657,90 +3281,130 @@ Private Sub RazreshaemoeP_Change()
     UF1.RazreshaemoeP.Value = Trim(UF1.RazreshaemoeP.Value)
     UF1.RazreshaemoeP = Replace(UF1.RazreshaemoeP, ".", ",")
     If IsNumeric(UF1.RazreshaemoeP.Value) Then
-        ActiveDocument.Variables("RazreshaemoeP").Value = Format(UF1.RazreshaemoeP.Value, "###0.0#####") & " кгс/см" & Strings.ChrW(178)
-        ActiveDocument.Variables("RazreshaemoePKrt").Value = Format(UF1.RazreshaemoeP.Value, "###0.0#####")
-        ActiveDocument.Variables("RazreshaemoePMP").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10, "###0.0#####") & " МПа"
-        ActiveDocument.Variables("RazreshaemoePMPKrt").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10, "###0.0#####")
+        ActiveDocument.Variables("RazreshaemoeP").Value = Format(UF1.RazreshaemoeP.Value, "0.0#####") & " кгс/см" & Strings.ChrW(178)
+        ActiveDocument.Variables("RazreshaemoePKrt").Value = Format(UF1.RazreshaemoeP.Value, "0.0#####")
+        ActiveDocument.Variables("RazreshaemoePMP").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10, "0.0#####") & " МПа"
+        ActiveDocument.Variables("RazreshaemoePMPKrt").Value = Format(CDbl(UF1.RazreshaemoeP.Value) / 10, "0.0#####")
     Else
         ActiveDocument.Variables("RazreshaemoeP").Value = UF1.RazreshaemoeP.Value
         ActiveDocument.Variables("RazreshaemoePKrt").Value = UF1.RazreshaemoeP.Value
         ActiveDocument.Variables("RazreshaemoePMP").Value = Strings.ChrW(31)
         ActiveDocument.Variables("RazreshaemoePMPKrt").Value = Strings.ChrW(31)
     End If
-    BaseUstr(BaseUstrIndex, 26) = UF1.RazreshaemoeP.Value
+    If UF1.CBPodNaliv.Value = True Then UF1.RazreshaemoeP.Value = "под налив"
+    BaseUstr(BaseUstrIndex, 30) = UF1.RazreshaemoeP.Value
 End Sub
 
 Private Sub RazreshaemoeP_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-    If UF1.ComboBoxTipUstroistva.Value = "Автоцистерна для СУГ" And Val(UF1.RazreshaemoeP.Value) < Val(UF1.RaschetnP.Value) Then
-        MsgBox ("Для сосудов с СУГ не допускается снижение давления. П.402 ФНП ОРПД")
-    End If
-    If IsNumeric(UF1.RazreshaemoeP.Value) Then UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.25), "###0.0#")
-    If UF1.CBVakuum.Value = True Then
-        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
-            UF1.IspitatP.Value = "2,0"
+    If UF1.CBPodNaliv.Value = True Then
+        UF1.IspitatP.Value = "наливом"
+    ElseIf UF1.CBVakuum.Value = True Then
+        UF1.IspitatP.Value = "1,25"
+        If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then UF1.IspitatP.Value = "2,0"
+    ElseIf UF1.PnIs.Value = True Then
+        If IsNumeric(UF1.RazreshaemoeP.Value) Then
+            UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.25), "0.0#")
+            'Для котлов
+            If UstrIdentifer > 10 And UstrIdentifer < 14 Then
+                If UF1.RazreshaemoeP.Value <= 5 Then
+                    If UF1.RazreshaemoeP.Value * 1.5 > UF1.RazreshaemoeP.Value + 2 Then
+                        UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.5), "0.0#")
+                    Else
+                        UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value + 2), "0.0#")
+                    End If
+                Else
+                    If CDbl(UF1.RazreshaemoeP.Value) + 3 > UF1.IspitatP.Value Then UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value + 3), "0.0#")
+                End If
+            End If
+            If UstrIdentifer = 3 Or UstrIdentifer = 10 Then UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.5), "0.0#") 'Для баллонов
+            If UstrIdentifer = 15 Or UstrIdentifer = 16 Then    'Для трубопроводов
+                If CDbl(UF1.RazreshaemoeP.Value) + 2 > UF1.IspitatP.Value Then UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value + 2), "0.0#")
+            End If
         Else
-            UF1.IspitatP.Value = "1,25"
+            MsgBox ("Проверь давление")
         End If
+    ElseIf IsNumeric(UF1.RazreshaemoeP.Value) Then
+        UF1.IspitatP.Value = Format((UF1.RazreshaemoeP.Value * 1.15), "0.0#")
+    End If
+    If UstrIdentifer = 4 And Val(UF1.RazreshaemoeP.Value) < Val(UF1.RaschetnP.Value) Then
+        MsgBox ("Для сосудов с СУГ не допускается снижение давления. П.402 ФНП ОРПД")
     End If
 End Sub
 
 Private Sub RegN_Change()
     ActiveDocument.Variables("RegN").Value = Trim(UF1.RegN.Value)
-    If UF1.RegN.ListIndex <> -1 Then
-        UF1.ZavN.ListIndex = UF1.RegN.ListIndex
-        BaseUstrIndex = UstrIndxs.Item(UF1.RegN.ListIndex + 1)
-        Call FillOutFormUstr(BaseUstrIndex, BaseUstr)
-        UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, 3)
-        UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, 3)
-        Call FillOutElements(BaseUstrIndex, BaseElements)
-    Else
-    End If
-End Sub
-
-Private Sub RegN_Exit(ByVal Cancel As MSForms.ReturnBoolean)
-If UF1.RegN.ListIndex <> -1 Then
-    BaseUstrIndex = UstrIndxs.Item(UF1.RegN.ListIndex + 1)
-    Call FillOutElements(BaseUstrIndex, BaseElements)
-Else
-    BaseUstrIndex = UBound(BaseUstr, 1)
-    UF1.ZavN.Clear
-    BaseUstr(BaseUstrIndex, 3) = UF1.poleRegNum.Value
-    BaseUstr(BaseUstrIndex, 4) = UF1.RegN.Value
-    UF1.RegN.Clear
-    BaseUstr(BaseUstrIndex, 15) = Trim$(UF1.CBPodNaliv.Value)
-    BaseUstr(BaseUstrIndex, 16) = Trim$(UF1.CBVakuum.Value)
-    BaseUstr(BaseUstrIndex, 21) = Trim$(UF1.CBRubashka.Value)
-    BaseElements(BaseUstrIndex, 163) = Trim$(UF1.CBZikl.Value)
-    For i = 11 To 155 Step 8
-        BaseElements(BaseUstrIndex, i) = "False"
-    Next i
-    Call FillOutFormUstr(BaseUstrIndex, BaseUstr)
-    Call FillOutElements(BaseUstrIndex, BaseElements)
-End If
-    UF1.SpButRemont.Value = 1
-    UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, 3)
-    UF1.SpButEPB.Value = 1
-    UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, 3)
+'    If UF1.RegN.ListIndex <> -1 Then
+'        UF1.NazvTehUstr.ListIndex = UF1.RegN.ListIndex
+'        UF1.ZavN.ListIndex = UF1.RegN.ListIndex
+''        BaseUstrIndex = UstrIndxs.Item(UF1.RegN.ListIndex + 1)
+''        Call FillOutFormUstr(BaseUstrIndex, BaseUstr)
+''        UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, 3)
+''        UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, 3)
+''        Call FillOutElements(BaseUstrIndex, BaseElements)
+''    Else
+'    End If
+    If Trim(UF1.RegN.Value) = "" Then ActiveDocument.Variables("RegN").Value = Strings.ChrW(31)
+    BaseUstr(BaseUstrIndex, 12) = UF1.RegN.Value
+'    BaseElements(BaseUstrIndex, 2) = UF1.RegN.Value
+'    BaseEPB(BaseUstrIndex, 2) = UF1.RegN.Value
+'    BaseRemont(BaseUstrIndex, 2) = UF1.RegN.Value
 End Sub
 
 Private Sub RegNOPO_Change()
+    UF1.OptionKotel.Value = False
+    UF1.OptionSosud.Value = False
+    UF1.OptionTruboprovod.Value = False
+    UF1.OptionSoorugenie.Value = False
+    UF1.OptionOstalnoe.Value = False
+    BaseUstrIndex = UBound(BaseUstr, 1)
+    UF1.ComboBoxTipUstroistva.ListIndex = -1
+    UF1.ComboBoxTechUsrtvo.ListIndex = -1
+
     ActiveDocument.Variables("RegNOPO").Value = Trim(UF1.RegNOPO.Value)
     If Trim(UF1.RegNOPO.Value) = "" Then ActiveDocument.Variables("RegNOPO").Value = Strings.ChrW(31)
     If UF1.RegNOPO.ListIndex <> -1 Then
         For i = 1 To UBound(BaseOPO, 1) - 1
-            If BaseOPO(i, 1) = Trim(UF1.RegNOPO.Value) Then BaseOPOIndex = i
+            If BaseOPO(i, 1) = Trim(UF1.RegNOPO.Value) Then
+                BaseOPOIndex = i
+                UF1.ClassOpasOPO.Value = BaseOPO(i, 3)
+                UF1.NazvOPO.Value = BaseOPO(i, 2)
+                Exit For
+            End If
         Next i
+        
+'        UF1.ClassOpasOPO.ListIndex = UF1.RegNOPO.ListIndex
+'        UF1.NazvOPO.ListIndex = UF1.RegNOPO.ListIndex
+        
+        Set UstrIndxs = Nothing
+        UF1.NazvTehUstr.Clear
+'        UF1.RegN.Clear
+'        UF1.ZavN.Clear
+        For i = 1 To UBound(BaseUstr, 1) - 1
+            If UF1.RegNOPO.Value = BaseUstr(i, 1) Then
+                UF1.NazvTehUstr.AddItem BaseUstr(i, 4)
+'                UF1.RegN.AddItem BaseUstr(i, 6)
+'                UF1.ZavN.AddItem BaseUstr(i, 9)
+                UstrIndxs.Add i
+            End If
+        Next i
+        If UF1.NazvTehUstr.ListCount = 0 Then
+'            UF1.RegN.ListIndex = 0
+'        Else
+            Call NewDevice_Click  '        BaseUstrIndex = UBound(BaseUstr, 1)
+        End If
     End If
-    If UF1.RegNOPO.ListIndex <> -1 And UF1.ClassOpasOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.ClassOpasOPO.ListIndex = UF1.RegNOPO.ListIndex
-    If UF1.RegNOPO.ListIndex <> -1 And UF1.NazvOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.NazvOPO.ListIndex = UF1.RegNOPO.ListIndex
+'    If UF1.RegNOPO.ListIndex <> -1 And UF1.ClassOpasOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.ClassOpasOPO.ListIndex = UF1.RegNOPO.ListIndex
+'    If UF1.RegNOPO.ListIndex <> -1 And UF1.NazvOPO.ListCount = UF1.RegNOPO.ListCount Then UF1.NazvOPO.ListIndex = UF1.RegNOPO.ListIndex
 End Sub
 
 Private Sub RegNOPO_Exit(ByVal Cancel As MSForms.ReturnBoolean)
     If UF1.RegNOPO.ListIndex = -1 Then
         BaseOPOIndex = UBound(BaseOPO, 1)
         BaseOPO(BaseOPOIndex, 1) = UF1.RegNOPO.Value
-        UF1.ClassOpasOPO.Clear
-        UF1.NazvOPO.Clear
+        UF1.ClassOpasOPO.Value = BaseOPO(BaseOPOIndex, 3)
+        UF1.NazvOPO.Value = BaseOPO(BaseOPOIndex, 2)
+'        UF1.ClassOpasOPO.Clear
+'        UF1.NazvOPO.Clear
     End If
 End Sub
 
@@ -2749,31 +3413,69 @@ Private Sub SavePribor_Click()
 For i = 1 To UF1.SavePribor.TabIndex / 2
 '    MsgBox (UF1.MultiPage1.Pages("Page2").Controls.Item("pribor" & i).Value)
 '    MsgBox (UF1.MultiPage1.Pages("Page2").Controls.Item("dp" & i).Value)
-    DateBase.Workbooks("data_base.xls").Worksheets("tablprib").Range("A" & i).Value = UF1.MultiPage1.Pages("Page5").Controls.Item("pribor" & i).Value
-    DateBase.Workbooks("data_base.xls").Worksheets("tablprib").Range("B" & i).Value = UF1.MultiPage1.Pages("Page5").Controls.Item("dp" & i).Value
+    DateBase.Worksheets("tablprib").Range("A" & i).Value = UF1.MultiPage1.Pages("Page5").Controls.item("pribor" & i).Value
+    DateBase.Worksheets("tablprib").Range("B" & i).Value = UF1.MultiPage1.Pages("Page5").Controls.item("dp" & i).Value
 Next i
-'Call Save_File("Page2", UF1.SavePribor.TabIndex - 1, MyFilePribor)
 
 End Sub
 
 Private Sub PnIs_Change()
-If (UF1.PnIs.Value = True) Then
-    UF1.AktAE.Visible = True
-    UF1.AktAED.Visible = True
-    UF1.Label54.Visible = True
-    UF1.Label427.Visible = True
-    For Each mark In AllCBp
-        If mark > 174 And mark < 191 Then UF1.Controls.Item("CBp" & mark).Value = False
-    Next
-    UF1.Controls.Item("CBp175").Value = True
-    UF1.Controls.Item("CBp190").Value = True
-Else
+
+If UF1.PnIs.Value = True Then
+    UF1.AktGI.Visible = True
+    UF1.AktGID.Visible = True
+    UF1.Label52.Visible = True
+    UF1.Label425.Visible = True
     UF1.AktAE.Visible = False
     UF1.AktAED.Visible = False
     UF1.Label54.Visible = False
     UF1.Label427.Visible = False
-    Call ComboBoxTipUstroistva_Change
+    UF1.PnIs.Caption = "ГИ"
+    If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+        UF1.CBtt145.Value = True
+        UF1.CBtt148.Value = True
+        UF1.CBtt149.Value = False
+        UF1.CBtt150.Value = False
+        UF1.CBtt151.Value = False
+    End If
 End If
+If UF1.PnIs.Value = False Then
+    UF1.AktGI.Enabled = False
+    UF1.AktGID.Enabled = False
+    UF1.Label52.Enabled = False
+    UF1.Label425.Enabled = False
+    UF1.AktAE.Visible = False
+    UF1.AktAED.Visible = False
+    UF1.Label54.Visible = False
+    UF1.Label427.Visible = False
+    UF1.PnIs.Caption = "Нет"
+End If
+If IsNull(UF1.PnIs.Value) Then
+    UF1.AktGI.Enabled = True
+    UF1.AktGID.Enabled = True
+    UF1.Label52.Enabled = True
+    UF1.Label425.Enabled = True
+    UF1.AktAE.Visible = True
+    UF1.AktAED.Visible = True
+    UF1.Label54.Visible = True
+    UF1.Label427.Visible = True
+    UF1.PnIs.Caption = "ПИ"
+    If UF1.ComboBoxTipUstroistva.Value = "технологический трубопровод" Then
+        UF1.CBtt145.Value = False
+        UF1.CBtt148.Value = False
+        UF1.CBtt149.Value = True
+        UF1.CBtt150.Value = True
+        UF1.CBtt151.Value = True
+    End If
+End If
+
+Call PnGIsp
+
+End Sub
+
+Private Sub SpButDocuments_Change()
+    UF1.NZapisDocuments.Caption = "Запись №" & UF1.SpButDocuments.Value
+    UF1.Documents.Value = BaseDocuments(BaseUstrIndex, UF1.SpButDocuments.Value)
 End Sub
 
 Private Sub SpButElm_Change()
@@ -2784,49 +3486,52 @@ Private Sub SpButEPB_Change()
     UF1.NZapisEPB.Caption = "Запись №" & UF1.SpButEPB.Value
     If IsEmpty(BaseUstrIndex) Then
     Else
-        UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value + 2)
+        UF1.SvedOEPB.Value = BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value)
     End If
 End Sub
 
 Private Sub SpButRemont_Change()
     UF1.NZapisRem.Caption = "Запись №" & UF1.SpButRemont.Value
     If IsEmpty(BaseUstrIndex) Then
-        Z = 1 + 1
+'        Z = 1 + 1
     Else
-        UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value + 2)
+        UF1.SvedORemonte.Value = BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value)
     End If
 End Sub
 
 Private Sub SvedOEPB_Change()
-    BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value + 2) = UF1.SvedOEPB.Value
+    BaseEPB(BaseUstrIndex, UF1.SpButEPB.Value) = UF1.SvedOEPB.Value
 End Sub
 
 Private Sub SvedORemonte_Change()
-    BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value + 2) = UF1.SvedORemonte.Value
+    BaseRemont(BaseUstrIndex, UF1.SpButRemont.Value) = UF1.SvedORemonte.Value
 End Sub
 
 Private Sub TBCopyUstr_Click()
-    X = UBound(BaseUstr, 1)
-    For i = 5 To UBound(BaseUstr, 2)
-        BaseUstr(X, i) = BaseUstr(BaseUstrIndex, i)
+    x = UBound(BaseUstr, 1)
+    For i = 3 To UBound(BaseUstr, 2)
+        BaseUstr(x, i) = BaseUstr(BaseUstrIndex, i)
     Next i
-    For i = 3 To UBound(BaseElements, 2)
-        BaseElements(X, i) = BaseElements(BaseUstrIndex, i)
+    For i = 1 To UBound(BaseElements, 2)
+        BaseElements(x, i) = BaseElements(BaseUstrIndex, i)
     Next i
-    For i = 3 To UBound(BaseRemont, 2)
-        BaseRemont(X, i) = BaseRemont(BaseUstrIndex, i)
+    For i = 1 To UBound(BaseRemont, 2)
+        BaseRemont(x, i) = BaseRemont(BaseUstrIndex, i)
+        BaseEPB(x, i) = BaseEPB(BaseUstrIndex, i)
+        BaseDocuments(x, i) = BaseDocuments(BaseUstrIndex, i)
     Next i
-    For i = 3 To UBound(BaseEPB, 2)
-        BaseEPB(X, i) = BaseEPB(BaseUstrIndex, i)
-    Next i
-    UF1.RegN.Clear
-    UF1.ZavN.Clear
-    BaseUstrIndex = X
-    UF1.TBCopyUstr.Value = False
+'    For i = 1 To UBound(BaseEPB, 2)
+'        BaseEPB(x, i) = BaseEPB(BaseUstrIndex, i)
+'    Next i
+    BaseUstrIndex = x
+    UF1.NazvTehUstr.Clear
+    UF1.RegN.Value = ""
+    UF1.ZavN.Value = ""
+'    UF1.TBCopyUstr.Value = False
 End Sub
 
 Private Sub TBUstrComment_Change()
-    BaseUstr(BaseUstrIndex, 38) = UF1.TBUstrComment.Value
+    BaseUstr(BaseUstrIndex, 41) = UF1.TBUstrComment.Value
 End Sub
 
 Private Sub Tolshin_Change()
@@ -2855,45 +3560,59 @@ End Sub
 
 Private Sub UserForm_Initialize()
 'Загружаем из файла приборы
-tmp1 = DateBase.Workbooks("data_base.xls").Worksheets("tablprib").Range("A1:B17").Value
-Dim Flag As Boolean
-Flag = False
-For i = 1 To 17
-    UF1.Controls.Item("pribor" & i).Value = tmp1(i, 1)
-    UF1.Controls.Item("dp" & i).Value = tmp1(i, 2)
+tmp1 = DateBase.Worksheets("tablprib").Range("A1:B18").Value
+Dim flag As Boolean
+flag = False
+For i = 1 To 18
+    UF1.Controls.item("pribor" & i).Value = tmp1(i, 1)
+    UF1.Controls.item("dp" & i).Value = tmp1(i, 2)
     If CDate(tmp1(i, 2)) < Date Then
-        UF1.Controls.Item("dp" & i).BackColor = wdColorRed '1000
-        Flag = True
+        UF1.Controls.item("dp" & i).BackColor = wdColorRed '1000
+        flag = True
     End If
 Next i
-If (Flag) Then
+If (flag) Then
     MsgBox "Есть просроченные приборы"
 End If
-index = DateBase.Workbooks("data_base.xls").Worksheets("Predpriyatiya").Range("A1").Value 'Indx(tmp2, "")
-BasePredp = DateBase.Workbooks("data_base.xls").Worksheets("Predpriyatiya").Range("B2:I" & index + 2).Value
+index = DateBase.Worksheets("Predpriyatiya").Range("A1").Value 'Indx(tmp2, "")
+BasePredp = DateBase.Worksheets("Predpriyatiya").Range("B2:I" & index + 2).Value
 BasePredpIndex = UBound(BasePredp, 1)
-index = DateBase.Workbooks("data_base.xls").Worksheets("OPO").Range("A1").Value 'Indx(tmpOPO1, "")
-BaseOPO = DateBase.Workbooks("data_base.xls").Worksheets("OPO").Range("B2:D" & index + 2).Value
+index = DateBase.Worksheets("OPO").Range("A1").Value 'Indx(tmpOPO1, "")
+BaseOPO = DateBase.Worksheets("OPO").Range("B2:D" & index + 2).Value
 BaseOPOIndex = UBound(BaseOPO, 1)
-index = DateBase.Workbooks("data_base.xls").Worksheets("Ustroystva").Range("A1").Value
-BaseUstr = DateBase.Workbooks("data_base.xls").Worksheets("Ustroystva").Range("B2:AM" & index + 2).Value
+index = DateBase.Worksheets("Ustroystva").Range("A1").Value
+BaseUstr = DateBase.Worksheets("Ustroystva").Range("B2:AP" & index + 2).Value
 BaseUstrIndex = UBound(BaseUstr, 1)
-BaseElements = DateBase.Workbooks("data_base.xls").Worksheets("Elements").Range("B2:FI" & index + 2).Value
-BaseEPB = DateBase.Workbooks("data_base.xls").Worksheets("EPB").Range("B2:R" & index + 2).Value
-BaseRemont = DateBase.Workbooks("data_base.xls").Worksheets("Remont").Range("B2:R" & index + 2).Value
+BaseElements = DateBase.Worksheets("Elements").Range("B2:FG" & index + 2).Value
+BaseEPB = DateBase.Worksheets("EPB").Range("B2:U" & index + 2).Value
+BaseRemont = DateBase.Worksheets("Remont").Range("B2:U" & index + 2).Value
+BaseDocuments = DateBase.Worksheets("Documents").Range("B2:U" & index + 2).Value
+UstrIdentifer = -1
 UF1.Predpriyatie.Clear
 For i = 1 To UBound(BasePredp, 1) - 1
     Me.Predpriyatie.AddItem BasePredp(i, 1)
 Next i
 
-If Date > CDate("24.06.2025") Then MsgBox ("Проверь срок действия удостоверений по НК")
+'Удостоверения по НК
+Dim NKdate As Date
+ActiveDocument.Variables("Unk1").Value = UF1.Unk1.Value
+ActiveDocument.Variables("Udnk1").Value = UF1.Udnk1.Value
+ActiveDocument.Variables("Unk2").Value = UF1.Unk2.Value
+ActiveDocument.Variables("Udnk2").Value = UF1.Udnk2.Value
+ActiveDocument.Variables("Unk3").Value = UF1.Unk3.Value
+ActiveDocument.Variables("Udnk3").Value = UF1.Udnk3.Value
+If CDate(UF1.Udnk1.Value) > CDate(UF1.Udnk2.Value) Then
+    NKdate = CDate(UF1.Udnk2.Value)
+Else
+    NKdate = CDate(UF1.Udnk1.Value)
+End If
+If NKdate > CDate(UF1.Udnk3.Value) Then NKdate = CDate(UF1.Udnk3.Value)
+NKdate = DateAdd("yyyy", 3, NKdate)
+If Date > NKdate Then MsgBox ("Проверь срок действия удостоверений по НК")
 
 
 UF1.DataAktPoRez.Value = Format(Date, "dd.mm.yyyy")
 UF1.AktVIKD.Value = Format(Date - 1, "dd.mm.yyyy")
-'ActiveDocument.Variables("DataAktPoRez").Value = Format(Date, "dd.mm.yyyy")
-'ActiveDocument.Variables("DateAktPoRez").Value = FormDat(Format(Date, "dd.mm.yyyy"))
- 
 
 For Each ctl In UF1.Controls
     If TypeName(ctl) = "CheckBox" And Left(ctl.Name, 3) = "CBp" Then AllCBp.Add (Val(ctl.Caption))
@@ -2928,6 +3647,7 @@ With UF1.ComboBoxTechUsrtvo
     .AddItem "теплообменник"
     .AddItem "насос"
     .AddItem "компрессор"
+    .AddItem "мерник"
 End With
 With UF1.ComboBoxRaschet
     .Clear
@@ -2938,7 +3658,20 @@ With UF1.ComboBoxRaschet
     .AddItem "ГОСТ 25215-82 баллоны"
     .AddItem "Справочник Лащинский"
     .AddItem "ГОСТ 32106-2013 Вибрация"
+    .AddItem "РД 153-112-017-97 Резервуары"
 End With
+'With UF1.RabSredaKlassOpasn
+'    .Clear
+'    .AddItem "Воздух"
+'    .AddItem "Вода"
+'    .AddItem "Пар"
+'    .AddItem "Кислород"
+'    .AddItem "Щелочь, кислота"
+'    .AddItem "Мазут"
+'    .AddItem "СУГ"
+'    .AddItem "Вещества 1 кл. опасн."
+'    .AddItem "Авиатопливо"
+'End With
 
 'Для классов присваиваем объекты с которыми они будут работать
 ReDim CBpclass(1 To AllCBp.Count)
@@ -2966,38 +3699,22 @@ ReDim CBsclass(1 To AllCBs.Count)
 
 End Sub
 
-Sub SetComboBox(SelectComboBox, tipFNP)
-
-If tipFNP = "CBp" Then
+Sub ClearComboBox()
     For Each mark In AllCBp
-        UF1.Controls.Item("CBp" & mark).Value = False
+        UF1.Controls.item("CBp" & mark).Value = False
     Next
-End If
-If tipFNP = "CBvb" Then
     For Each mark In AllCBv
-        UF1.Controls.Item("CBvb" & mark).Value = False
+        UF1.Controls.item("CBvb" & mark).Value = False
     Next
-End If
-If tipFNP = "CBho" Then
     For Each mark In AllCBh
-        UF1.Controls.Item("CBho" & mark).Value = False
+        UF1.Controls.item("CBho" & mark).Value = False
     Next
-End If
-If tipFNP = "CBtt" Then
     For Each mark In AllCBt
-        UF1.Controls.Item("CBtt" & mark).Value = False
+        UF1.Controls.item("CBtt" & mark).Value = False
     Next
-End If
-If tipFNP = "CBsn" Then
     For Each mark In AllCBs
-        UF1.Controls.Item("CBsn" & mark).Value = False
+        UF1.Controls.item("CBsn" & mark).Value = False
     Next
-End If
-
-For Each mark In SelectComboBox
-    UF1.Controls.Item(tipFNP & mark).Value = True
-Next mark
-
 End Sub
 
 Private Sub UZK_Change()
@@ -3025,18 +3742,19 @@ End If
 End Sub
 
 Private Sub VKorp_Change()
-    BaseUstr(BaseUstrIndex, 19) = UF1.VKorp.Value
+    UF1.VKorp.Value = Replace(UF1.VKorp.Value, ".", ",")
+    BaseUstr(BaseUstrIndex, 23) = UF1.VKorp.Value
     ActiveDocument.Variables("VKorp").Value = ", V=" & UF1.VKorp.Value & " м" & Strings.ChrW(179)
     If UF1.VKorp.Value = "" Then ActiveDocument.Variables("VKorp").Value = Strings.ChrW(31)
 End Sub
 
 Private Sub Vladelez_Change()
-    BaseUstr(BaseUstrIndex, 6) = UF1.Vladelez.Value
+    BaseUstr(BaseUstrIndex, 16) = UF1.Vladelez.Value
     ActiveDocument.Variables("Vladelez").Value = Trim(UF1.Vladelez.Value)
 End Sub
 
 Private Sub VRub_Change()
-    BaseUstr(BaseUstrIndex, 24) = UF1.VRub.Value
+    BaseUstr(BaseUstrIndex, 28) = UF1.VRub.Value
     ActiveDocument.Variables("VRub").Value = ", V=" & UF1.VRub.Value & " м" & Strings.ChrW(179)
     If UF1.VRub.Value = "" Then ActiveDocument.Variables("VRub").Value = Strings.ChrW(31)
 End Sub
@@ -3074,23 +3792,34 @@ End If
 End Sub
 
 Private Sub ZavKontr_Change()
-    BaseUstr(BaseUstrIndex, 36) = UF1.ZavKontr.Value
-    ActiveDocument.Variables("ZavKontr").Value = Trim(UF1.ZavKontr.Value)
+    If UF1.ZavKontr.Value = "" Then
+        ActiveDocument.Variables("ZavKontr").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("ZavKontr").Value = Trim(UF1.ZavKontr.Value)
+    End If
+    BaseUstr(BaseUstrIndex, 40) = UF1.ZavKontr.Value
 End Sub
 
 Private Sub ZavN_Change()
     ActiveDocument.Variables("ZavN").Value = Trim(UF1.ZavN.Value)
-    If UF1.ZavN.ListIndex <> -1 Then UF1.RegN.ListIndex = UF1.ZavN.ListIndex
-'    UF1.NazvTehUstr.ListIndex = UF1.ZavN.ListIndex
-End Sub
-
-Private Sub ZavN_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    If Trim(UF1.ZavN.Value) = "" Then ActiveDocument.Variables("ZavN").Value = Strings.ChrW(31)
     BaseUstr(BaseUstrIndex, 7) = UF1.ZavN.Value
+'    BaseElements(BaseUstrIndex, 1) = UF1.ZavN.Value
+'    BaseEPB(BaseUstrIndex, 1) = UF1.ZavN.Value
+'    BaseRemont(BaseUstrIndex, 1) = UF1.ZavN.Value
+'    If UF1.ZavN.ListIndex <> -1 Then
+'        UF1.NazvTehUstr.ListIndex = UF1.ZavN.ListIndex
+'        UF1.RegN.ListIndex = UF1.ZavN.ListIndex
+'    End If
 End Sub
 
 Private Sub ZavodIzg_Change()
-    BaseUstr(BaseUstrIndex, 10) = UF1.ZavodIzg.Value
-    ActiveDocument.Variables("ZavodIzg").Value = Trim(UF1.ZavodIzg.Value)
+    BaseUstr(BaseUstrIndex, 5) = UF1.ZavodIzg.Value
+    If UF1.ZavodIzg.Value = "-" Or UF1.ZavodIzg.Value = "" Then
+        ActiveDocument.Variables("ZavodIzg").Value = Strings.ChrW(31)
+    Else
+        ActiveDocument.Variables("ZavodIzg").Value = Trim(UF1.ZavodIzg.Value)
+    End If
 End Sub
 
 Sub UstSosAktNK(VikMK, Tolshin, UZK, MPDZD, Tverdost, Ovalnost, ProgibCb, KontrGibCh, PnIs)
@@ -3106,57 +3835,73 @@ Sub UstSosAktNK(VikMK, Tolshin, UZK, MPDZD, Tverdost, Ovalnost, ProgibCb, KontrG
 
 End Sub
 Sub FillOutFormUstr(index, ustroystvo)
-    UF1.poleRegNum.Value = ustroystvo(index, 3)
-    UF1.DataRegistracii.Value = ustroystvo(index, 5)
-    UF1.Vladelez.Value = ustroystvo(index, 6)
-    UF1.DataIzg.Value = ustroystvo(index, 8)
-    UF1.DataVvoda.Value = ustroystvo(index, 9)
-    UF1.ZavodIzg.Value = ustroystvo(index, 10)
-    UF1.NazvTehUstr.Value = ustroystvo(index, 11)
-    UF1.ComboBoxTipUstroistva.Value = ustroystvo(index, 12)
-    UF1.ComboBoxTechUsrtvo.Value = ustroystvo(index, 13)
-    UF1.NaznTehUstr.Value = ustroystvo(index, 14)
-    UF1.CBPodNaliv.Value = ustroystvo(index, 15)
-    UF1.CBVakuum.Value = ustroystvo(index, 16)
-    UF1.RaschetnP.Value = ustroystvo(index, 17)
-    UF1.Raschetnt.Value = ustroystvo(index, 18)
-    UF1.VKorp.Value = ustroystvo(index, 19)
-    UF1.RaschSreda.Value = ustroystvo(index, 20)
-    UF1.CBRubashka.Value = ustroystvo(index, 21)
-    UF1.RaschetnPRub.Value = ustroystvo(index, 22)
-    UF1.RaschetntRub.Value = ustroystvo(index, 23)
-    UF1.VRub.Value = ustroystvo(index, 24)
-    UF1.RaschSredaRub.Value = ustroystvo(index, 25)
-    UF1.RazreshaemoeP.Value = ustroystvo(index, 26)
-    UF1.RabTemp.Value = ustroystvo(index, 27)
-    UF1.RabSreda.Value = ustroystvo(index, 28)
-    UF1.RabocheePRub.Value = ustroystvo(index, 29)
-    UF1.RabTempRub.Value = ustroystvo(index, 30)
-    UF1.RabSredaRub.Value = ustroystvo(index, 31)
-    UF1.IspitatP.Value = ustroystvo(index, 32)
-    UF1.IspitatPRub.Value = ustroystvo(index, 33)
-    UF1.FlanzSoed.Value = ustroystvo(index, 34)
-    UF1.PrimSvMat.Value = ustroystvo(index, 35)
-    UF1.ZavKontr.Value = ustroystvo(index, 36)
-    UF1.PasportKolStr.Value = ustroystvo(index, 37)
-    UF1.TBUstrComment.Value = ustroystvo(index, 38)
+    If ustroystvo(index, 2) = "Котел" Then UF1.OptionKotel.Value = True
+    If ustroystvo(index, 2) = "Сосуд" Then UF1.OptionSosud.Value = True
+    If ustroystvo(index, 2) = "Трубопровод" Then UF1.OptionTruboprovod.Value = True
+    If ustroystvo(index, 2) = "Сооружение" Then UF1.OptionSoorugenie.Value = True
+    If ustroystvo(index, 2) = "Остальное" Then UF1.OptionOstalnoe.Value = True
+    UF1.ComboBoxTipUstroistva.Value = ustroystvo(index, 3)
+'    UF1.NazvTehUstr.Value = ustroystvo(index, 4)
+    UF1.ZavodIzg.Value = ustroystvo(index, 5)
+    UF1.DataIzg.Value = ustroystvo(index, 6)
+    UF1.ZavN.Value = ustroystvo(index, 7)
+    UF1.MontagOrg.Value = ustroystvo(index, 8)
+    UF1.DataMontaga.Value = ustroystvo(index, 9)
+    UF1.DataVvoda.Value = ustroystvo(index, 10)
+    UF1.poleRegNum.Value = ustroystvo(index, 11)
+    UF1.RegN.Value = ustroystvo(index, 12)
+    UF1.DataRegistracii.Value = ustroystvo(index, 13)
+    UF1.polePosition.Value = ustroystvo(index, 14)
+    UF1.Position.Value = ustroystvo(index, 15)
+    UF1.Vladelez.Value = ustroystvo(index, 16)
+    UF1.ComboBoxTechUsrtvo.Value = ustroystvo(index, 17)
+    UF1.NaznTehUstr.Value = ustroystvo(index, 18)
+    UF1.CBPodNaliv.Value = ustroystvo(index, 19)
+    UF1.CBVakuum.Value = ustroystvo(index, 20)
+    UF1.RaschetnP.Value = ustroystvo(index, 21)
+    UF1.Raschetnt.Value = ustroystvo(index, 22)
+    UF1.VKorp.Value = ustroystvo(index, 23)
+    UF1.RaschSreda.Value = ustroystvo(index, 24)
+    UF1.CBRubashka.Value = ustroystvo(index, 25)
+    UF1.RaschetnPRub.Value = ustroystvo(index, 26)
+    UF1.RaschetntRub.Value = ustroystvo(index, 27)
+    UF1.VRub.Value = ustroystvo(index, 28)
+    UF1.RaschSredaRub.Value = ustroystvo(index, 29)
+    UF1.RazreshaemoeP.Value = ustroystvo(index, 30)
+    UF1.RabTemp.Value = ustroystvo(index, 31)
+    UF1.RabSreda.Value = ustroystvo(index, 32)
+    UF1.RabocheePRub.Value = ustroystvo(index, 33)
+    UF1.RabTempRub.Value = ustroystvo(index, 34)
+    UF1.RabSredaRub.Value = ustroystvo(index, 35)
+    UF1.IspitatP.Value = ustroystvo(index, 36)
+    UF1.IspitatPRub.Value = ustroystvo(index, 37)
+    UF1.FlanzSoed.Value = ustroystvo(index, 38)
+    UF1.PrimSvMat.Value = ustroystvo(index, 39)
+    UF1.ZavKontr.Value = ustroystvo(index, 40)
+    UF1.TBUstrComment.Value = ustroystvo(index, 41)
     
 End Sub
 
 Sub FillOutElements(index, ustroystvo)
-Z = 3
+z = 1
 For i = 1 To 10
     For n = 1 To 8
         If n > 1 Then
-            UF1.Controls.Item("R" & i & "C" & n - 1).Value = ustroystvo(index, Z + (8 * (UF1.SpButElm.Value)))
+            UF1.Controls.item("R" & i & "C" & n - 1).Value = ustroystvo(index, z + (8 * (UF1.SpButElm.Value)))
         Else
-            If i > 1 Then UF1.Controls.Item("CBR" & i).Value = ustroystvo(index, Z + (8 * (UF1.SpButElm.Value)))
+            If i > 1 Then
+                If ustroystvo(index, z + (8 * (UF1.SpButElm.Value))) = "True" Then
+                    UF1.Controls.item("CBR" & i).Value = "True"
+                Else
+                    UF1.Controls.item("CBR" & i).Value = "False"
+                End If
+            End If
         End If
-    Z = Z + 1
+    z = z + 1
     Next n
 Next i
-UF1.CBZikl.Value = ustroystvo(index, 163)
+UF1.CBZikl.Value = ustroystvo(index, 161)
 If IsNull(UF1.CBZikl.Value) Then UF1.CBZikl.Value = False
-UF1.KolZicl.Value = ustroystvo(index, 164)
+UF1.KolZicl.Value = ustroystvo(index, 162)
 End Sub
 
